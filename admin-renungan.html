@@ -1,0 +1,778 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3b82f6">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RNHKBP Pelikan">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin - Kelola Renungan Harian</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #3b82f6;
+      --primary-light: #93c5fd;
+      --primary-soft: #dbeafe;
+      --primary-dark: #1e40af;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #1e293b;
+      --gray: #64748b;
+      --gray-light: #e2e8f0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f1f5f9;
+      color: var(--dark);
+    }
+
+    /* Sidebar */
+    .sidebar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      height: 100vh;
+      width: 260px;
+      background: white;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+      padding: 2rem 1rem;
+      overflow-y: auto;
+      z-index: 1000;
+    }
+
+    .sidebar h4 {
+      color: var(--primary-dark);
+      font-weight: 600;
+      margin-bottom: 2rem;
+      padding-bottom: 1rem;
+      border-bottom: 2px solid var(--primary-soft);
+    }
+
+    .sidebar h4 i {
+      margin-right: 10px;
+      color: var(--primary);
+    }
+
+    .sidebar-menu {
+      list-style: none;
+      padding: 0;
+    }
+
+    .sidebar-menu li {
+      margin-bottom: 0.5rem;
+    }
+
+    .sidebar-menu a {
+      display: flex;
+      align-items: center;
+      padding: 0.8rem 1rem;
+      color: var(--gray);
+      text-decoration: none;
+      border-radius: 10px;
+      transition: all 0.3s ease;
+    }
+
+    .sidebar-menu a i {
+      width: 25px;
+      margin-right: 10px;
+      font-size: 1.1rem;
+    }
+
+    .sidebar-menu a:hover {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+    }
+
+    .sidebar-menu a.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .sidebar-menu a.active i {
+      color: white;
+    }
+
+    /* Main Content */
+    .main-content {
+      margin-left: 260px;
+      padding: 2rem;
+    }
+
+    /* Navbar */
+    .navbar-admin {
+      background: white;
+      border-radius: 15px;
+      padding: 1rem 2rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .navbar-admin h5 {
+      margin: 0;
+      font-weight: 600;
+      color: var(--dark);
+    }
+
+    .navbar-admin h5 i {
+      color: var(--primary);
+      margin-right: 10px;
+    }
+
+    .user-info {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+    }
+
+    .user-info span {
+      color: var(--gray);
+      font-size: 0.9rem;
+    }
+
+    .btn-logout {
+      background: var(--danger);
+      color: white;
+      border: none;
+      border-radius: 50px;
+      padding: 0.4rem 1.2rem;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-logout:hover {
+      background: #dc2626;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(220, 38, 38, 0.3);
+    }
+
+    /* Cards */
+    .section-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      margin-bottom: 2rem;
+      box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+    }
+
+    .section-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      color: var(--dark);
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary-soft);
+    }
+
+    .section-title i {
+      color: var(--primary);
+      margin-right: 10px;
+    }
+
+    /* Form */
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-label {
+      font-weight: 500;
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-bottom: 0.3rem;
+    }
+
+    .form-control, .form-select {
+      border: 1px solid var(--gray-light);
+      border-radius: 10px;
+      padding: 0.6rem 1rem;
+      font-size: 0.95rem;
+      transition: all 0.3s ease;
+    }
+
+    .form-control:focus, .form-select:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    textarea.form-control {
+      min-height: 120px;
+      resize: vertical;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      border: none;
+      border-radius: 10px;
+      padding: 0.6rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-primary:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-outline-primary {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      background: transparent;
+      border-radius: 10px;
+      padding: 0.6rem 1.5rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+    }
+
+    .btn-danger {
+      background: var(--danger);
+      border: none;
+      border-radius: 10px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+      transition: all 0.3s ease;
+    }
+
+    .btn-danger:hover {
+      background: #dc2626;
+      transform: translateY(-2px);
+    }
+
+    .btn-warning {
+      background: var(--warning);
+      border: none;
+      border-radius: 10px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.8rem;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .btn-warning:hover {
+      background: #d97706;
+      transform: translateY(-2px);
+    }
+
+    /* Tabel Renungan */
+    .table-renungan {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table-renungan th {
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      font-weight: 600;
+      font-size: 0.85rem;
+      padding: 1rem;
+      text-align: left;
+    }
+
+    .table-renungan td {
+      padding: 1rem;
+      border-bottom: 1px solid var(--gray-light);
+      font-size: 0.9rem;
+      vertical-align: middle;
+    }
+
+    .table-renungan tr:hover {
+      background: var(--primary-soft);
+    }
+
+    .ayat-cell {
+      font-weight: 600;
+      color: var(--primary-dark);
+    }
+
+    .isi-cell {
+      max-width: 300px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--gray);
+    }
+
+    .action-cell {
+      white-space: nowrap;
+    }
+
+    .action-cell button {
+      margin: 0 3px;
+    }
+
+    .badge-kategori {
+      display: inline-block;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      padding: 0.2rem 0.8rem;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 500;
+    }
+
+    /* Alert */
+    .alert {
+      border-radius: 10px;
+      padding: 1rem;
+      margin-bottom: 1rem;
+      border: none;
+    }
+
+    .alert-success {
+      background: #d1fae5;
+      color: #065f46;
+    }
+
+    .alert-danger {
+      background: #fee2e2;
+      color: #991b1b;
+    }
+
+    /* Loading */
+    .spinner-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(255,255,255,0.8);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      display: none;
+    }
+
+    .spinner {
+      width: 50px;
+      height: 50px;
+      border: 3px solid var(--primary-soft);
+      border-top-color: var(--primary);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+      .main-content {
+        margin-left: 0;
+      }
+      .table-renungan {
+        font-size: 0.8rem;
+      }
+      .action-cell button {
+        padding: 0.3rem 0.5rem;
+        font-size: 0.7rem;
+      }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Sidebar -->
+<div class="sidebar">
+  <h4><i class="fas fa-church"></i> NHKBP Pelikan</h4>
+  <ul class="sidebar-menu">
+    <li><a href="dashboard.html"><i class="fas fa-tachometer-alt"></i> Dashboard</a></li>
+    <li><a href="anggota.html"><i class="fas fa-users"></i> Anggota</a></li>
+    <li><a href="absensi.html"><i class="fas fa-calendar-check"></i> Absensi</a></li>
+    <li><a href="admin-artikel.html"><i class="fas fa-newspaper"></i> Artikel</a></li>
+    <li><a href="admin-renungan.html" class="active"><i class="fas fa-bible"></i> Renungan</a></li>
+    <li><a href="admin-kepengurusan.html"><i class="fas fa-users-cog"></i> Kepengurusan</a></li>
+    <li><a href="admin-tentang.html"><i class="fas fa-image"></i> Foto Tentang</a></li>
+    <li><a href="admin-partitur.html"><i class="fas fa-music"></i> Partitur</a></li>
+  </ul>
+</div>
+
+<!-- Main Content -->
+<div class="main-content">
+  
+  <!-- Navbar -->
+  <div class="navbar-admin">
+    <h5><i class="fas fa-bible"></i> Kelola Renungan Harian</h5>
+    <div class="user-info">
+      <span id="adminEmail"><i class="fas fa-user-circle"></i> admin@nhkbp.org</span>
+      <button class="btn-logout" onclick="logout()">
+        <i class="fas fa-sign-out-alt me-2"></i>Logout
+      </button>
+    </div>
+  </div>
+
+  <!-- Alert Message -->
+  <div id="alertMessage" class="alert" style="display: none;"></div>
+
+  <!-- Loading Spinner -->
+  <div class="spinner-overlay" id="loadingSpinner">
+    <div class="spinner"></div>
+  </div>
+
+  <!-- FORM TAMBAH RENUNGAN -->
+  <div class="section-card">
+    <h5 class="section-title"><i class="fas fa-plus-circle"></i> Tambah Renungan Baru</h5>
+    <div class="row">
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">Tanggal</label>
+          <input type="date" class="form-control" id="tanggal" value="<?php echo date('Y-m-d'); ?>">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">Kategori</label>
+          <select class="form-select" id="kategori">
+            <option value="Renungan Pagi">🌅 Renungan Pagi</option>
+            <option value="Renungan Siang">☀️ Renungan Siang</option>
+            <option value="Renungan Malam">🌙 Renungan Malam</option>
+            <option value="Renungan Khusus">✨ Renungan Khusus</option>
+          </select>
+        </div>
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <label class="form-label">Ayat Alkitab</label>
+          <input type="text" class="form-control" id="ayat" placeholder="Contoh: Mazmur 23:1">
+        </div>
+      </div>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">Isi Renungan</label>
+      <textarea class="form-control" id="isi" placeholder="Tulis renungan di sini..."></textarea>
+    </div>
+    
+    <div class="form-group">
+      <label class="form-label">Aplikasi (opsional)</label>
+      <textarea class="form-control" id="aplikasi" placeholder="Aplikasi dalam kehidupan sehari-hari..."></textarea>
+    </div>
+    
+    <input type="hidden" id="renunganId" value="">
+    
+    <div class="mt-3">
+      <button class="btn btn-primary" onclick="simpanRenungan()" id="btnSimpan">
+        <i class="fas fa-save me-2"></i>Simpan Renungan
+      </button>
+      <button class="btn btn-outline-primary" onclick="batalEdit()" id="btnBatal" style="display: none;">
+        <i class="fas fa-times me-2"></i>Batal
+      </button>
+    </div>
+  </div>
+
+  <!-- DAFTAR RENUNGAN -->
+  <div class="section-card">
+    <h5 class="section-title"><i class="fas fa-list"></i> Daftar Renungan Harian</h5>
+    
+    <div class="table-responsive">
+      <table class="table-renungan">
+        <thead>
+          <tr>
+            <th>Tanggal</th>
+            <th>Kategori</th>
+            <th>Ayat</th>
+            <th>Isi Renungan</th>
+            <th>Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="daftarRenungan">
+          <tr>
+            <td colspan="5" class="text-center py-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+
+<script>
+// ================= KONFIGURASI FIREBASE =================
+const firebaseConfig = {
+  apiKey: "AIzaSyCwQGsFPBIs_gk0Xc1hscpG-7n6M16gqWc",
+  authDomain: "rnhkbp-pelikan.firebaseapp.com",
+  projectId: "rnhkbp-pelikan",
+  storageBucket: "rnhkbp-pelikan.firebasestorage.app",
+  messagingSenderId: "202813062166",
+  appId: "1:202813062166:web:eb3d963d5965a5e6f48937"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// ================= CEK LOGIN =================
+auth.onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = "login.html";
+  } else {
+    document.getElementById('adminEmail').innerHTML = `<i class="fas fa-user-circle me-1"></i>${user.email}`;
+    loadRenungan();
+  }
+});
+
+// ================= LOGOUT =================
+function logout() {
+  auth.signOut()
+    .then(() => {
+      window.location.href = "login.html";
+    })
+    .catch(error => {
+      showAlert('Gagal logout: ' + error.message, 'danger');
+    });
+}
+
+// ================= SHOW ALERT =================
+function showAlert(message, type = 'success') {
+  const alertEl = document.getElementById('alertMessage');
+  alertEl.className = `alert alert-${type}`;
+  alertEl.style.display = 'block';
+  alertEl.innerHTML = `<i class="fas ${type === 'success' ? 'fa-check-circle' : 'fa-exclamation-circle'} me-2"></i>${message}`;
+  
+  setTimeout(() => {
+    alertEl.style.display = 'none';
+  }, 3000);
+}
+
+// ================= SHOW LOADING =================
+function showLoading(show) {
+  document.getElementById('loadingSpinner').style.display = show ? 'flex' : 'none';
+}
+
+// ================= SIMPAN RENUNGAN =================
+async function simpanRenungan() {
+  const id = document.getElementById('renunganId').value;
+  const tanggal = document.getElementById('tanggal').value;
+  const kategori = document.getElementById('kategori').value;
+  const ayat = document.getElementById('ayat').value;
+  const isi = document.getElementById('isi').value;
+  const aplikasi = document.getElementById('aplikasi').value;
+  
+  if (!tanggal || !ayat || !isi) {
+    showAlert('Tanggal, ayat, dan isi renungan harus diisi!', 'danger');
+    return;
+  }
+  
+  showLoading(true);
+  
+  try {
+    const renunganData = {
+      tanggal: tanggal,
+      kategori: kategori,
+      ayat: ayat,
+      isi: isi,
+      aplikasi: aplikasi || '',
+      createdAt: firebase.firestore.FieldValue.serverTimestamp()
+    };
+    
+    if (id) {
+      // Update
+      await db.collection("renungan").doc(id).update(renunganData);
+      showAlert('Renungan berhasil diperbarui!', 'success');
+    } else {
+      // Tambah baru
+      await db.collection("renungan").add(renunganData);
+      showAlert('Renungan berhasil ditambahkan!', 'success');
+    }
+    
+    // Reset form
+    batalEdit();
+    loadRenungan();
+    
+  } catch (error) {
+    console.error("Error saving:", error);
+    showAlert('Gagal menyimpan: ' + error.message, 'danger');
+  }
+  
+  showLoading(false);
+}
+
+// ================= LOAD RENUNGAN =================
+async function loadRenungan() {
+  try {
+    const snapshot = await db.collection("renungan")
+      .orderBy("tanggal", "desc")
+      .get();
+    
+    let html = '';
+    
+    if (snapshot.empty) {
+      html = `
+        <tr>
+          <td colspan="5" class="text-center py-4">
+            <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+            <p class="text-muted">Belum ada renungan</p>
+          </td>
+        </tr>
+      `;
+    } else {
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        
+        // Format tanggal
+        let tanggalFormatted = data.tanggal;
+        if (data.tanggal) {
+          const parts = data.tanggal.split('-');
+          if (parts.length === 3) {
+            const bulan = ['Jan', 'Feb', 'Mar', 'Apr', 'Mei', 'Jun', 'Jul', 'Ags', 'Sep', 'Okt', 'Nov', 'Des'];
+            tanggalFormatted = `${parseInt(parts[2])} ${bulan[parseInt(parts[1])-1]} ${parts[0]}`;
+          }
+        }
+        
+        // Potong isi
+        let isiSingkat = data.isi || '';
+        if (isiSingkat.length > 100) {
+          isiSingkat = isiSingkat.substring(0, 100) + '...';
+        }
+        
+        html += `
+          <tr>
+            <td>${tanggalFormatted}</td>
+            <td><span class="badge-kategori">${data.kategori || 'Renungan'}</span></td>
+            <td class="ayat-cell">${data.ayat || '-'}</td>
+            <td class="isi-cell">${isiSingkat}</td>
+            <td class="action-cell">
+              <button class="btn btn-warning btn-sm" onclick="editRenungan('${doc.id}')">
+                <i class="fas fa-edit"></i>
+              </button>
+              <button class="btn btn-danger btn-sm" onclick="hapusRenungan('${doc.id}')">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+    
+    document.getElementById('daftarRenungan').innerHTML = html;
+    
+  } catch (error) {
+    console.error("Error loading:", error);
+    document.getElementById('daftarRenungan').innerHTML = `
+      <tr>
+        <td colspan="5" class="text-center py-4 text-danger">
+          <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
+          <p>Gagal memuat data: ${error.message}</p>
+        </td>
+      </tr>
+    `;
+  }
+}
+
+// ================= EDIT RENUNGAN =================
+async function editRenungan(id) {
+  showLoading(true);
+  
+  try {
+    const doc = await db.collection("renungan").doc(id).get();
+    if (!doc.exists) {
+      showAlert('Renungan tidak ditemukan!', 'danger');
+      return;
+    }
+    
+    const data = doc.data();
+    
+    document.getElementById('renunganId').value = id;
+    document.getElementById('tanggal').value = data.tanggal || '';
+    document.getElementById('kategori').value = data.kategori || 'Renungan Pagi';
+    document.getElementById('ayat').value = data.ayat || '';
+    document.getElementById('isi').value = data.isi || '';
+    document.getElementById('aplikasi').value = data.aplikasi || '';
+    
+    document.getElementById('btnBatal').style.display = 'inline-block';
+    document.getElementById('btnSimpan').innerHTML = '<i class="fas fa-save me-2"></i>Perbarui Renungan';
+    
+    // Scroll ke form
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+    
+  } catch (error) {
+    console.error("Error editing:", error);
+    showAlert('Gagal memuat data: ' + error.message, 'danger');
+  }
+  
+  showLoading(false);
+}
+
+// ================= HAPUS RENUNGAN =================
+function hapusRenungan(id) {
+  if (confirm('Apakah Anda yakin ingin menghapus renungan ini?')) {
+    showLoading(true);
+    
+    db.collection("renungan").doc(id).delete()
+      .then(() => {
+        showAlert('Renungan berhasil dihapus!', 'success');
+        loadRenungan();
+      })
+      .catch(error => {
+        console.error("Error deleting:", error);
+        showAlert('Gagal menghapus: ' + error.message, 'danger');
+      })
+      .finally(() => {
+        showLoading(false);
+      });
+  }
+}
+
+// ================= BATAL EDIT =================
+function batalEdit() {
+  document.getElementById('renunganId').value = '';
+  document.getElementById('tanggal').value = new Date().toISOString().split('T')[0];
+  document.getElementById('kategori').value = 'Renungan Pagi';
+  document.getElementById('ayat').value = '';
+  document.getElementById('isi').value = '';
+  document.getElementById('aplikasi').value = '';
+  
+  document.getElementById('btnBatal').style.display = 'none';
+  document.getElementById('btnSimpan').innerHTML = '<i class="fas fa-save me-2"></i>Simpan Renungan';
+}
+
+// ================= SET TANGGAL DEFAULT =================
+document.addEventListener('DOMContentLoaded', () => {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('tanggal').value = today;
+});
+</script>
+
+<script src="js/pwa-init.js"></script>
+</body>
+</html>

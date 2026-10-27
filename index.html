@@ -1,108 +1,1596 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Galeri partitur lagu dalam format PDF. Cari, lihat, dan unduh." />
-  <title>Galeri Partitur</title>
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♫</text></svg>" />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="style.css" />
+  <meta name="google-site-verification" content="IpEgfeEtGRFA-t9VZ0LZSQUHX5l5-g-uP36x_ayAUPI" />
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3b82f6">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RNHKBP Pelikan">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RNHKBP Pelikan - Website Resmi</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --primary: #3b82f6;
+      --primary-light: #93c5fd;
+      --primary-soft: #dbeafe;
+      --primary-dark: #1e40af;
+      --secondary: #60a5fa;
+      --accent: #38bdf8;
+      --success: #22c55e;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --dark: #1e293b;
+      --light: #f8fafc;
+      --gray: #64748b;
+      --gray-light: #e2e8f0;
+      --bg-soft: #eff6ff;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      color: var(--dark);
+      line-height: 1.6;
+      overflow-x: hidden;
+      background: var(--bg-soft);
+    }
+
+    /* Navbar Styling */
+    .navbar {
+      background: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 15px rgba(59, 130, 246, 0.1);
+      padding: 0.8rem 0;
+    }
+
+    .navbar-brand img {
+      height: 40px;
+      width: auto;
+      transition: transform 0.3s ease;
+    }
+
+    .navbar-brand:hover img {
+      transform: scale(1.05);
+    }
+
+    .navbar-brand .fw-bold {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--primary-dark) !important;
+    }
+
+    .navbar-brand small {
+      color: var(--gray) !important;
+      font-size: 0.65rem;
+      letter-spacing: 0.5px;
+    }
+
+    .nav-link {
+      color: var(--dark) !important;
+      font-weight: 500;
+      font-size: 0.9rem;
+      margin: 0 8px;
+      position: relative;
+      padding: 0.4rem 0 !important;
+    }
+
+    .nav-link::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 0;
+      height: 2px;
+      background: var(--primary);
+      transition: width 0.3s ease;
+    }
+
+    .nav-link:hover::after,
+    .nav-link.active::after {
+      width: 100%;
+    }
+
+    .nav-link.active {
+      color: var(--primary) !important;
+    }
+
+    .btn-outline-primary {
+      border: 2px solid var(--primary);
+      color: var(--primary);
+      background: transparent;
+      border-radius: 50px;
+      padding: 0.4rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .btn-outline-primary:hover {
+      background: var(--primary);
+      color: white;
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Hero Section - DIPERBAIKI padding-top */
+    .hero-section {
+      background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+      color: white;
+      padding: 120px 0 100px;
+      margin-top: 0;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url('data:image/svg+xml,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320"><path fill="%23ffffff" fill-opacity="0.1" d="M0,96L48,112C96,128,192,160,288,160C384,160,480,128,576,122.7C672,117,768,139,864,154.7C960,171,1056,181,1152,165.3C1248,149,1344,107,1392,85.3L1440,64L1440,320L1392,320C1344,320,1248,320,1152,320C1056,320,960,320,864,320C768,320,672,320,576,320C480,320,384,320,288,320C192,320,96,320,48,320L0,320Z"></path></svg>');
+      background-repeat: no-repeat;
+      background-position: bottom;
+      background-size: cover;
+      opacity: 0.3;
+    }
+
+    .hero-section .container {
+      position: relative;
+      z-index: 2;
+    }
+
+    .hero-section h1 {
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin-bottom: 1rem;
+      text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+      animation: fadeInDown 1s ease;
+    }
+
+    .hero-section .lead {
+      font-size: 1.2rem;
+      margin-bottom: 2rem;
+      opacity: 0.95;
+      animation: fadeInUp 1s ease 0.2s both;
+      font-weight: 400;
+    }
+
+    .hero-section .btn {
+      padding: 0.8rem 2rem;
+      font-weight: 500;
+      font-size: 1rem;
+      border-radius: 50px;
+      transition: all 0.3s ease;
+      animation: fadeInUp 1s ease 0.4s both;
+    }
+
+    .hero-section .btn-light {
+      background: white;
+      color: var(--primary);
+      border: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+
+    .hero-section .btn-light:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.15);
+    }
+
+    .hero-section .btn-outline-light {
+      border: 2px solid white;
+      color: white;
+      background: transparent;
+    }
+
+    .hero-section .btn-outline-light:hover {
+      background: white;
+      color: var(--primary);
+      transform: translateY(-3px);
+    }
+
+    /* Stat Cards */
+    .stat-card {
+      background: white;
+      border-radius: 15px;
+      padding: 1.5rem 1rem;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(59, 130, 246, 0.08);
+      transition: all 0.3s ease;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15);
+    }
+
+    .stat-card i {
+      font-size: 2rem;
+      color: var(--primary);
+      margin-bottom: 0.8rem;
+    }
+
+    .stat-number {
+      font-size: 1.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      margin: 0.3rem 0;
+    }
+
+    .stat-card .text-muted {
+      font-size: 0.85rem;
+      color: var(--gray) !important;
+    }
+
+    /* Feature Cards */
+    .feature-card {
+      background: white;
+      border: none;
+      border-radius: 20px;
+      padding: 2rem 1.5rem;
+      text-align: center;
+      box-shadow: 0 5px 20px rgba(59, 130, 246, 0.08);
+      transition: all 0.3s ease;
+      height: 100%;
+      border: 1px solid rgba(59, 130, 246, 0.1);
+    }
+
+    .feature-card:hover {
+      transform: translateY(-8px);
+      box-shadow: 0 20px 30px rgba(59, 130, 246, 0.15);
+      border-color: var(--primary-light);
+    }
+
+    .feature-icon {
+      width: 70px;
+      height: 70px;
+      line-height: 70px;
+      font-size: 1.8rem;
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-radius: 20px;
+      margin: 0 auto 1.2rem;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card:hover .feature-icon {
+      background: var(--primary);
+      color: white;
+      transform: scale(1.1) rotate(5deg);
+    }
+
+    .feature-card h4 {
+      font-size: 1.2rem;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: var(--dark);
+    }
+
+    .feature-card p {
+      font-size: 0.9rem;
+      color: var(--gray);
+      margin-bottom: 1.2rem;
+      line-height: 1.5;
+    }
+
+    .feature-card .btn {
+      border-radius: 50px;
+      padding: 0.5rem 1.5rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      background: var(--primary);
+      border: none;
+      color: white;
+      transition: all 0.3s ease;
+    }
+
+    .feature-card .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+    }
+
+    /* ===== RENUNGAN HARIAN SECTION ===== */
+    .renungan-section {
+      padding: 60px 0;
+      background: white;
+    }
+
+    .section-title {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 2rem;
+      color: var(--dark);
+      text-align: center;
+    }
+
+    .section-title span {
+      color: var(--primary);
+    }
+
+    .renungan-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.8rem;
+      box-shadow: 0 10px 30px rgba(59, 130, 246, 0.1);
+      border: 1px solid var(--primary-soft);
+      transition: all 0.3s ease;
+      height: 100%;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .renungan-card::before {
+      content: '"';
+      position: absolute;
+      top: -20px;
+      right: 10px;
+      font-size: 8rem;
+      color: var(--primary-soft);
+      font-family: serif;
+      opacity: 0.5;
+      z-index: 0;
+    }
+
+    .renungan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
+    }
+
+    .renungan-date {
+      display: inline-block;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      padding: 0.3rem 1rem;
+      border-radius: 50px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      margin-bottom: 1rem;
+      position: relative;
+      z-index: 1;
+    }
+
+    .renungan-ayat {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 2px solid var(--primary-soft);
+      position: relative;
+      z-index: 1;
+    }
+
+    .renungan-isi {
+      font-size: 0.95rem;
+      color: var(--dark);
+      margin-bottom: 1rem;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+      font-style: italic;
+    }
+
+    .renungan-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-top: 1rem;
+      padding-top: 0.5rem;
+      border-top: 1px solid var(--gray-light);
+      position: relative;
+      z-index: 1;
+    }
+
+    .renungan-footer small {
+      color: var(--gray);
+      font-size: 0.8rem;
+    }
+
+    /* ===== PROFIL KEPENGURUSAN SECTION ===== */
+    .profil-section {
+      padding: 60px 0;
+      background: var(--bg-soft);
+    }
+
+    .kepengurusan-card {
+      background: white;
+      border-radius: 20px;
+      padding: 1.5rem;
+      box-shadow: 0 5px 20px rgba(59, 130, 246, 0.08);
+      border: 1px solid rgba(59, 130, 246, 0.1);
+      transition: all 0.3s ease;
+      height: 100%;
+      text-align: center;
+    }
+
+    .kepengurusan-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15);
+    }
+
+    .kepengurusan-icon {
+      width: 60px;
+      height: 60px;
+      line-height: 60px;
+      font-size: 1.8rem;
+      background: var(--primary-soft);
+      color: var(--primary);
+      border-radius: 50%;
+      margin: 0 auto 1rem;
+    }
+
+    .kepengurusan-card h4 {
+      font-size: 1.1rem;
+      font-weight: 600;
+      color: var(--primary-dark);
+      margin-bottom: 0.5rem;
+    }
+
+    .kepengurusan-card .jabatan {
+      font-size: 0.8rem;
+      color: var(--primary);
+      font-weight: 500;
+      margin-bottom: 0.5rem;
+    }
+
+    .kepengurusan-card .nama {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--dark);
+      margin-bottom: 0.3rem;
+    }
+
+    .kepengurusan-card .kontak {
+      font-size: 0.8rem;
+      color: var(--gray);
+    }
+
+    .seksi-badge {
+      display: inline-block;
+      background: var(--primary-soft);
+      color: var(--primary-dark);
+      padding: 0.2rem 0.8rem;
+      border-radius: 50px;
+      font-size: 0.7rem;
+      font-weight: 500;
+      margin: 0.2rem;
+    }
+
+    /* About Section */
+    .about-section {
+      padding: 60px 0;
+      background: white;
+    }
+
+    .about-content h2 {
+      font-size: 2rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      color: var(--dark);
+    }
+
+    .about-content h2 span {
+      color: var(--primary);
+    }
+
+    .about-content .lead {
+      font-size: 1rem;
+      color: var(--dark);
+      font-weight: 500;
+      margin-bottom: 1rem;
+    }
+
+    .about-content p {
+      font-size: 0.95rem;
+      color: var(--gray);
+      margin-bottom: 1rem;
+    }
+
+    /* Articles Section */
+    .article-card {
+      background: white;
+      border: none;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(59, 130, 246, 0.08);
+      transition: all 0.3s ease;
+      height: 100%;
+    }
+
+    .article-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 30px rgba(59, 130, 246, 0.15);
+    }
+
+    .article-card img {
+      height: 180px;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+
+    .article-card:hover img {
+      transform: scale(1.05);
+    }
+
+    .article-card .card-body {
+      padding: 1.2rem;
+    }
+
+    .article-card .card-title {
+      font-size: 1.1rem;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: var(--dark);
+    }
+
+    .article-card .text-muted {
+      font-size: 0.75rem;
+    }
+
+    .article-card .card-text {
+      font-size: 0.85rem;
+      color: var(--gray);
+      margin-bottom: 1rem;
+      line-height: 1.5;
+    }
+
+    .article-card .btn {
+      border-radius: 50px;
+      padding: 0.4rem 1.2rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      background: var(--primary);
+      border: none;
+      color: white;
+    }
+
+    .article-card .btn:hover {
+      background: var(--primary-dark);
+    }
+
+    /* Contact Section */
+    .contact-section {
+      padding: 60px 0;
+      background: white;
+    }
+
+    .contact-info {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      padding: 2rem;
+      border-radius: 20px;
+      color: white;
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.2);
+    }
+
+    .contact-info h2 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 1rem;
+      padding: 0.8rem;
+      background: rgba(255,255,255,0.1);
+      border-radius: 12px;
+      backdrop-filter: blur(10px);
+      transition: all 0.3s ease;
+    }
+
+    .info-item:hover {
+      background: rgba(255,255,255,0.2);
+      transform: translateX(5px);
+    }
+
+    .info-item i {
+      font-size: 1.2rem;
+      margin-right: 1rem;
+      width: 30px;
+      text-align: center;
+    }
+
+    .info-item h5 {
+      margin: 0;
+      font-size: 0.9rem;
+      font-weight: 500;
+      opacity: 0.9;
+    }
+
+    .info-item p, .info-item a {
+      margin: 0;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: white;
+      text-decoration: none;
+    }
+
+    .social-links {
+      margin-top: 1.5rem;
+    }
+
+    .social-btn {
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      margin-right: 0.5rem;
+      transition: all 0.3s ease;
+      background: rgba(255,255,255,0.2);
+      backdrop-filter: blur(10px);
+      text-decoration: none;
+      font-size: 1rem;
+    }
+
+    .social-btn:hover {
+      transform: translateY(-3px);
+      background: white;
+      color: var(--primary);
+    }
+
+    .contact-form {
+      background: white;
+      padding: 2rem;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(59, 130, 246, 0.1);
+      border: 1px solid var(--primary-soft);
+    }
+
+    .contact-form h4 {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      color: var(--dark);
+    }
+
+    .contact-form .form-control {
+      border: 1px solid var(--gray-light);
+      border-radius: 12px;
+      padding: 0.6rem 1rem;
+      font-size: 0.9rem;
+      transition: all 0.3s ease;
+    }
+
+    .contact-form .form-control:focus {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    .contact-form .btn {
+      background: var(--primary);
+      border: none;
+      border-radius: 50px;
+      padding: 0.7rem;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: all 0.3s ease;
+    }
+
+    .contact-form .btn:hover {
+      background: var(--primary-dark);
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+    }
+
+    /* Footer */
+    .footer {
+      background: var(--dark);
+      color: white;
+      padding: 50px 0 20px;
+      position: relative;
+    }
+
+    .footer-logo {
+      height: 50px;
+      width: auto;
+    }
+
+    .footer h5 {
+      font-size: 1rem;
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+      color: white;
+    }
+
+    .footer-links {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-links li {
+      margin-bottom: 0.6rem;
+    }
+
+    .footer-links a {
+      color: var(--gray-light);
+      text-decoration: none;
+      font-size: 0.85rem;
+      transition: all 0.3s ease;
+    }
+
+    .footer-links a:hover {
+      color: white;
+      padding-left: 5px;
+    }
+
+    .footer-contact {
+      list-style: none;
+      padding: 0;
+    }
+
+    .footer-contact li {
+      display: flex;
+      align-items: center;
+      margin-bottom: 0.8rem;
+      color: var(--gray-light);
+      font-size: 0.85rem;
+    }
+
+    .footer-contact i {
+      width: 25px;
+      font-size: 0.9rem;
+      color: var(--primary);
+    }
+
+    .footer-contact a {
+      color: var(--gray-light);
+      text-decoration: none;
+    }
+
+    .footer-contact a:hover {
+      color: white;
+    }
+
+    .footer-bottom {
+      text-align: center;
+      padding-top: 1.5rem;
+      margin-top: 1.5rem;
+      border-top: 1px solid rgba(255,255,255,0.1);
+      color: var(--gray-light);
+      font-size: 0.8rem;
+    }
+
+    /* Animations */
+    @keyframes fadeInDown {
+      from {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes float {
+      0% { transform: translateY(0px); }
+      50% { transform: translateY(-5px); }
+      100% { transform: translateY(0px); }
+    }
+
+    .float-animation {
+      animation: float 3s ease-in-out infinite;
+    }
+
+    /* Admin Edit Button */
+    .admin-edit-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      background: var(--primary);
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(59, 130, 246, 0.3);
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: none;
+    }
+
+    .admin-edit-btn:hover {
+      transform: scale(1.1);
+      background: var(--primary-dark);
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      .hero-section h1 {
+        font-size: 2rem;
+      }
+
+      .hero-section {
+        padding: 100px 0 80px;
+      }
+
+      .section-title {
+        font-size: 1.6rem;
+      }
+
+      .navbar-brand .fw-bold {
+        font-size: 0.9rem;
+      }
+
+      .contact-info {
+        margin-bottom: 2rem;
+      }
+    }
+  </style>
 </head>
 <body>
-  <header class="site-header">
-    <a class="brand" href="#"><span class="brand-mark" aria-hidden="true">♫</span> Galeri Partitur</a>
-    <button id="adminToggle" class="button button-ghost" type="button" aria-expanded="false" aria-controls="adminPanel">Admin</button>
-  </header>
 
-  <main>
-    <section class="hero">
-      <svg class="staff" viewBox="0 0 1200 160" preserveAspectRatio="none" aria-hidden="true">
-        <g stroke="currentColor" stroke-width="1.5" fill="none">
-          <line x1="0" y1="40" x2="1200" y2="40"/><line x1="0" y1="62" x2="1200" y2="62"/>
-          <line x1="0" y1="84" x2="1200" y2="84"/><line x1="0" y1="106" x2="1200" y2="106"/>
-          <line x1="0" y1="128" x2="1200" y2="128"/>
-        </g>
-        <g fill="var(--brass)">
-          <ellipse cx="760" cy="95" rx="13" ry="10" transform="rotate(-20 760 95)"/><rect x="771" y="30" width="3" height="64"/>
-          <ellipse cx="860" cy="73" rx="13" ry="10" transform="rotate(-20 860 73)"/><rect x="871" y="8" width="3" height="64"/>
-          <ellipse cx="960" cy="117" rx="13" ry="10" transform="rotate(-20 960 117)"/><rect x="971" y="52" width="3" height="64"/>
-          <ellipse cx="1060" cy="51" rx="13" ry="10" transform="rotate(-20 1060 51)"/><rect x="1071" y="-14" width="3" height="64"/>
-        </g>
-      </svg>
-      <div class="container hero-inner">
-        <h1>Partitur lagu, siap dibuka dan diunduh.</h1>
-        <p class="hero-copy">Cari berdasarkan judul, pencipta, atau kategori. Semua file berformat PDF.</p>
-        <label class="search-wrap">
-          <span aria-hidden="true">⌕</span>
-          <input id="searchInput" type="search" placeholder="Cari judul, pencipta, atau kategori" autocomplete="off" aria-label="Cari partitur" />
-        </label>
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark fixed-top">
+  <div class="container">
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <img src="logo.png" alt="Logo NHKBP Pelikan" class="me-2 float-animation">
+      <div>
+        <div class="fw-bold">R-NHKBP PELIKAN</div>
+        <small>RESSORT PELIKAN RAYA</small>
       </div>
-    </section>
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+          <a class="nav-link active" href="index.html">Beranda</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="dokumentasi-publik.html">Dokumentasi</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="partitur.html">Partitur</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#renungan">Renungan</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#profil">Kepengurusan</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#tentang">Tentang</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#kontak">Kontak</a>
+        </li>
+      </ul>
+      <a href="login.html" class="btn btn-outline-primary">
+        <i class="fas fa-lock me-2"></i>Admin Login
+      </a>
+    </div>
+  </div>
+</nav>
 
-    <section class="container gallery-section">
-      <div class="section-heading">
-        <h2>Daftar partitur</h2>
-        <span id="songCount" class="muted">Memuat…</span>
-      </div>
-      <div id="categoryBar" class="chips" role="group" aria-label="Filter kategori"></div>
-      <div id="statusMessage" class="status" role="status">Menghubungkan ke galeri…</div>
-      <div id="songGrid" class="song-grid"></div>
-    </section>
+<!-- Hero Section - DIPERBAIKI dengan padding-top lebih besar -->
+<section class="hero-section">
+  <div class="container text-center">
+    <h1 class="mb-3">
+      Selamat Datang di Website R-NHKBP Pelikan
+    </h1>
+    <p class="lead mb-4">
+       "MARSIHAPOSAN, MARSITANGIANGAN & MARSIURUPAN.
 
-    <section id="adminPanel" class="admin-panel hidden">
-      <div class="container">
-        <div class="section-heading">
-          <h2>Panel admin</h2>
-          <button id="logoutButton" class="button button-outline hidden" type="button">Keluar</button>
+"
+    </p>
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="d-grid gap-2 d-md-flex justify-content-md-center">
+          <a href="dokumentasi-publik.html" class="btn btn-light px-4">
+            <i class="fas fa-images me-2"></i>Lihat Dokumentasi
+          </a>
+          <a href="partitur.html" class="btn btn-outline-light px-4">
+            <i class="fas fa-music me-2"></i>Partitur Lagu
+          </a>
+          <a href="#tentang" class="btn btn-outline-light px-4">
+            <i class="fas fa-info-circle me-2"></i>Tentang Kami
+          </a>
         </div>
-
-        <div id="loginBox" class="admin-card">
-          <h3>Masuk sebagai admin</h3>
-          <p class="muted">Gunakan akun yang dibuat di Firebase Authentication.</p>
-          <form id="loginForm" class="form-grid">
-            <label>Email<input id="adminEmail" type="email" required autocomplete="username" placeholder="admin@email.com" /></label>
-            <label>Kata sandi<input id="adminPassword" type="password" required autocomplete="current-password" /></label>
-            <button class="button" type="submit">Masuk</button>
-          </form>
-          <p id="loginMessage" class="form-message" role="status"></p>
-        </div>
-
-        <div id="uploadBox" class="admin-card hidden">
-          <h3 id="formTitle">Tambah partitur</h3>
-          <form id="songForm" class="form-grid">
-            <label>Judul lagu<input id="songTitle" required maxlength="120" placeholder="Contoh: Amazing Grace" /></label>
-            <label>Pencipta / pengaransemen<input id="songCreator" maxlength="120" placeholder="Opsional" /></label>
-            <label>Kategori<input id="songCategory" maxlength="60" list="categoryList" placeholder="Contoh: Rohani, Natal, Pop" /></label>
-            <datalist id="categoryList"></datalist>
-            <label>Link Google Drive<input id="songDriveLink" type="url" required placeholder="https://drive.google.com/file/d/.../view" /></label>
-            <div class="form-actions">
-              <button id="uploadButton" class="button" type="submit">Tambah partitur</button>
-              <button id="cancelEdit" class="button button-outline hidden" type="button">Batal edit</button>
-            </div>
-          </form>
-          <p id="uploadMessage" class="form-message" role="status"></p>
-          <p class="small muted">Sebelum menambahkan: di Google Drive pilih Bagikan, lalu ubah akses umum menjadi “Siapa saja yang memiliki link” (Pelihat).</p>
-        </div>
-      </div>
-    </section>
-  </main>
-
-  <dialog id="viewer" class="viewer" aria-label="Pratinjau partitur">
-    <div class="viewer-bar">
-      <strong id="viewerTitle"></strong>
-      <div class="viewer-actions">
-        <a id="viewerDownload" class="button" target="_blank" rel="noopener noreferrer">Unduh PDF</a>
-        <a id="viewerOpen" class="button button-outline" target="_blank" rel="noopener noreferrer">Buka di Drive</a>
-        <button id="viewerClose" class="button button-outline" type="button">Tutup</button>
       </div>
     </div>
-    <iframe id="viewerFrame" title="Pratinjau PDF" allow="autoplay"></iframe>
-  </dialog>
+  </div>
+</section>
 
-  <footer><p>Galeri Partitur · Koleksi PDF untuk belajar dan bermusik</p></footer>
-  <script type="module" src="app.js"></script>
+<!-- Statistik Section -->
+<div class="container mb-5" style="margin-top: -30px;">
+  <div class="row g-3">
+    <div class="col-md-3 col-6">
+      <div class="stat-card">
+        <i class="fas fa-users"></i>
+        <div class="stat-number" id="totalAnggota">
+          <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
+        </div>
+        <div class="text-muted">Total Anggota</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card">
+        <i class="fas fa-calendar-check"></i>
+        <div class="stat-number" id="totalKegiatan">
+          <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
+        </div>
+        <div class="text-muted">Total Kegiatan</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card">
+        <i class="fas fa-newspaper"></i>
+        <div class="stat-number" id="totalArtikel">
+          <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
+        </div>
+        <div class="text-muted">Total Artikel</div>
+      </div>
+    </div>
+    <div class="col-md-3 col-6">
+      <div class="stat-card">
+        <i class="fas fa-heart"></i>
+        <div class="stat-number" id="totalLike">
+          <span class="spinner-border spinner-border-sm text-primary" role="status"></span>
+        </div>
+        <div class="text-muted">Total Likes</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Fitur Unggulan -->
+<div class="container mb-5">
+  <h2 class="section-title">Fitur <span>Unggulan</span></h2>
+  <div class="row g-4">
+    <div class="col-md-4">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-camera"></i>
+        </div>
+        <h4>Dokumentasi Kegiatan</h4>
+        <p>Lihat dokumentasi lengkap Partangiangan, Latihan Koor, dan berbagai kegiatan lainnya.</p>
+        <a href="dokumentasi-publik.html" class="btn">Lihat Dokumentasi</a>
+      </div>
+    </div>
+    
+    <!-- RENUNGAN HARIAN -->
+    <div class="col-md-4">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-bible"></i>
+        </div>
+        <h4>Renungan Harian</h4>
+        <p>Ayat alkitab dan renungan singkat untuk memulai hari dengan firman Tuhan.</p>
+        <a href="#renungan" class="btn">Baca Renungan</a>
+      </div>
+    </div>
+    
+    <!-- PROFIL KEPENGURUSAN -->
+    <div class="col-md-4">
+      <div class="feature-card">
+        <div class="feature-icon">
+          <i class="fas fa-users-cog"></i>
+        </div>
+        <h4>Kepengurusan</h4>
+        <p>Profil lengkap pengurus Naposobulung, Parguru, Inang Paniroi, dan 7 Seksi.</p>
+        <a href="#profil" class="btn">Lihat Profil</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- RENUNGAN HARIAN SECTION -->
+<section id="renungan" class="renungan-section">
+  <div class="container">
+    <h2 class="section-title">Renungan <span>Harian</span></h2>
+    <div class="row g-4" id="renunganContainer">
+      <!-- Akan diisi JavaScript -->
+    </div>
+    <div class="text-center mt-4">
+      <a href="#" class="btn btn-primary px-4">
+        Lihat Semua Renungan <i class="fas fa-arrow-right ms-2"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- PROFIL KEPENGURUSAN SECTION -->
+<section id="profil" class="profil-section">
+  <div class="container">
+    <h2 class="section-title">Kepengurusan <span>RNHKBP</span></h2>
+    
+    <!-- KETUA, SEKRETARIS, BENDAHARA -->
+    <div class="row g-4 mb-5">
+      <div class="col-md-4">
+        <div class="kepengurusan-card">
+          <div class="kepengurusan-icon">
+            <i class="fas fa-user-tie"></i>
+          </div>
+          <h4>Ketua Naposobulung</h4>
+          <div class="jabatan">Koordinator</div>
+          <div class="nama" id="ketua">-</div>
+          <div class="kontak"><i class="fab fa-whatsapp me-1"></i> <span id="ketua_kontak">-</span></div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="kepengurusan-card">
+          <div class="kepengurusan-icon">
+            <i class="fas fa-file-signature"></i>
+          </div>
+          <h4>Sekretaris</h4>
+          <div class="jabatan">Administrasi</div>
+          <div class="nama" id="sekretaris">-</div>
+          <div class="kontak"><i class="fab fa-whatsapp me-1"></i> <span id="sekretaris_kontak">-</span></div>
+        </div>
+      </div>
+      
+      <div class="col-md-4">
+        <div class="kepengurusan-card">
+          <div class="kepengurusan-icon">
+            <i class="fas fa-coins"></i>
+          </div>
+          <h4>Bendahara</h4>
+          <div class="jabatan">Keuangan</div>
+          <div class="nama" id="bendahara">-</div>
+          <div class="kontak"><i class="fab fa-whatsapp me-1"></i> <span id="bendahara_kontak">-</span></div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- 7 SEKSI NAPOSO -->
+    <h4 class="text-center mb-4" style="color: var(--primary-dark);">7 Seksi Naposobulung</h4>
+    <div class="row g-4 mb-5">
+      <div class="col-md-3 col-6">
+        <div class="kepengurusan-card">
+          <span class="seksi-badge">Seksi 1</span>
+          <h5>Koor & Musik</h5>
+          <div class="nama" id="seksi1">-</div>
+          <div class="kontak" id="seksi1_kontak">-</div>
+        </div>
+      </div>
+      
+      <div class="col-md-3 col-6">
+        <div class="kepengurusan-card">
+          <span class="seksi-badge">Seksi 2</span>
+          <h5>Perlengkapan</h5>
+          <div class="nama" id="seksi2">-</div>
+          <div class="kontak" id="seksi2_kontak">-</div>
+        </div>
+      </div>
+      
+      <div class="col-md-3 col-6">
+        <div class="kepengurusan-card">
+          <span class="seksi-badge">Seksi 3</span>
+          <h5>Konsumsi</h5>
+          <div class="nama" id="seksi3">-</div>
+          <div class="kontak" id="seksi3_kontak">-</div>
+        </div>
+      </div>
+      
+      <div class="col-md-3 col-6">
+        <div class="kepengurusan-card">
+          <span class="seksi-badge">Seksi 4</span>
+          <h5>Dokumentasi</h5>
+          <div class="nama" id="seksi4">-</div>
+          <div class="kontak" id="seksi4_kontak">-</div>
+        </div>
+      </div>
+      
+      <div class="col-md-3 col-6">
+        <div class="kepengurusan-card">
+          <span class="seksi-badge">Seksi 5</span>
+          <h5>Kebersihan</h5>
+          <div class="nama" id="seksi5">-</div>
+          <div class="kontak" id="seksi5_kontak">-</div>
+        </div>
+      </div>
+      
+      <div class="col-md-3 col-6">
+        <div class="kepengurusan-card">
+          <span class="seksi-badge">Seksi 6</span>
+          <h5>Acara & Kreatif</h5>
+          <div class="nama" id="seksi6">-</div>
+          <div class="kontak" id="seksi6_kontak">-</div>
+        </div>
+      </div>
+      
+      <div class="col-md-3 col-6">
+        <div class="kepengurusan-card">
+          <span class="seksi-badge">Seksi 7</span>
+          <h5>Humas</h5>
+          <div class="nama" id="seksi7">-</div>
+          <div class="kontak" id="seksi7_kontak">-</div>
+        </div>
+      </div>
+      
+      <div class="col-md-3 col-6">
+        <div class="kepengurusan-card">
+          <span class="seksi-badge">Parguru</span>
+          <h5>Parguru Malua</h5>
+          <div class="nama" id="parguru">-</div>
+          <div class="kontak" id="parguru_kontak">-</div>
+        </div>
+      </div>
+    </div>
+    
+    <!-- INANG PANIROI -->
+    <h4 class="text-center mb-4" style="color: var(--primary-dark);">Inang Paniroi</h4>
+    <div class="row justify-content-center">
+      <div class="col-md-6">
+        <div class="kepengurusan-card">
+          <div class="kepengurusan-icon">
+            <i class="fas fa-female"></i>
+          </div>
+          <h4>Inang Paniroi</h4>
+          <div class="jabatan">Pembina Naposobulung</div>
+          <div class="nama" id="inang">-</div>
+          <div class="kontak"><i class="fab fa-whatsapp me-1"></i> <span id="inang_kontak">-</span></div>
+          <div class="mt-2 small text-muted">"Membimbing dengan kasih"</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Tentang Section -->
+<section id="tentang" class="about-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 about-content">
+        <h2>Tentang <span>NHKBP Pelikan</span></h2>
+        <p class="lead">NHKBP Ressort Pelikan Raya adalah wadah persekutuan Naposobulung dan Parguru Malua.</p>
+        <p>Kami hadir untuk membangun persekutuan yang saling mengasihi, bertumbuh dalam iman, dan melayani sesama melalui berbagai kegiatan rohani dan sosial. Setiap minggu kami mengadakan Partangiangan dan Latihan Koor sebagai bentuk pelayanan dan persekutuan.</p>
+      </div>
+      <div class="col-lg-6">
+        <img id="tentangFoto" src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1000 700'%3E%3Crect width='1000' height='700' fill='%23dbe7ff'/%3E%3Ctext x='500' y='370' font-family='Arial' font-size='84' text-anchor='middle' fill='%232563eb' opacity='.55'%3ENHKBP Pelikan%3C/text%3E%3C/svg%3E" class="img-fluid rounded-4 shadow" alt="Tentang Kami" style="width:100%;aspect-ratio:10/7;object-fit:cover;">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Artikel Terbaru -->
+<section class="py-5 bg-white">
+  <div class="container">
+    <h2 class="section-title">Artikel <span>Terbaru</span></h2>
+    <div class="row" id="artikelTerbaru">
+      <div class="col-12 text-center">
+        <div class="spinner-border text-primary" role="status">
+          <span class="visually-hidden">Loading...</span>
+        </div>
+      </div>
+    </div>
+    <div class="text-center mt-3">
+      <a href="dokumentasi-publik.html" class="btn btn-primary px-4">
+        Lihat Semua Artikel <i class="fas fa-arrow-right ms-2"></i>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Kontak Section -->
+<section id="kontak" class="contact-section">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-5">
+        <div class="contact-info">
+          <h2>Hubungi Kami</h2>
+          
+          <div class="info-item">
+            <i class="fas fa-map-marker-alt"></i>
+            <div>
+              <h5>Alamat</h5>
+              <p>Jl. Pelikan Raya No. 1, Perumnas Mandala, Medan, Sumatera Utara 20226</p>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <i class="fas fa-phone"></i>
+            <div>
+              <h5>Telepon</h5>
+              <p>+62 812 3456 7890</p>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <i class="fas fa-envelope"></i>
+            <div>
+              <h5>Email</h5>
+              <p>info@nhkbp-pelikan.org</p>
+            </div>
+          </div>
+          
+          <div class="info-item">
+            <i class="fab fa-instagram"></i>
+            <div>
+              <h5>Instagram</h5>
+              <a href="https://www.instagram.com/nhkbppelikanrealaccount" target="_blank">
+                @nhkbppelikanrealaccount
+              </a>
+            </div>
+          </div>
+          
+          <div class="social-links">
+            <a href="https://www.instagram.com/nhkbppelikanrealaccount" target="_blank" class="social-btn">
+              <i class="fab fa-instagram"></i>
+            </a>
+            <a href="#" class="social-btn">
+              <i class="fab fa-facebook-f"></i>
+            </a>
+            <a href="#" class="social-btn">
+              <i class="fab fa-twitter"></i>
+            </a>
+            <a href="#" class="social-btn">
+              <i class="fab fa-youtube"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-lg-7">
+        <div class="contact-form">
+          <h4>Kirim Pesan</h4>
+          <form id="formPesan">
+            <div class="row">
+              <div class="col-md-6 mb-3">
+                <input type="text" class="form-control" placeholder="Nama Lengkap" required>
+              </div>
+              <div class="col-md-6 mb-3">
+                <input type="email" class="form-control" placeholder="Email" required>
+              </div>
+            </div>
+            <div class="mb-3">
+              <input type="text" class="form-control" placeholder="Subjek" required>
+            </div>
+            <div class="mb-3">
+              <textarea class="form-control" rows="4" placeholder="Pesan Anda" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">
+              <i class="fas fa-paper-plane me-2"></i>Kirim Pesan
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-4 mb-4">
+        <div class="d-flex align-items-center mb-3">
+          <img src="logo.png" alt="Logo NHKBP Pelikan" class="footer-logo me-3">
+          <div>
+            <h5 class="mb-0">RNHKBP PELIKAN</h5>
+            <small class="text-primary">RESSORT PELIKAN RAYA</small>
+          </div>
+        </div>
+        <p class="text-white-50 small">Melayani dengan Kasih, Bertumbuh dalam Iman.</p>
+      </div>
+      
+      <div class="col-lg-2 mb-4">
+        <h5>Link Cepat</h5>
+        <ul class="footer-links">
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="dokumentasi-publik.html">Dokumentasi</a></li>
+          <li><a href="#renungan">Renungan</a></li>
+          <li><a href="#profil">Kepengurusan</a></li>
+          <li><a href="#tentang">Tentang</a></li>
+          <li><a href="#kontak">Kontak</a></li>
+        </ul>
+      </div>
+      
+      <div class="col-lg-3 mb-4">
+        <h5>Kepengurusan</h5>
+        <ul class="footer-links">
+          <li><a href="#profil">Ketua Naposobulung</a></li>
+          <li><a href="#profil">Sekretaris & Bendahara</a></li>
+          <li><a href="#profil">7 Seksi Naposo</a></li>
+          <li><a href="#profil">Inang Paniroi</a></li>
+        </ul>
+      </div>
+      
+      <div class="col-lg-3 mb-4">
+        <h5>Info Kontak</h5>
+        <ul class="footer-contact">
+          <li><i class="fas fa-map-marker-alt"></i> Jl. Pelikan Raya No. 1</li>
+          <li><i class="fas fa-phone"></i> +62 812 3456 7890</li>
+          <li><i class="fas fa-envelope"></i> info@nhkbp-pelikan.org</li>
+          <li><i class="fab fa-instagram"></i> <a href="https://www.instagram.com/nhkbppelikanrealaccount" target="_blank">@nhkbppelikanrealaccount</a></li>
+        </ul>
+      </div>
+    </div>
+    
+    <div class="footer-bottom">
+      <p class="mb-0">&copy; 2026 NHKBP PELIKAN - Ressort Pelikan Raya</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Admin Edit Button (hanya muncul jika login) -->
+<div id="adminEditBtn" class="admin-edit-btn" style="display: none;" onclick="window.location.href='admin-kepengurusan.html'">
+  <i class="fas fa-edit"></i>
+</div>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCwQGsFPBIs_gk0Xc1hscpG-7n6M16gqWc",
+  authDomain: "rnhkbp-pelikan.firebaseapp.com",
+  projectId: "rnhkbp-pelikan",
+  storageBucket: "rnhkbp-pelikan.firebasestorage.app",
+  messagingSenderId: "202813062166",
+  appId: "1:202813062166:web:eb3d963d5965a5e6f48937"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
+// Cek status login untuk menampilkan tombol edit
+auth.onAuthStateChanged(user => {
+  if (user) {
+    document.getElementById('adminEditBtn').style.display = 'flex';
+  } else {
+    document.getElementById('adminEditBtn').style.display = 'none';
+  }
+});
+
+// ================= LOAD STATISTIK =================
+async function loadStats() {
+  try {
+    const anggotaSnapshot = await db.collection("anggota").get();
+    document.getElementById('totalAnggota').textContent = anggotaSnapshot.size;
+    
+    const absensiSnapshot = await db.collection("absensi").get();
+    document.getElementById('totalKegiatan').textContent = absensiSnapshot.size;
+    
+    const artikelSnapshot = await db.collection("artikel").get();
+    document.getElementById('totalArtikel').textContent = artikelSnapshot.size;
+    
+    let totalLike = 0;
+    artikelSnapshot.forEach(doc => {
+      totalLike += doc.data().like || 0;
+    });
+    document.getElementById('totalLike').textContent = totalLike;
+    
+  } catch (error) {
+    console.error("Error loading stats:", error);
+  }
+}
+
+// ================= LOAD RENUNGAN =================
+db.collection("renungan")
+  .orderBy("tanggal", "desc")
+  .limit(3)
+  .onSnapshot(snapshot => {
+    let html = '';
+    
+    if (snapshot.empty) {
+      // Data default jika kosong
+      html = `
+        <div class="col-md-4">
+          <div class="renungan-card">
+            <span class="renungan-date"><i class="far fa-calendar-alt me-1"></i> 26 Februari 2026</span>
+            <div class="renungan-ayat">Mazmur 23:1-2</div>
+            <div class="renungan-isi">"Tuhan adalah gembalaku, takkan kekurangan aku. Ia membaringkan aku di padang yang berumput hijau."</div>
+            <div class="renungan-footer">
+              <small>Renungan pagi</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="renungan-card">
+            <span class="renungan-date"><i class="far fa-calendar-alt me-1"></i> 25 Februari 2026</span>
+            <div class="renungan-ayat">Yeremia 29:11</div>
+            <div class="renungan-isi">"Sebab Aku ini mengetahui rancangan-rancangan apa yang ada pada-Ku mengenai kamu, yaitu rancangan damai sejahtera."</div>
+            <div class="renungan-footer">
+              <small>Renungan siang</small>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="renungan-card">
+            <span class="renungan-date"><i class="far fa-calendar-alt me-1"></i> 24 Februari 2026</span>
+            <div class="renungan-ayat">Filipi 4:13</div>
+            <div class="renungan-isi">"Segala perkara dapat kutanggung di dalam Dia yang memberi kekuatan kepadaku."</div>
+            <div class="renungan-footer">
+              <small>Renungan malam</small>
+            </div>
+          </div>
+        </div>
+      `;
+    } else {
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        html += `
+          <div class="col-md-4">
+            <div class="renungan-card">
+              <span class="renungan-date"><i class="far fa-calendar-alt me-1"></i> ${data.tanggal || '26 Feb 2026'}</span>
+              <div class="renungan-ayat">${data.ayat || 'Mazmur 23:1'}</div>
+              <div class="renungan-isi">${data.isi || 'Renungan hari ini...'}</div>
+              <div class="renungan-footer">
+                <small>${data.kategori || 'Renungan'}</small>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+    document.getElementById('renunganContainer').innerHTML = html;
+  });
+
+// ================= LOAD KEPENGURUSAN =================
+async function loadKepengurusan() {
+  try {
+    const docRef = db.collection("pengurus").doc("kepengurusan");
+    const docSnap = await docRef.get();
+    
+    if (docSnap.exists) {
+      const data = docSnap.data();
+      
+      // Inti Pengurus
+      document.getElementById('ketua').textContent = data.ketua || 'Ricky Sihombing';
+      document.getElementById('ketua_kontak').textContent = data.ketua_kontak || '0812-3456-7890';
+      document.getElementById('sekretaris').textContent = data.sekretaris || 'Gabriel Marbun';
+      document.getElementById('sekretaris_kontak').textContent = data.sekretaris_kontak || '0812-3456-7891';
+      document.getElementById('bendahara').textContent = data.bendahara || 'Vincen Manurung';
+      document.getElementById('bendahara_kontak').textContent = data.bendahara_kontak || '0812-3456-7892';
+      
+      // 7 Seksi
+      document.getElementById('seksi1').textContent = data.seksi1 || 'Liven Manalu';
+      document.getElementById('seksi1_kontak').textContent = data.seksi1_kontak || '0812-3456-7893';
+      document.getElementById('seksi2').textContent = data.seksi2 || 'Dirga Simarmata';
+      document.getElementById('seksi2_kontak').textContent = data.seksi2_kontak || '0812-3456-7894';
+      document.getElementById('seksi3').textContent = data.seksi3 || 'Bella Tampubolon';
+      document.getElementById('seksi3_kontak').textContent = data.seksi3_kontak || '0812-3456-7895';
+      document.getElementById('seksi4').textContent = data.seksi4 || 'Frans Hutagalung';
+      document.getElementById('seksi4_kontak').textContent = data.seksi4_kontak || '0812-3456-7896';
+      document.getElementById('seksi5').textContent = data.seksi5 || 'Herland Pardede';
+      document.getElementById('seksi5_kontak').textContent = data.seksi5_kontak || '0812-3456-7897';
+      document.getElementById('seksi6').textContent = data.seksi6 || 'Putri Manalu';
+      document.getElementById('seksi6_kontak').textContent = data.seksi6_kontak || '0812-3456-7898';
+      document.getElementById('seksi7').textContent = data.seksi7 || 'Samuel Sitanggang';
+      document.getElementById('seksi7_kontak').textContent = data.seksi7_kontak || '0812-3456-7899';
+      
+      // Parguru & Inang
+      document.getElementById('parguru').textContent = data.parguru || 'Gabriel Manullang';
+      document.getElementById('parguru_kontak').textContent = data.parguru_kontak || '0812-3456-7800';
+      document.getElementById('inang').textContent = data.inang || 'Ibu Sorta Simanjuntak';
+      document.getElementById('inang_kontak').textContent = data.inang_kontak || '0812-3456-7810';
+    }
+  } catch (error) {
+    console.error("Error loading kepengurusan:", error);
+  }
+}
+
+// ================= LOAD ARTIKEL TERBARU =================
+db.collection("artikel")
+  .orderBy("tanggal", "desc")
+  .limit(3)
+  .onSnapshot(snapshot => {
+    let html = '';
+    
+    if (snapshot.empty) {
+      html = '<p class="text-center text-muted">Belum ada artikel</p>';
+    } else {
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        
+        let tanggal = '';
+        if (data.tanggal) {
+          if (data.tanggal.toDate) {
+            tanggal = data.tanggal.toDate().toLocaleDateString('id-ID', {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            });
+          }
+        }
+        
+        let excerpt = '';
+        if (data.isi) {
+          const tempDiv = document.createElement('div');
+          tempDiv.innerHTML = data.isi;
+          excerpt = tempDiv.textContent.substring(0, 80) + '...';
+        }
+        
+        html += `
+          <div class="col-md-4 mb-3">
+            <div class="article-card">
+              <img src="${data.foto || 'https://via.placeholder.com/400x200?text=NHKBP'}" 
+                   class="card-img-top"
+                   onerror="this.src='https://via.placeholder.com/400x200?text=NHKBP'">
+              <div class="card-body">
+                <h5 class="card-title">${data.judul || 'Judul Artikel'}</h5>
+                <p class="text-muted small mb-2">${tanggal || ''}</p>
+                <p class="card-text">${excerpt}</p>
+                <a href="detail-artikel-publik.html?id=${doc.id}" class="btn btn-sm">
+                  Baca
+                </a>
+              </div>
+            </div>
+          </div>
+        `;
+      });
+    }
+    
+    document.getElementById('artikelTerbaru').innerHTML = html;
+  });
+
+// ================= FORM HANDLER =================
+document.getElementById('formPesan')?.addEventListener('submit', function(e) {
+  e.preventDefault();
+  alert('✅ Terima kasih! Pesan Anda telah terkirim.');
+  this.reset();
+});
+
+// ================= LOAD FOTO TENTANG KAMI =================
+async function loadTentangFoto() {
+  try {
+    const snap = await db.collection("pengurus").doc("tentang").get();
+    if (snap.exists && snap.data().foto) {
+      let url = snap.data().foto;
+      // Kecilkan & optimalkan otomatis lewat Cloudinary
+      if (url.includes("res.cloudinary.com") && url.includes("/upload/") && !url.includes("/upload/f_auto")) {
+        url = url.replace("/upload/", "/upload/f_auto,q_auto,w_1200/");
+      }
+      document.getElementById('tentangFoto').src = url;
+    }
+  } catch (error) {
+    console.warn("Foto Tentang Kami memakai gambar bawaan:", error.message);
+  }
+}
+
+// ================= LOAD SAAT HALAMAN DIMUAT =================
+document.addEventListener('DOMContentLoaded', () => {
+  loadStats();
+  loadKepengurusan();
+  loadTentangFoto();
+});
+</script>
+
+<script src="js/pwa-init.js"></script>
 </body>
 </html>

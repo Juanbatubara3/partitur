@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3b82f6">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RNHKBP Pelikan">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Detail Artikel - RNHKBP</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .article-image {
+      width: 100%;
+      max-height: 500px;
+      object-fit: cover;
+      border-radius: 20px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+    }
+    
+    .article-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #333;
+    }
+    
+    .article-meta {
+      background: #f8f9fa;
+      padding: 15px 20px;
+      border-radius: 15px;
+      margin: 20px 0;
+    }
+    
+    .article-content {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #444;
+    }
+    
+    .article-content img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 10px;
+      margin: 20px 0;
+    }
+    
+    .like-btn {
+      background: none;
+      border: 2px solid #dc3545;
+      color: #dc3545;
+      padding: 12px 40px;
+      border-radius: 50px;
+      font-size: 1.1rem;
+      transition: all 0.3s;
+    }
+    
+    .like-btn:hover {
+      background: #dc3545;
+      color: white;
+    }
+    
+    .comment-box {
+      background: #f8f9fa;
+      border-radius: 20px;
+      padding: 30px;
+    }
+    
+    .comment-avatar {
+      width: 50px;
+      height: 50px;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    
+    .back-btn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #0d6efd;
+      color: white;
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 5px 15px rgba(13, 110, 253, 0.3);
+      z-index: 1000;
+    }
+    
+    .back-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 10px 25px rgba(13, 110, 253, 0.4);
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <i class="fas fa-church me-2"></i>RNHKBP Pelikan
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Beranda</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="dokumentasi-publik.html">Dokumentasi</a>
+        </li>
+      </ul>
+      <a href="login.html" class="btn btn-outline-light">
+        <i class="fas fa-lock me-2"></i>Admin
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Artikel Detail -->
+<div class="container my-5">
+  <div id="loadingSpinner" class="text-center py-5">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+    <p class="text-muted mt-3">Memuat artikel...</p>
+  </div>
+  
+  <div id="detailArtikel" style="display: none;"></div>
+</div>
+
+<!-- Komentar -->
+<div class="container my-5" id="commentsSection" style="display: none;">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="comment-box">
+        <h4 class="mb-4">
+          <i class="far fa-comments me-2 text-primary"></i>Komentar
+        </h4>
+        
+        <!-- Form Komentar -->
+        <div class="mb-4">
+          <input type="text" id="namaKomentar" class="form-control mb-2" placeholder="Nama Anda">
+          <textarea id="isiKomentar" class="form-control mb-2" rows="3" placeholder="Tulis komentar..."></textarea>
+          <button onclick="kirimKomentar()" class="btn btn-primary">
+            <i class="fas fa-paper-plane me-2"></i>Kirim Komentar
+          </button>
+        </div>
+        
+        <!-- Daftar Komentar -->
+        <div id="listKomentar" class="mt-4"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Back Button -->
+<a href="dokumentasi-publik.html" class="back-btn">
+  <i class="fas fa-arrow-left"></i>
+</a>
+
+<!-- Footer -->
+<footer class="bg-dark text-white py-4 mt-5">
+  <div class="container text-center">
+    <p class="mb-0">&copy; 2024 RNHKBP Pelikan</p>
+  </div>
+</footer>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+const firebaseConfig = {
+  apiKey: "AIzaSyCwQGsFPBIs_gk0Xc1hscpG-7n6M16gqWc",
+  authDomain: "rnhkbp-pelikan.firebaseapp.com",
+  projectId: "rnhkbp-pelikan",
+  storageBucket: "rnhkbp-pelikan.firebasestorage.app",
+  messagingSenderId: "202813062166",
+  appId: "1:202813062166:web:eb3d963d5965a5e6f48937"
+};
+
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// Ambil ID dari URL
+const params = new URLSearchParams(window.location.search);
+const artikelId = params.get('id');
+
+if (!artikelId) {
+  window.location.href = 'dokumentasi-publik.html';
+}
+
+// Load artikel
+db.collection("artikel").doc(artikelId).onSnapshot(doc => {
+  if (!doc.exists) {
+    window.location.href = 'dokumentasi-publik.html';
+    return;
+  }
+  
+  const data = doc.data();
+  
+  document.getElementById('loadingSpinner').style.display = 'none';
+  document.getElementById('detailArtikel').style.display = 'block';
+  document.getElementById('commentsSection').style.display = 'block';
+  
+  let tanggal = '';
+  if (data.tanggal) {
+    if (data.tanggal.toDate) {
+      tanggal = data.tanggal.toDate().toLocaleDateString('id-ID', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric'
+      });
+    }
+  }
+  
+  document.getElementById('detailArtikel').innerHTML = `
+    <div class="card border-0 shadow-lg">
+      <img src="${data.foto || 'https://via.placeholder.com/1200x600?text=RNHKBP'}" 
+           class="article-image"
+           onerror="this.src='https://via.placeholder.com/1200x600?text=RNHKBP'">
+      <div class="card-body p-5">
+        <h1 class="article-title mb-3">${data.judul || 'Judul Artikel'}</h1>
+        <div class="article-meta">
+          <i class="far fa-calendar-alt me-2"></i>${tanggal}
+          <span class="mx-3">|</span>
+          <i class="fas fa-tag me-2"></i>${data.kategori || 'Umum'}
+          <span class="mx-3">|</span>
+          <i class="far fa-heart text-danger me-2"></i>
+          <span id="likeCount">${data.like || 0}</span> Suka
+        </div>
+        <div class="article-content">
+          ${data.isi || 'Konten tidak tersedia'}
+        </div>
+        <div class="text-center mt-5">
+          <button onclick="likeArtikel()" class="like-btn" id="likeButton">
+            <i class="far fa-heart me-2"></i>Suka Artikel Ini
+          </button>
+        </div>
+      </div>
+    </div>
+  `;
+  
+  // Load komentar
+  loadComments();
+});
+
+// Fungsi like
+function likeArtikel() {
+  db.collection("artikel").doc(artikelId).update({
+    like: firebase.firestore.FieldValue.increment(1)
+  })
+  .then(() => {
+    const likeCount = document.getElementById('likeCount');
+    likeCount.textContent = parseInt(likeCount.textContent) + 1;
+  });
+}
+
+// Fungsi komentar
+function kirimKomentar() {
+  const nama = document.getElementById("namaKomentar").value.trim();
+  const isi = document.getElementById("isiKomentar").value.trim();
+
+  if (!nama || !isi) {
+    alert("Nama dan komentar harus diisi!");
+    return;
+  }
+
+  db.collection("artikel").doc(artikelId)
+    .collection("komentar")
+    .add({
+      nama: nama,
+      isi: isi,
+      tanggal: firebase.firestore.FieldValue.serverTimestamp()
+    })
+    .then(() => {
+      document.getElementById("namaKomentar").value = "";
+      document.getElementById("isiKomentar").value = "";
+      alert("Komentar berhasil dikirim!");
+    });
+}
+
+// Load komentar
+function loadComments() {
+  db.collection("artikel").doc(artikelId)
+    .collection("komentar")
+    .orderBy("tanggal", "desc")
+    .onSnapshot(snapshot => {
+      let html = "";
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        
+        let tanggal = '';
+        if (data.tanggal) {
+          if (data.tanggal.toDate) {
+            const date = data.tanggal.toDate();
+            const now = new Date();
+            const diff = Math.floor((now - date) / 60000); // menit
+            
+            if (diff < 60) {
+              tanggal = `${diff} menit yang lalu`;
+            } else if (diff < 1440) {
+              tanggal = `${Math.floor(diff / 60)} jam yang lalu`;
+            } else {
+              tanggal = date.toLocaleDateString('id-ID');
+            }
+          }
+        }
+        
+        const initial = data.nama ? data.nama.charAt(0).toUpperCase() : 'A';
+        
+        html += `
+          <div class="d-flex gap-3 mb-3">
+            <div class="comment-avatar">${initial}</div>
+            <div class="flex-grow-1">
+              <div class="d-flex justify-content-between">
+                <h6 class="mb-1">${data.nama}</h6>
+                <small class="text-muted">${tanggal}</small>
+              </div>
+              <p class="mb-0">${data.isi}</p>
+            </div>
+          </div>
+        `;
+      });
+      
+      document.getElementById("listKomentar").innerHTML = html || '<p class="text-muted text-center">Belum ada komentar</p>';
+    });
+}
+</script>
+
+<script src="js/pwa-init.js"></script>
+</body>
+</html>

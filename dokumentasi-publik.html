@@ -1,0 +1,599 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#3b82f6">
+  <link rel="apple-touch-icon" href="icon-180.png">
+  <link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="RNHKBP Pelikan">
+  <meta name="mobile-web-app-capable" content="yes">
+
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dokumentasi Kegiatan - RNHKBP Pelikan</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .hero-section {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      padding: 60px 0;
+      margin-bottom: 40px;
+    }
+    
+    .article-card {
+      border: none;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+      transition: all 0.3s;
+      height: 100%;
+    }
+    
+    .article-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+    }
+    
+    .article-image {
+      height: 220px;
+      object-fit: cover;
+      transition: transform 0.5s;
+    }
+    
+    .article-card:hover .article-image {
+      transform: scale(1.05);
+    }
+    
+    .category-badge {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      background: rgba(13, 110, 253, 0.9);
+      color: white;
+      padding: 5px 15px;
+      border-radius: 25px;
+      font-size: 12px;
+      font-weight: 500;
+      z-index: 1;
+    }
+    
+    .date-badge {
+      position: absolute;
+      top: 15px;
+      left: 15px;
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      padding: 5px 15px;
+      border-radius: 25px;
+      font-size: 12px;
+      font-weight: 500;
+      z-index: 1;
+    }
+    
+    .search-box {
+      border-radius: 30px;
+      padding: 15px 25px;
+      border: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    
+    .filter-select {
+      border-radius: 30px;
+      padding: 15px 25px;
+      border: none;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      cursor: pointer;
+    }
+    
+    .pagination-btn {
+      border-radius: 30px;
+      padding: 10px 25px;
+      transition: all 0.3s;
+    }
+    
+    .pagination-btn:hover {
+      transform: scale(1.05);
+    }
+    
+    .footer {
+      background: #212529;
+      color: white;
+      padding: 50px 0 20px;
+      margin-top: 60px;
+    }
+    
+    .skeleton {
+      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+      background-size: 200% 100%;
+      animation: loading 1.5s infinite;
+      border-radius: 10px;
+    }
+    
+    @keyframes loading {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+  <div class="container">
+    <a class="navbar-brand" href="index.html">
+      <i class="fas fa-church me-2"></i>RNHKBP Pelikan
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav mx-auto">
+        <li class="nav-item">
+          <a class="nav-link" href="index.html">Beranda</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="dokumentasi-publik.html">Dokumentasi</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="index.html#tentang">Tentang</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="index.html#kontak">Kontak</a>
+        </li>
+      </ul>
+      <a href="login.html" class="btn btn-outline-light">
+        <i class="fas fa-lock me-2"></i>Admin
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero Section -->
+<section class="hero-section">
+  <div class="container text-center">
+    <h1 class="display-4 mb-3">
+      <i class="fas fa-images me-3"></i>Dokumentasi Kegiatan
+    </h1>
+    <p class="lead mb-4">
+      Dokumentasi Partangiangan, Latihan Koor, dan berbagai kegiatan RNHKBP Pelikan
+    </p>
+    
+    <!-- Search Box -->
+    <div class="row justify-content-center">
+      <div class="col-md-8">
+        <div class="input-group">
+          <input 
+            type="text" 
+            id="searchInput" 
+            class="form-control search-box" 
+            placeholder="Cari judul atau isi artikel..."
+            onkeyup="filterArtikel()"
+          >
+          <span class="input-group-text search-box" style="border-left: none; background: white;">
+            <i class="fas fa-search text-primary"></i>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Filter Section -->
+<div class="container mb-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <select id="kategoriFilter" class="form-select filter-select" onchange="filterArtikel()">
+        <option value="">📋 Semua Kategori</option>
+        <option value="Partangiangan">🙏 Partangiangan</option>
+        <option value="Latihan Koor">🎵 Latihan Koor</option>
+        <option value="Kebaktian">⛪ Kebaktian</option>
+        <option value="Acara Khusus">🎉 Acara Khusus</option>
+        <option value="Lainnya">📌 Lainnya</option>
+      </select>
+    </div>
+  </div>
+</div>
+
+<!-- Artikel Grid -->
+<div class="container mb-5">
+  <!-- Skeleton Loading -->
+  <div id="skeletonContainer" class="row g-4" style="display: none;">
+    <div class="col-lg-4 col-md-6">
+      <div class="card article-card">
+        <div class="skeleton" style="height: 220px;"></div>
+        <div class="card-body">
+          <div class="skeleton" style="height: 24px; width: 80%; margin-bottom: 10px;"></div>
+          <div class="skeleton" style="height: 16px; margin-bottom: 5px;"></div>
+          <div class="skeleton" style="height: 16px; width: 60%;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="card article-card">
+        <div class="skeleton" style="height: 220px;"></div>
+        <div class="card-body">
+          <div class="skeleton" style="height: 24px; width: 80%; margin-bottom: 10px;"></div>
+          <div class="skeleton" style="height: 16px; margin-bottom: 5px;"></div>
+          <div class="skeleton" style="height: 16px; width: 60%;"></div>
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-4 col-md-6">
+      <div class="card article-card">
+        <div class="skeleton" style="height: 220px;"></div>
+        <div class="card-body">
+          <div class="skeleton" style="height: 24px; width: 80%; margin-bottom: 10px;"></div>
+          <div class="skeleton" style="height: 16px; margin-bottom: 5px;"></div>
+          <div class="skeleton" style="height: 16px; width: 60%;"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- Artikel Container -->
+  <div id="artikelContainer" class="row g-4"></div>
+  
+  <!-- Load More Button -->
+  <div class="text-center mt-5">
+    <button class="btn btn-outline-primary pagination-btn" onclick="loadMore()" id="loadMoreBtn" style="display: none;">
+      <i class="fas fa-sync-alt me-2"></i>Muat Lebih Banyak
+    </button>
+  </div>
+  
+  <!-- No Data Message -->
+  <div id="noDataMessage" class="text-center py-5" style="display: none;">
+    <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
+    <h4 class="text-muted">Belum Ada Artikel</h4>
+    <p class="text-muted">Belum ada dokumentasi yang tersedia saat ini.</p>
+  </div>
+  
+  <!-- No Results Message -->
+  <div id="noResultsMessage" class="text-center py-5" style="display: none;">
+    <i class="fas fa-search fa-4x text-muted mb-3"></i>
+    <h4 class="text-muted">Tidak Ditemukan</h4>
+    <p class="text-muted">Tidak ada artikel yang sesuai dengan pencarian Anda.</p>
+    <button class="btn btn-primary mt-3" onclick="resetFilter()">
+      <i class="fas fa-redo-alt me-2"></i>Reset Filter
+    </button>
+  </div>
+</div>
+
+<!-- Footer -->
+<footer class="footer">
+  <div class="container">
+    <div class="row">
+      <div class="col-md-4 mb-4">
+        <h5><i class="fas fa-church me-2"></i>RNHKBP Pelikan</h5>
+        <p class="text-white-50">Melayani dengan Kasih, Bertumbuh dalam Iman</p>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h5>Link Cepat</h5>
+        <ul class="list-unstyled">
+          <li><a href="index.html" class="text-white-50 text-decoration-none">Beranda</a></li>
+          <li><a href="dokumentasi-publik.html" class="text-white-50 text-decoration-none">Dokumentasi</a></li>
+          <li><a href="index.html#tentang" class="text-white-50 text-decoration-none">Tentang</a></li>
+          <li><a href="index.html#kontak" class="text-white-50 text-decoration-none">Kontak</a></li>
+        </ul>
+      </div>
+      <div class="col-md-4 mb-4">
+        <h5>Admin</h5>
+        <p class="text-white-50">Fitur admin hanya untuk pengelola</p>
+        <a href="login.html" class="btn btn-outline-light btn-sm">
+          <i class="fas fa-lock me-2"></i>Login Admin
+        </a>
+      </div>
+    </div>
+    <hr class="bg-light">
+    <div class="text-center">
+      <p class="mb-0">&copy; 2024 RNHKBP Pelikan. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<!-- Firebase -->
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<script>
+// ================= KONFIGURASI FIREBASE =================
+const firebaseConfig = {
+  apiKey: "AIzaSyCwQGsFPBIs_gk0Xc1hscpG-7n6M16gqWc",
+  authDomain: "rnhkbp-pelikan.firebaseapp.com",
+  projectId: "rnhkbp-pelikan",
+  storageBucket: "rnhkbp-pelikan.firebasestorage.app",
+  messagingSenderId: "202813062166",
+  appId: "1:202813062166:web:eb3d963d5965a5e6f48937"
+};
+
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ================= VARIABEL GLOBAL =================
+let allArticles = [];
+let displayedArticles = [];
+let lastVisible = null;
+let loading = false;
+let hasMore = true;
+const ARTICLES_PER_PAGE = 6;
+
+// ================= LOAD ARTICLES =================
+async function loadArticles(isInitial = true) {
+  if (loading) return;
+  loading = true;
+  
+  if (isInitial) {
+    document.getElementById('skeletonContainer').style.display = 'flex';
+    document.getElementById('artikelContainer').innerHTML = '';
+    lastVisible = null;
+    allArticles = [];
+  }
+  
+  try {
+    let query = db.collection("artikel")
+      .orderBy("tanggal", "desc")
+      .limit(ARTICLES_PER_PAGE);
+    
+    if (lastVisible) {
+      query = query.startAfter(lastVisible);
+    }
+    
+    const snapshot = await query.get();
+    
+    if (isInitial) {
+      document.getElementById('skeletonContainer').style.display = 'none';
+    }
+    
+    if (snapshot.empty) {
+      hasMore = false;
+      document.getElementById('loadMoreBtn').style.display = 'none';
+      
+      if (isInitial && allArticles.length === 0) {
+        document.getElementById('noDataMessage').style.display = 'block';
+      }
+      loading = false;
+      return;
+    }
+    
+    document.getElementById('noDataMessage').style.display = 'none';
+    
+    lastVisible = snapshot.docs[snapshot.docs.length - 1];
+    
+    const newArticles = [];
+    snapshot.forEach(doc => {
+      newArticles.push({
+        id: doc.id,
+        ...doc.data()
+      });
+    });
+    
+    allArticles = [...allArticles, ...newArticles];
+    
+    if (isInitial) {
+      displayedArticles = allArticles;
+      renderArticles(displayedArticles);
+    } else {
+      displayedArticles = allArticles;
+      appendArticles(newArticles);
+    }
+    
+    hasMore = snapshot.size === ARTICLES_PER_PAGE;
+    document.getElementById('loadMoreBtn').style.display = hasMore ? 'inline-block' : 'none';
+    
+  } catch (error) {
+    console.error("Error loading articles:", error);
+    if (isInitial) {
+      document.getElementById('skeletonContainer').style.display = 'none';
+      document.getElementById('artikelContainer').innerHTML = `
+        <div class="col-12 text-center py-5">
+          <i class="fas fa-exclamation-triangle fa-4x text-danger mb-3"></i>
+          <h5 class="text-danger">Gagal Memuat Data</h5>
+          <p class="text-muted">${error.message}</p>
+        </div>
+      `;
+    }
+  }
+  
+  loading = false;
+}
+
+// ================= RENDER ARTICLES =================
+function renderArticles(articles) {
+  const container = document.getElementById('artikelContainer');
+  
+  if (articles.length === 0) {
+    container.innerHTML = '';
+    document.getElementById('noResultsMessage').style.display = 'block';
+    document.getElementById('loadMoreBtn').style.display = 'none';
+    return;
+  }
+  
+  document.getElementById('noResultsMessage').style.display = 'none';
+  
+  let html = '';
+  articles.forEach(artikel => {
+    // Format tanggal
+    let tanggal = '';
+    if (artikel.tanggal) {
+      try {
+        if (artikel.tanggal.toDate) {
+          tanggal = artikel.tanggal.toDate().toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          });
+        }
+      } catch (e) {}
+    }
+    
+    // Buat excerpt
+    let excerpt = '';
+    if (artikel.isi) {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = artikel.isi;
+      excerpt = tempDiv.textContent.substring(0, 120) + (tempDiv.textContent.length > 120 ? '...' : '');
+    }
+    
+    html += `
+      <div class="col-lg-4 col-md-6">
+        <div class="card article-card">
+          <div class="position-relative overflow-hidden">
+            <img src="${artikel.foto || 'https://via.placeholder.com/400x220?text=RNHKBP'}" 
+                 class="article-image w-100" 
+                 alt="${artikel.judul}"
+                 onerror="this.src='https://via.placeholder.com/400x220?text=RNHKBP'">
+            <span class="category-badge">
+              <i class="fas fa-tag me-1"></i>${artikel.kategori || 'Umum'}
+            </span>
+            <span class="date-badge">
+              <i class="far fa-calendar-alt me-1"></i>${tanggal}
+            </span>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title fw-bold mb-2">${artikel.judul || 'Judul Artikel'}</h5>
+            <p class="card-text text-muted small">${excerpt}</p>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <a href="detail-artikel-publik.html?id=${artikel.id}" class="btn btn-primary btn-sm">
+                <i class="fas fa-book-open me-2"></i>Baca
+              </a>
+              <small class="text-muted">
+                <i class="far fa-heart text-danger me-1"></i> ${artikel.like || 0}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML = html;
+}
+
+// ================= APPEND ARTICLES =================
+function appendArticles(newArticles) {
+  const container = document.getElementById('artikelContainer');
+  
+  let html = '';
+  newArticles.forEach(artikel => {
+    let tanggal = '';
+    if (artikel.tanggal) {
+      try {
+        if (artikel.tanggal.toDate) {
+          tanggal = artikel.tanggal.toDate().toLocaleDateString('id-ID', {
+            day: 'numeric',
+            month: 'long',
+            year: 'numeric'
+          });
+        }
+      } catch (e) {}
+    }
+    
+    let excerpt = '';
+    if (artikel.isi) {
+      const tempDiv = document.createElement('div');
+      tempDiv.innerHTML = artikel.isi;
+      excerpt = tempDiv.textContent.substring(0, 120) + (tempDiv.textContent.length > 120 ? '...' : '');
+    }
+    
+    html += `
+      <div class="col-lg-4 col-md-6">
+        <div class="card article-card">
+          <div class="position-relative overflow-hidden">
+            <img src="${artikel.foto || 'https://via.placeholder.com/400x220?text=RNHKBP'}" 
+                 class="article-image w-100" 
+                 alt="${artikel.judul}"
+                 onerror="this.src='https://via.placeholder.com/400x220?text=RNHKBP'">
+            <span class="category-badge">${artikel.kategori || 'Umum'}</span>
+            <span class="date-badge">${tanggal}</span>
+          </div>
+          <div class="card-body">
+            <h5 class="card-title fw-bold mb-2">${artikel.judul || 'Judul Artikel'}</h5>
+            <p class="card-text text-muted small">${excerpt}</p>
+            <div class="d-flex justify-content-between align-items-center mt-3">
+              <a href="detail-artikel-publik.html?id=${artikel.id}" class="btn btn-primary btn-sm">
+                <i class="fas fa-book-open me-2"></i>Baca
+              </a>
+              <small class="text-muted">
+                <i class="far fa-heart text-danger me-1"></i> ${artikel.like || 0}
+              </small>
+            </div>
+          </div>
+        </div>
+      </div>
+    `;
+  });
+  
+  container.innerHTML += html;
+}
+
+// ================= FILTER ARTIKEL =================
+function filterArtikel() {
+  const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
+  const kategori = document.getElementById('kategoriFilter').value;
+  
+  const filtered = allArticles.filter(artikel => {
+    const judul = (artikel.judul || '').toLowerCase();
+    const isi = (artikel.isi || '').toLowerCase();
+    const artikelKategori = artikel.kategori || '';
+    
+    const matchesSearch = searchTerm === '' || 
+                         judul.includes(searchTerm) || 
+                         isi.includes(searchTerm);
+    const matchesKategori = !kategori || artikelKategori === kategori;
+    
+    return matchesSearch && matchesKategori;
+  });
+  
+  renderArticles(filtered);
+  
+  if (searchTerm || kategori) {
+    document.getElementById('loadMoreBtn').style.display = 'none';
+  } else {
+    document.getElementById('loadMoreBtn').style.display = hasMore ? 'inline-block' : 'none';
+  }
+}
+
+// ================= LOAD MORE =================
+function loadMore() {
+  if (loading || !hasMore) return;
+  loadArticles(false);
+}
+
+// ================= RESET FILTER =================
+function resetFilter() {
+  document.getElementById('searchInput').value = '';
+  document.getElementById('kategoriFilter').value = '';
+  renderArticles(allArticles);
+  document.getElementById('loadMoreBtn').style.display = hasMore ? 'inline-block' : 'none';
+}
+
+// ================= INITIAL LOAD =================
+document.addEventListener('DOMContentLoaded', () => {
+  loadArticles(true);
+});
+
+// ================= INFINITE SCROLL =================
+window.addEventListener('scroll', () => {
+  if (loading || !hasMore) return;
+  
+  const searchTerm = document.getElementById('searchInput').value;
+  const kategori = document.getElementById('kategoriFilter').value;
+  if (searchTerm || kategori) return;
+  
+  const scrollY = window.scrollY;
+  const height = document.documentElement.scrollHeight - window.innerHeight;
+  
+  if (height > 0 && (scrollY / height) > 0.8) {
+    loadMore();
+  }
+});
+</script>
+
+<script src="js/pwa-init.js"></script>
+</body>
+</html>
