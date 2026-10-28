@@ -1,9 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="id">
 <head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#3b82f6">
+  <meta name="theme-color" content="#0e1a33">
   <link rel="apple-touch-icon" href="icon-180.png">
   <link rel="apple-touch-icon" sizes="152x152" href="icon-152.png">
   <link rel="apple-touch-icon" sizes="180x180" href="icon-180.png">
@@ -11,580 +12,258 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="RNHKBP Pelikan">
   <meta name="mobile-web-app-capable" content="yes">
-
-  <title>Admin - Kelola Artikel</title>
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+  <meta name="robots" content="noindex">
+  <title>Artikel & Dokumentasi · Admin RNHKBP Pelikan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    .ql-editor {
-      min-height: 300px;
-      max-height: 500px;
-      overflow-y: auto;
-    }
-    .preview-image {
-      max-width: 100%;
-      max-height: 200px;
-      object-fit: cover;
-      border-radius: 10px;
-      margin-top: 10px;
-      border: 2px solid #dee2e6;
-      padding: 5px;
-    }
-    .upload-progress {
-      display: none;
-      margin-top: 10px;
-    }
-    .btn-loading {
-      position: relative;
-      pointer-events: none;
-      opacity: 0.7;
-    }
-    .btn-loading:after {
-      content: "";
-      position: absolute;
-      width: 20px;
-      height: 20px;
-      top: 50%;
-      left: 50%;
-      margin-left: -10px;
-      margin-top: -10px;
-      border: 2px solid #fff;
-      border-top-color: transparent;
-      border-radius: 50%;
-      animation: spinner 0.6s linear infinite;
-    }
-    @keyframes spinner {
-      to { transform: rotate(360deg); }
-    }
-  </style>
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="https://cdn.quilljs.com/1.3.6/quill.snow.css">
 </head>
-<body>
+<body data-active="artikel" data-title="Artikel & Dokumentasi">
+<div class="shell" id="shell">
+  <aside class="sidebar" id="sidebar"></aside>
+  <div class="scrim" id="scrim"></div>
+  <div class="main">
+    <header class="topbar" id="topbar"></header>
 
-<nav class="navbar navbar-dark bg-dark">
-  <div class="container-fluid">
-    <span class="navbar-brand">
-      <i class="fas fa-cog me-2"></i>Admin - Kelola Artikel Dokumentasi
-    </span>
-    <div>
-      <a href="dashboard.html" class="btn btn-light me-2">
-        <i class="fas fa-tachometer-alt me-2"></i>Dashboard
-      </a>
-      <button onclick="logout()" class="btn btn-danger">
-        <i class="fas fa-sign-out-alt me-2"></i>Logout
-      </button>
+    <div class="page-head row">
+      <div>
+        <h1>Artikel &amp; Dokumentasi</h1>
+        <p>Tulis artikel dan unggah foto kegiatan. Semua yang kamu simpan tampil di halaman Dokumentasi.</p>
+      </div>
+      <a class="btn btn-ghost" href="dokumentasi-publik.html" target="_blank" rel="noopener"><i class="fas fa-arrow-up-right-from-square"></i> Lihat halaman publik</a>
     </div>
-  </div>
-</nav>
 
-<div class="container mt-4">
-
-  <!-- Form Artikel -->
-  <div class="card p-4 mb-4 shadow">
-    <h5 class="mb-3">
-      <i class="fas fa-edit me-2"></i>
-      <span id="formTitle">Tambah Artikel Baru</span>
-    </h5>
-    
-    <input type="hidden" id="artikelId" value="">
-    <input type="hidden" id="existingFoto" value="">
-    
-    <div class="row">
-      <div class="col-md-8">
-        <div class="mb-3">
-          <label class="form-label fw-bold">Judul Artikel</label>
-          <input type="text" id="judul" class="form-control" placeholder="Masukkan judul artikel">
-        </div>
-        
-        <div class="mb-3">
-          <label class="form-label fw-bold">Kategori</label>
-          <select id="kategori" class="form-control">
-            <option value="">Pilih Kategori</option>
-            <option value="Partangiangan">Partangiangan</option>
-            <option value="Latihan Koor">Latihan Koor</option>
-            <option value="Kebaktian">Kebaktian</option>
-            <option value="Acara Khusus">Acara Khusus</option>
-            <option value="Lainnya">Lainnya</option>
-          </select>
-        </div>
-        
-        <div class="mb-3">
-          <label class="form-label fw-bold">Isi Artikel</label>
-          <div id="editor" class="border rounded"></div>
+    <div class="split" id="formCard">
+      <div class="card">
+        <div class="card-head"><h3 id="formTitle">Tambah artikel baru</h3></div>
+        <input type="hidden" id="artikelId">
+        <input type="hidden" id="existingFoto">
+        <div class="stack-16">
+          <div class="grid2">
+            <div class="field"><label for="judul">Judul artikel</label><input type="text" id="judul" class="input" placeholder="Masukkan judul artikel" autocomplete="off"></div>
+            <div class="field"><label for="kategori">Kategori</label>
+              <select id="kategori" class="select">
+                <option value="">Pilih kategori</option>
+                <option value="Partangiangan">Partangiangan</option>
+                <option value="Latihan Koor">Latihan Koor</option>
+                <option value="Kebaktian">Kebaktian</option>
+                <option value="Acara Khusus">Acara Khusus</option>
+                <option value="Lainnya">Lainnya</option>
+              </select>
+            </div>
+          </div>
+          <div class="field"><label>Isi artikel</label><div id="editor"></div></div>
         </div>
       </div>
-      
-      <div class="col-md-4">
-        <div class="card p-3">
-          <h6 class="fw-bold"><i class="fas fa-image me-2"></i>Gambar Artikel</h6>
-          <p class="text-muted small">Upload gambar untuk artikel (Max: 5MB, Format: JPG, PNG, GIF)</p>
-          
-          <input type="file" id="file" class="form-control mb-3" accept="image/*">
-          
-          <!-- Progress bar -->
-          <div class="upload-progress text-center" id="uploadProgress">
-            <div class="spinner-border text-primary spinner-border-sm me-2" role="status"></div>
-            <span class="text-muted small">Mengupload gambar...</span>
-          </div>
-          
-          <!-- Preview gambar -->
-          <div id="imagePreview" class="text-center"></div>
-          
-          <div class="form-check mt-2">
-            <input class="form-check-input" type="checkbox" id="hapusGambar" style="display: none;">
-            <label class="form-check-label text-danger small" for="hapusGambar" id="hapusGambarLabel" style="display: none;">
-              <i class="fas fa-trash me-1"></i>Hapus gambar ini
-            </label>
-          </div>
+
+      <div class="card">
+        <div class="card-head"><div><h3>Gambar artikel</h3><p class="hint">JPG, PNG, atau GIF. Maksimal 5 MB.</p></div></div>
+        <label class="dropzone mini" id="drop" for="file">
+          <i class="fas fa-cloud-arrow-up"></i>
+          <b>Pilih atau seret gambar</b>
+          <small id="dropSub">Belum ada gambar dipilih</small>
+          <input type="file" id="file" accept="image/*">
+        </label>
+        <div class="upload-note" id="uploadProgress"><span class="spin"></span> Mengunggah gambar…</div>
+        <div id="imagePreview"></div>
+        <label class="check hidden" id="hapusGambarLabel"><input type="checkbox" id="hapusGambar"> Hapus gambar ini</label>
+        <div class="form-actions">
+          <button class="btn" id="btnSimpan" type="button"><i class="fas fa-floppy-disk"></i> <span>Simpan artikel</span></button>
+          <button class="btn btn-ghost hidden" id="btnBatal" type="button"><i class="fas fa-xmark"></i> Batal</button>
         </div>
       </div>
     </div>
-    
-    <div class="mt-4">
-      <button onclick="simpanArtikel()" class="btn btn-primary" id="btnSimpan">
-        <i class="fas fa-save me-2"></i>Simpan Artikel
-      </button>
-      <button onclick="batalEdit()" class="btn btn-secondary" id="btnBatal" style="display: none;">
-        <i class="fas fa-times me-2"></i>Batal
-      </button>
+
+    <div class="card" style="margin-top:20px">
+      <div class="card-head"><h3>Daftar artikel <span class="cnt" id="cnt"></span></h3></div>
+      <div class="toolbar">
+        <div class="search"><i class="fas fa-magnifying-glass"></i><input id="q" class="input" placeholder="Cari judul artikel…" autocomplete="off"></div>
+        <select id="fKat" class="select" aria-label="Filter kategori">
+          <option value="">Semua kategori</option><option>Partangiangan</option><option>Latihan Koor</option><option>Kebaktian</option><option>Acara Khusus</option><option>Lainnya</option>
+        </select>
+      </div>
+      <div class="tbl-wrap">
+        <table class="tbl stack">
+          <thead><tr><th style="width:96px">Gambar</th><th>Judul</th><th>Kategori</th><th>Tanggal</th><th class="num">Suka</th><th class="num">Komentar</th><th class="right">Aksi</th></tr></thead>
+          <tbody id="daftarArtikel"><tr><td colspan="7"><div class="loading"><span class="spin"></span> Memuat artikel…</div></td></tr></tbody>
+        </table>
+      </div>
     </div>
   </div>
-
-  <!-- Daftar Artikel -->
-  <div class="card p-4 shadow">
-    <h5 class="mb-3"><i class="fas fa-list me-2"></i>Daftar Artikel</h5>
-    
-    <div class="table-responsive">
-      <table class="table table-bordered table-hover">
-        <thead class="table-dark">
-          <tr>
-            <th style="width: 80px;">Gambar</th>
-            <th>Judul</th>
-            <th style="width: 120px;">Kategori</th>
-            <th style="width: 120px;">Tanggal</th>
-            <th style="width: 80px;">Like</th>
-            <th style="width: 100px;">Komentar</th>
-            <th style="width: 150px;">Aksi</th>
-          </tr>
-        </thead>
-        <tbody id="daftarArtikel">
-          <tr id="loadingRow">
-            <td colspan="7" class="text-center py-4">
-              <div class="spinner-border text-primary" role="status">
-                <span class="visually-hidden">Loading...</span>
-              </div>
-              <p class="mt-2 text-muted">Memuat data artikel...</p>
-            </td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    
-    <div id="noDataMessage" class="text-center py-5" style="display: none;">
-      <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
-      <h5 class="text-muted">Belum ada artikel</h5>
-      <p class="text-muted">Klik tombol "Simpan Artikel" untuk membuat artikel pertama</p>
-    </div>
-  </div>
-
 </div>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-storage-compat.js"></script>
-
-<!-- Quill Editor -->
+<script src="js/admin-common.js"></script>
 <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-
 <script>
-// Konfigurasi Firebase
-const firebaseConfig = {
-  apiKey: "AIzaSyCwQGsFPBIs_gk0Xc1hscpG-7n6M16gqWc",
-  authDomain: "rnhkbp-pelikan.firebaseapp.com",
-  projectId: "rnhkbp-pelikan",
-  storageBucket: "rnhkbp-pelikan.firebasestorage.app",
-  messagingSenderId: "202813062166",
-  appId: "1:202813062166:web:eb3d963d5965a5e6f48937"
-};
-
-// Initialize Firebase
-firebase.initializeApp(firebaseConfig);
-const auth = firebase.auth();
-const db = firebase.firestore();
-const storage = firebase.storage();
-
-// Konfigurasi Cloudinary
+const { db, esc, toast, fmtTs, confirmBox, requireAuth } = AdminApp;
+const $ = (id) => document.getElementById(id);
 const CLOUDINARY_CLOUD_NAME = "dnyrxwl1g";
 const CLOUDINARY_UPLOAD_PRESET = "rnhkbp-pelikan";
+const NO_IMG = "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 80 60'%3E%3Crect width='80' height='60' fill='%23e8edf7'/%3E%3Cpath d='M26 40l9-11 7 8 5-6 9 9z' fill='%23b9c4dc'/%3E%3Ccircle cx='30' cy='23' r='4' fill='%23b9c4dc'/%3E%3C/svg%3E";
+let semua = [];
 
-// Cek login
-auth.onAuthStateChanged(user => {
-  if (!user) {
-    window.location.href = "index.html";
-  } else {
-    console.log("User logged in:", user.email);
-    loadArtikel();
-  }
+requireAuth(loadArtikel);
+
+const quill = new Quill('#editor', {
+  theme: 'snow', placeholder: 'Tulis isi artikel di sini…',
+  modules: { toolbar: [[{ header: [1, 2, 3, false] }], ['bold', 'italic', 'underline', 'strike'], [{ color: [] }, { background: [] }], [{ list: 'ordered' }, { list: 'bullet' }], [{ indent: '-1' }, { indent: '+1' }], ['link', 'image', 'video'], ['clean']] }
 });
 
-// Logout function
-window.logout = function() {
-  auth.signOut().then(() => {
-    window.location.href = "index.html";
-  }).catch((error) => {
-    alert("Gagal logout: " + error.message);
-  });
-};
+/* Gambar kecil untuk tabel (Cloudinary), gambar lain dipakai apa adanya */
+const thumb = (u) => (u && u.includes('res.cloudinary.com') && u.includes('/upload/') && !u.includes('/upload/c_')) ? u.replace('/upload/', '/upload/c_fill,w_160,h_120,f_auto,q_auto/') : u;
 
-// Initialize Quill editor
-var quill = new Quill('#editor', {
-  theme: 'snow',
-  placeholder: 'Tulis isi artikel di sini...',
-  modules: {
-    toolbar: [
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
-      ['bold', 'italic', 'underline', 'strike'],
-      [{ 'color': [] }, { 'background': [] }],
-      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-      [{ 'indent': '-1'}, { 'indent': '+1' }],
-      ['link', 'image', 'video'],
-      ['clean']
-    ]
-  }
-});
+/* ---------- Pilih gambar ---------- */
+function pickFile(file) {
+  const input = $('file');
+  if (!file) return;
+  if (!file.type.startsWith('image/')) { toast('File harus berupa gambar.', 'warn'); input.value = ''; return; }
+  if (file.size > 5 * 1024 * 1024) { toast('Ukuran gambar maksimal 5 MB.', 'warn'); input.value = ''; return; }
+  const dt = new DataTransfer(); dt.items.add(file); input.files = dt.files;
+  $('dropSub').textContent = `${file.name} · ${(file.size / 1024 / 1024).toFixed(2)} MB`;
+  const r = new FileReader();
+  r.onload = (e) => { $('imagePreview').innerHTML = `<img src="${e.target.result}" class="preview-image" alt="Pratinjau gambar baru">`; };
+  r.readAsDataURL(file);
+  $('hapusGambar').checked = false; $('hapusGambarLabel').classList.add('hidden');
+}
+$('file').addEventListener('change', (e) => pickFile(e.target.files[0]));
+const drop = $('drop');
+['dragenter', 'dragover'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.add('drag'); }));
+['dragleave', 'drop'].forEach((ev) => drop.addEventListener(ev, (e) => { e.preventDefault(); drop.classList.remove('drag'); }));
+drop.addEventListener('drop', (e) => pickFile(e.dataTransfer.files[0]));
 
-// Preview image
-document.getElementById('file').addEventListener('change', function(e) {
-  const file = e.target.files[0];
-  if (file) {
-    // Validasi ukuran file (max 5MB)
-    if (file.size > 5 * 1024 * 1024) {
-      alert("Ukuran file maksimal 5MB!");
-      this.value = '';
-      return;
-    }
-    
-    // Validasi tipe file
-    if (!file.type.match('image.*')) {
-      alert("File harus berupa gambar!");
-      this.value = '';
-      return;
-    }
-    
-    const reader = new FileReader();
-    reader.onload = function(e) {
-      document.getElementById('imagePreview').innerHTML = `
-        <img src="${e.target.result}" class="preview-image" alt="Preview">
-        <p class="text-success small mt-2">
-          <i class="fas fa-check-circle"></i> Gambar siap diupload
-        </p>
-      `;
-    };
-    reader.readAsDataURL(file);
-    
-    // Sembunyikan opsi hapus gambar
-    document.getElementById('hapusGambar').style.display = 'none';
-    document.getElementById('hapusGambarLabel').style.display = 'none';
-  }
-});
-
-// Upload image ke Cloudinary
 async function uploadImageToCloudinary(file) {
-  const formData = new FormData();
-  formData.append("file", file);
-  formData.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
-  
-  try {
-    const response = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, {
-      method: "POST",
-      body: formData
-    });
-    
-    if (!response.ok) {
-      throw new Error(`Upload gagal: ${response.statusText}`);
-    }
-    
-    const data = await response.json();
-    return data.secure_url;
-  } catch (error) {
-    console.error("Cloudinary upload error:", error);
-    throw error;
-  }
+  const fd = new FormData(); fd.append("file", file); fd.append("upload_preset", CLOUDINARY_UPLOAD_PRESET);
+  const res = await fetch(`https://api.cloudinary.com/v1_1/${CLOUDINARY_CLOUD_NAME}/image/upload`, { method: "POST", body: fd });
+  if (!res.ok) throw new Error(`Upload gagal (${res.status})`);
+  return (await res.json()).secure_url;
 }
 
-// Simpan artikel
-window.simpanArtikel = async function() {
-  const artikelId = document.getElementById('artikelId').value;
-  const judul = document.getElementById('judul').value.trim();
-  const kategori = document.getElementById('kategori').value;
+/* ---------- Simpan ---------- */
+async function simpanArtikel() {
+  const artikelId = $('artikelId').value;
+  const judul = $('judul').value.trim();
+  const kategori = $('kategori').value;
   const isi = quill.root.innerHTML;
-  const fileInput = document.getElementById('file');
-  const file = fileInput.files[0];
-  const hapusGambar = document.getElementById('hapusGambar').checked;
-  const existingFoto = document.getElementById('existingFoto').value;
-  
-  // Validasi
-  if (!judul) {
-    alert("Judul artikel harus diisi!");
-    document.getElementById('judul').focus();
-    return;
-  }
-  
-  if (!kategori) {
-    alert("Kategori harus dipilih!");
-    document.getElementById('kategori').focus();
-    return;
-  }
-  
-  if (!isi || isi === '<p><br></p>') {
-    alert("Isi artikel harus diisi!");
-    quill.focus();
-    return;
-  }
-  
-  // Untuk artikel baru, wajib upload gambar
-  if (!artikelId && !file) {
-    alert("Gambar harus diupload untuk artikel baru!");
-    document.getElementById('file').focus();
-    return;
-  }
-  
-  // Tampilkan loading
-  const btnSimpan = document.getElementById('btnSimpan');
-  btnSimpan.classList.add('btn-loading');
-  btnSimpan.disabled = true;
-  
+  const file = $('file').files[0];
+  const hapusGambar = $('hapusGambar').checked;
+  const existingFoto = $('existingFoto').value;
+
+  if (!judul) { toast('Judul artikel harus diisi.', 'warn'); $('judul').focus(); return; }
+  if (!kategori) { toast('Pilih kategori artikel.', 'warn'); $('kategori').focus(); return; }
+  if (quill.getText().trim() === '' && !isi.includes('<img')) { toast('Isi artikel harus diisi.', 'warn'); quill.focus(); return; }
+  if (!artikelId && !file) { toast('Gambar wajib diunggah untuk artikel baru.', 'warn'); return; }
+
+  const btn = $('btnSimpan'); btn.disabled = true;
   try {
     let imageUrl = existingFoto;
-    
-    // Upload gambar baru jika ada
-    if (file) {
-      document.getElementById('uploadProgress').style.display = 'block';
-      imageUrl = await uploadImageToCloudinary(file);
-      document.getElementById('uploadProgress').style.display = 'none';
-    }
-    
-    // Jika hapus gambar dicentang, set imageUrl kosong
-    if (hapusGambar) {
-      imageUrl = '';
-    }
-    
-    const artikelData = {
-      judul: judul,
-      kategori: kategori,
-      isi: isi,
-      tanggal: firebase.firestore.FieldValue.serverTimestamp()
-    };
-    
-    // Tambah URL gambar jika ada
-    if (imageUrl) {
-      artikelData.foto = imageUrl;
-    }
-    
-    if (artikelId) {
-      // Update artikel
-      await db.collection("artikel").doc(artikelId).update(artikelData);
-      alert("✅ Artikel berhasil diperbarui!");
-    } else {
-      // Artikel baru
-      artikelData.like = 0;
-      await db.collection("artikel").add(artikelData);
-      alert("✅ Artikel berhasil ditambahkan!");
-    }
-    
-    // Reset form
-    batalEdit();
-    
-  } catch (error) {
-    console.error("Error detail:", error);
-    alert("❌ Gagal menyimpan artikel: " + error.message);
-    document.getElementById('uploadProgress').style.display = 'none';
-  } finally {
-    btnSimpan.classList.remove('btn-loading');
-    btnSimpan.disabled = false;
-  }
-};
+    if (file) { $('uploadProgress').style.display = 'flex'; imageUrl = await uploadImageToCloudinary(file); $('uploadProgress').style.display = 'none'; }
 
-// Load daftar artikel
+    const data = { judul, kategori, isi };
+    if (artikelId) {
+      if (imageUrl && !(hapusGambar && !file)) data.foto = imageUrl;
+      else if (hapusGambar && !file) data.foto = firebase.firestore.FieldValue.delete();
+      await db.collection("artikel").doc(artikelId).update(data);   // tanggal asli tidak diubah
+      toast('Artikel diperbarui.', 'success');
+    } else {
+      data.foto = imageUrl; data.like = 0; data.tanggal = firebase.firestore.FieldValue.serverTimestamp();
+      await db.collection("artikel").add(data);
+      toast('Artikel ditambahkan.', 'success');
+    }
+    batalEdit(); await loadArtikel();
+  } catch (err) {
+    console.error(err); $('uploadProgress').style.display = 'none';
+    toast('Gagal menyimpan artikel: ' + err.message, 'error');
+  }
+  btn.disabled = false;
+}
+$('btnSimpan').addEventListener('click', simpanArtikel);
+
+/* ---------- Daftar ---------- */
 async function loadArtikel() {
   try {
-    const snapshot = await db.collection("artikel")
-      .orderBy("tanggal", "desc")
-      .get();
-    
-    document.getElementById('loadingRow').style.display = 'none';
-    
-    if (snapshot.empty) {
-      document.getElementById('noDataMessage').style.display = 'block';
-      document.getElementById('daftarArtikel').innerHTML = '';
-      return;
-    }
-    
-    document.getElementById('noDataMessage').style.display = 'none';
-    
-    let html = '';
-    
-    for (const doc of snapshot.docs) {
-      const data = doc.data();
-      
-      // Format tanggal
-      let tanggal = '-';
-      if (data.tanggal) {
-        if (data.tanggal.toDate) {
-          tanggal = data.tanggal.toDate().toLocaleDateString('id-ID', {
-            day: 'numeric',
-            month: 'short',
-            year: 'numeric'
-          });
-        } else if (data.tanggal instanceof Date) {
-          tanggal = data.tanggal.toLocaleDateString('id-ID');
-        }
-      }
-      
-      // Hitung jumlah komentar
-      let jumlahKomentar = 0;
-      try {
-        const komentarSnapshot = await db.collection("artikel")
-          .doc(doc.id)
-          .collection("komentar")
-          .get();
-        jumlahKomentar = komentarSnapshot.size;
-      } catch (e) {
-        console.log("Error loading comments:", e);
-      }
-      
-      html += `
-        <tr>
-          <td>
-            <img src="${data.foto || 'https://via.placeholder.com/80x60?text=No+Image'}" 
-                 style="width: 80px; height: 60px; object-fit: cover; border-radius: 5px;"
-                 onerror="this.src='https://via.placeholder.com/80x60?text=Error'">
-          </td>
-          <td>
-            <strong>${data.judul || '-'}</strong>
-          </td>
-          <td>
-            <span class="badge bg-info">${data.kategori || '-'}</span>
-          </td>
-          <td><small>${tanggal}</small></td>
-          <td class="text-center">${data.like || 0}</td>
-          <td class="text-center">${jumlahKomentar}</td>
-          <td>
-            <button onclick="editArtikel('${doc.id}')" class="btn btn-warning btn-sm mb-1" style="width: 65px;">
-              <i class="fas fa-edit"></i> Edit
-            </button>
-            <button onclick="hapusArtikel('${doc.id}')" class="btn btn-danger btn-sm mb-1" style="width: 65px;">
-              <i class="fas fa-trash"></i> Hapus
-            </button>
-          </td>
-        </tr>
-      `;
-    }
-    
-    document.getElementById('daftarArtikel').innerHTML = html;
-    
-  } catch (error) {
-    console.error("Error loading articles:", error);
-    document.getElementById('loadingRow').innerHTML = `
-      <td colspan="7" class="text-center py-4 text-danger">
-        <i class="fas fa-exclamation-triangle fa-3x mb-3"></i>
-        <p>Gagal memuat data: ${error.message}</p>
-        <button class="btn btn-primary btn-sm" onclick="loadArtikel()">
-          <i class="fas fa-sync-alt me-2"></i>Coba Lagi
-        </button>
-      </td>
-    `;
+    const snap = await db.collection("artikel").orderBy("tanggal", "desc").get();
+    semua = await Promise.all(snap.docs.map(async (doc) => {
+      let komentar = 0;
+      try { komentar = (await db.collection("artikel").doc(doc.id).collection("komentar").get()).size; } catch (e) { /* abaikan */ }
+      return { id: doc.id, ...doc.data(), komentar };
+    }));
+    render();
+  } catch (err) {
+    console.error(err);
+    $('daftarArtikel').innerHTML = `<tr><td colspan="7"><div class="empty"><i class="fas fa-triangle-exclamation"></i><b>Gagal memuat artikel</b>${esc(err.message)}<br><br><button class="btn btn-sm" type="button" onclick="loadArtikel()"><i class="fas fa-rotate"></i> Coba lagi</button></div></td></tr>`;
   }
 }
+window.loadArtikel = loadArtikel;
 
-// Edit artikel
-window.editArtikel = async function(id) {
-  try {
-    const doc = await db.collection("artikel").doc(id).get();
-    if (!doc.exists) {
-      alert("Artikel tidak ditemukan!");
-      return;
-    }
-    
-    const data = doc.data();
-    
-    document.getElementById('artikelId').value = id;
-    document.getElementById('existingFoto').value = data.foto || '';
-    document.getElementById('judul').value = data.judul || '';
-    document.getElementById('kategori').value = data.kategori || '';
-    document.getElementById('formTitle').innerHTML = '<i class="fas fa-edit me-2"></i>Edit Artikel';
-    document.getElementById('btnBatal').style.display = 'inline-block';
-    
-    // Set isi artikel ke editor
-    quill.root.innerHTML = data.isi || '';
-    
-    // Tampilkan preview gambar yang sudah ada
-    if (data.foto) {
-      document.getElementById('imagePreview').innerHTML = `
-        <img src="${data.foto}" class="preview-image" alt="Current Image">
-        <p class="text-info small mt-2">
-          <i class="fas fa-info-circle"></i> Gambar saat ini
-        </p>
-      `;
-      
-      // Tampilkan opsi hapus gambar
-      document.getElementById('hapusGambar').style.display = 'block';
-      document.getElementById('hapusGambarLabel').style.display = 'block';
-    }
-    
-    // Scroll ke form
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-    
-  } catch (error) {
-    alert("Gagal memuat artikel: " + error.message);
+function render() {
+  const q = $('q').value.trim().toLowerCase(), k = $('fKat').value;
+  const list = semua.filter((a) => (!k || a.kategori === k) && (!q || (a.judul || '').toLowerCase().includes(q)));
+  $('cnt').textContent = semua.length ? `· ${list.length}${list.length !== semua.length ? ' dari ' + semua.length : ''}` : '';
+  if (!list.length) {
+    $('daftarArtikel').innerHTML = `<tr><td colspan="7"><div class="empty"><i class="fas fa-folder-open"></i><b>${semua.length ? 'Tidak ada yang cocok' : 'Belum ada artikel'}</b>${semua.length ? 'Coba kata kunci atau filter lain.' : 'Isi formulir di atas untuk membuat artikel pertama.'}</div></td></tr>`;
+    return;
   }
-};
-
-// Hapus artikel
-window.hapusArtikel = function(id) {
-  if (confirm("Apakah Anda yakin ingin menghapus artikel ini?")) {
-    // Tampilkan loading di tombol
-    const btn = event.target;
-    btn.disabled = true;
-    btn.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
-    
-    db.collection("artikel").doc(id).delete()
-      .then(() => {
-        alert("Artikel berhasil dihapus!");
-      })
-      .catch((error) => {
-        alert("Gagal menghapus artikel: " + error.message);
-        btn.disabled = false;
-        btn.innerHTML = '<i class="fas fa-trash"></i> Hapus';
-      });
-  }
-};
-
-// Batal edit
-window.batalEdit = function() {
-  document.getElementById('artikelId').value = '';
-  document.getElementById('existingFoto').value = '';
-  document.getElementById('judul').value = '';
-  document.getElementById('kategori').value = '';
-  document.getElementById('file').value = '';
-  document.getElementById('imagePreview').innerHTML = '';
-  document.getElementById('formTitle').innerHTML = '<i class="fas fa-plus-circle me-2"></i>Tambah Artikel Baru';
-  document.getElementById('btnBatal').style.display = 'none';
-  document.getElementById('hapusGambar').style.display = 'none';
-  document.getElementById('hapusGambarLabel').style.display = 'none';
-  document.getElementById('hapusGambar').checked = false;
-  quill.root.innerHTML = '';
-};
-
-// Initialize saat halaman dimuat
-document.addEventListener('DOMContentLoaded', function() {
-  console.log("Halaman admin artikel siap");
+  $('daftarArtikel').innerHTML = list.map((a) => `<tr>
+    <td class="first"><img class="thumb" src="${esc(thumb(a.foto) || NO_IMG)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${NO_IMG}'"></td>
+    <td data-label="Judul" class="strong">${esc(a.judul || '-')}</td>
+    <td data-label="Kategori"><span class="chip kat">${esc(a.kategori || '-')}</span></td>
+    <td data-label="Tanggal" class="muted">${esc(fmtTs(a.tanggal))}</td>
+    <td data-label="Suka" class="num"><i class="fas fa-heart" style="color:#e11d48;font-size:.75rem"></i> ${a.like || 0}</td>
+    <td data-label="Komentar" class="num"><i class="fas fa-comment" style="color:#64708a;font-size:.75rem"></i> ${a.komentar}</td>
+    <td class="acts"><div class="cell-actions">
+      <a class="icon-btn" href="detail-artikel-publik.html?id=${a.id}" target="_blank" rel="noopener" title="Lihat di situs" aria-label="Lihat artikel di situs"><i class="fas fa-arrow-up-right-from-square"></i></a>
+      <button class="icon-btn" type="button" data-act="edit" data-id="${a.id}" title="Edit" aria-label="Edit artikel"><i class="fas fa-pen"></i></button>
+      <button class="icon-btn del" type="button" data-act="del" data-id="${a.id}" title="Hapus" aria-label="Hapus artikel"><i class="fas fa-trash"></i></button>
+    </div></td></tr>`).join('');
+}
+$('q').addEventListener('input', render);
+$('fKat').addEventListener('change', render);
+$('daftarArtikel').addEventListener('click', (e) => {
+  const b = e.target.closest('[data-act]'); if (!b) return;
+  if (b.dataset.act === 'edit') editArtikel(b.dataset.id); else hapusArtikel(b.dataset.id);
 });
-</script>
 
+/* ---------- Edit / hapus / batal ---------- */
+function editArtikel(id) {
+  const a = semua.find((x) => x.id === id); if (!a) { toast('Artikel tidak ditemukan.', 'error'); return; }
+  $('artikelId').value = id; $('existingFoto').value = a.foto || '';
+  $('judul').value = a.judul || ''; $('kategori').value = a.kategori || '';
+  quill.root.innerHTML = a.isi || '';
+  $('formTitle').textContent = 'Edit artikel';
+  $('btnSimpan').querySelector('span').textContent = 'Perbarui artikel';
+  $('btnBatal').classList.remove('hidden');
+  $('file').value = ''; $('dropSub').textContent = 'Pilih gambar baru untuk mengganti';
+  $('hapusGambar').checked = false;
+  if (a.foto) { $('imagePreview').innerHTML = `<img src="${esc(a.foto)}" class="preview-image" alt="Gambar saat ini">`; $('hapusGambarLabel').classList.remove('hidden'); }
+  else { $('imagePreview').innerHTML = ''; $('hapusGambarLabel').classList.add('hidden'); }
+  $('formCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+async function hapusArtikel(id) {
+  const a = semua.find((x) => x.id === id);
+  const ya = await confirmBox({ title: 'Hapus artikel?', text: a ? `“${a.judul}” akan dihapus permanen dari situs.` : '', ok: 'Hapus', danger: true });
+  if (!ya) return;
+  try { await db.collection("artikel").doc(id).delete(); toast('Artikel dihapus.', 'success'); if ($('artikelId').value === id) batalEdit(); await loadArtikel(); }
+  catch (err) { toast('Gagal menghapus artikel: ' + err.message, 'error'); }
+}
+
+function batalEdit() {
+  $('artikelId').value = ''; $('existingFoto').value = ''; $('judul').value = ''; $('kategori').value = '';
+  $('file').value = ''; $('dropSub').textContent = 'Belum ada gambar dipilih'; $('imagePreview').innerHTML = '';
+  $('formTitle').textContent = 'Tambah artikel baru';
+  $('btnSimpan').querySelector('span').textContent = 'Simpan artikel';
+  $('btnBatal').classList.add('hidden');
+  $('hapusGambar').checked = false; $('hapusGambarLabel').classList.add('hidden');
+  quill.root.innerHTML = '';
+}
+$('btnBatal').addEventListener('click', batalEdit);
+</script>
 <script src="js/pwa-init.js"></script>
 </body>
 </html>
