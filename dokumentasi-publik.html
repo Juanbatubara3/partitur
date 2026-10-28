@@ -139,6 +139,9 @@
           <a class="nav-link active" href="dokumentasi-publik.html">Dokumentasi</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link" href="partitur.html">Partitur</a>
+        </li>
+        <li class="nav-item">
           <a class="nav-link" href="index.html#tentang">Tentang</a>
         </li>
         <li class="nav-item">
@@ -443,10 +446,10 @@ function renderArticles(articles) {
       <div class="col-lg-4 col-md-6">
         <div class="card article-card">
           <div class="position-relative overflow-hidden">
-            <img src="${artikel.foto || 'https://via.placeholder.com/400x220?text=RNHKBP'}" 
+            <img src="${artikel.foto || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 220%27%3E%3Crect width=%27400%27 height=%27220%27 fill=%27%23dbe7ff%27/%3E%3Ctext x=%27200%27 y=%27118%27 font-family=%27Arial%27 font-size=%2725%27 text-anchor=%27middle%27 fill=%27%232563eb%27 opacity=%27.6%27%3ERNHKBP Pelikan%3C/text%3E%3C/svg%3E'}" 
                  class="article-image w-100" 
                  alt="${artikel.judul}"
-                 onerror="this.src='https://via.placeholder.com/400x220?text=RNHKBP'">
+                 onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 220%27%3E%3Crect width=%27400%27 height=%27220%27 fill=%27%23dbe7ff%27/%3E%3Ctext x=%27200%27 y=%27118%27 font-family=%27Arial%27 font-size=%2725%27 text-anchor=%27middle%27 fill=%27%232563eb%27 opacity=%27.6%27%3ERNHKBP Pelikan%3C/text%3E%3C/svg%3E'">
             <span class="category-badge">
               <i class="fas fa-tag me-1"></i>${artikel.kategori || 'Umum'}
             </span>
@@ -504,10 +507,10 @@ function appendArticles(newArticles) {
       <div class="col-lg-4 col-md-6">
         <div class="card article-card">
           <div class="position-relative overflow-hidden">
-            <img src="${artikel.foto || 'https://via.placeholder.com/400x220?text=RNHKBP'}" 
+            <img src="${artikel.foto || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 220%27%3E%3Crect width=%27400%27 height=%27220%27 fill=%27%23dbe7ff%27/%3E%3Ctext x=%27200%27 y=%27118%27 font-family=%27Arial%27 font-size=%2725%27 text-anchor=%27middle%27 fill=%27%232563eb%27 opacity=%27.6%27%3ERNHKBP Pelikan%3C/text%3E%3C/svg%3E'}" 
                  class="article-image w-100" 
                  alt="${artikel.judul}"
-                 onerror="this.src='https://via.placeholder.com/400x220?text=RNHKBP'">
+                 onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 220%27%3E%3Crect width=%27400%27 height=%27220%27 fill=%27%23dbe7ff%27/%3E%3Ctext x=%27200%27 y=%27118%27 font-family=%27Arial%27 font-size=%2725%27 text-anchor=%27middle%27 fill=%27%232563eb%27 opacity=%27.6%27%3ERNHKBP Pelikan%3C/text%3E%3C/svg%3E'">
             <span class="category-badge">${artikel.kategori || 'Umum'}</span>
             <span class="date-badge">${tanggal}</span>
           </div>

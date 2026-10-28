@@ -1020,10 +1020,10 @@
     <div class="row g-4" id="renunganContainer">
       <!-- Akan diisi JavaScript -->
     </div>
-    <div class="text-center mt-4">
-      <a href="#" class="btn btn-primary px-4">
+    <div class="text-center mt-4" id="wrapSemuaRenungan" style="display:none;">
+      <button type="button" id="btnSemuaRenungan" class="btn btn-primary px-4">
         Lihat Semua Renungan <i class="fas fa-arrow-right ms-2"></i>
-      </a>
+      </button>
     </div>
   </div>
 </section>
@@ -1248,15 +1248,6 @@
             <a href="https://www.instagram.com/nhkbppelikanrealaccount" target="_blank" class="social-btn">
               <i class="fab fa-instagram"></i>
             </a>
-            <a href="#" class="social-btn">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-            <a href="#" class="social-btn">
-              <i class="fab fa-twitter"></i>
-            </a>
-            <a href="#" class="social-btn">
-              <i class="fab fa-youtube"></i>
-            </a>
           </div>
         </div>
       </div>
@@ -1401,11 +1392,18 @@ async function loadStats() {
 }
 
 // ================= LOAD RENUNGAN =================
-db.collection("renungan")
-  .orderBy("tanggal", "desc")
-  .limit(3)
-  .onSnapshot(snapshot => {
+let renunganSemua = false;
+let renunganUnsub = null;
+
+function listenRenungan() {
+  if (renunganUnsub) renunganUnsub();
+  let query = db.collection("renungan").orderBy("tanggal", "desc");
+  if (!renunganSemua) query = query.limit(4);   // 4 = 3 tampil + 1 untuk tahu apakah masih ada lagi
+
+  renunganUnsub = query.onSnapshot(snapshot => {
     let html = '';
+    const semuaDocs = snapshot.docs;
+    const tampilDocs = renunganSemua ? semuaDocs : semuaDocs.slice(0, 3);
     
     if (snapshot.empty) {
       // Data default jika kosong
@@ -1442,7 +1440,7 @@ db.collection("renungan")
         </div>
       `;
     } else {
-      snapshot.forEach(doc => {
+      tampilDocs.forEach(doc => {
         const data = doc.data();
         html += `
           <div class="col-md-4">
@@ -1459,7 +1457,23 @@ db.collection("renungan")
       });
     }
     document.getElementById('renunganContainer').innerHTML = html;
+
+    // Tombol "Lihat Semua" hanya muncul kalau memang ada lebih dari 3 renungan
+    const wrap = document.getElementById('wrapSemuaRenungan');
+    const btn = document.getElementById('btnSemuaRenungan');
+    wrap.style.display = semuaDocs.length > 3 ? '' : 'none';
+    btn.innerHTML = renunganSemua
+      ? 'Tampilkan Lebih Sedikit <i class="fas fa-arrow-up ms-2"></i>'
+      : 'Lihat Semua Renungan <i class="fas fa-arrow-right ms-2"></i>';
   });
+}
+
+document.getElementById('btnSemuaRenungan').addEventListener('click', () => {
+  renunganSemua = !renunganSemua;
+  listenRenungan();
+  if (!renunganSemua) document.getElementById('renungan').scrollIntoView({ behavior: 'smooth' });
+});
+listenRenungan();
 
 // ================= LOAD KEPENGURUSAN =================
 async function loadKepengurusan() {
@@ -1539,9 +1553,9 @@ db.collection("artikel")
         html += `
           <div class="col-md-4 mb-3">
             <div class="article-card">
-              <img src="${data.foto || 'https://via.placeholder.com/400x200?text=NHKBP'}" 
+              <img src="${data.foto || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 200%27%3E%3Crect width=%27400%27 height=%27200%27 fill=%27%23dbe7ff%27/%3E%3Ctext x=%27200%27 y=%27108%27 font-family=%27Arial%27 font-size=%2725%27 text-anchor=%27middle%27 fill=%27%232563eb%27 opacity=%27.6%27%3ERNHKBP Pelikan%3C/text%3E%3C/svg%3E'}" 
                    class="card-img-top"
-                   onerror="this.src='https://via.placeholder.com/400x200?text=NHKBP'">
+                   onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 200%27%3E%3Crect width=%27400%27 height=%27200%27 fill=%27%23dbe7ff%27/%3E%3Ctext x=%27200%27 y=%27108%27 font-family=%27Arial%27 font-size=%2725%27 text-anchor=%27middle%27 fill=%27%232563eb%27 opacity=%27.6%27%3ERNHKBP Pelikan%3C/text%3E%3C/svg%3E'">
               <div class="card-body">
                 <h5 class="card-title">${data.judul || 'Judul Artikel'}</h5>
                 <p class="text-muted small mb-2">${tanggal || ''}</p>

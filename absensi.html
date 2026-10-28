@@ -12,378 +12,758 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="RNHKBP Pelikan">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="robots" content="noindex">
 
-  <title>Absensi · Admin RNHKBP Pelikan</title>
+  <title>Absensi Kegiatan</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+    .table-responsive {
+      overflow-x: auto;
+    }
+    .filter-section {
+      background: #f8f9fa;
+      border-radius: 10px;
+      padding: 20px;
+    }
+    .stats-card {
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      color: white;
+      border-radius: 10px;
+      padding: 15px;
+      margin-bottom: 15px;
+    }
+    .stats-card:last-child {
+      background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+    }
+    .badge-naposobulung {
+      background-color: #0d6efd;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+    .badge-parguru {
+      background-color: #198754;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+    }
+    .anggota-search-wrapper {
+      position: relative;
+    }
+    #anggotaDropdown {
+      position: absolute;
+      top: 100%;
+      left: 0;
+      right: 0;
+      z-index: 1050;
+      max-height: 260px;
+      overflow-y: auto;
+      display: none;
+      border-radius: 8px;
+      margin-top: -6px;
+    }
+    #anggotaDropdown .list-group-item {
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    #anggotaDropdown .list-group-item small {
+      display: block;
+      color: #6c757d;
+    }
+    .badge-mini {
+      font-size: 0.7rem;
+      padding: 3px 8px;
+      border-radius: 12px;
+      color: #fff;
+    }
+    .badge-mini.naposo { background-color: #0d6efd; }
+    .badge-mini.parguru { background-color: #198754; }
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-15px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+  </style>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="css/admin.css">
-
+  <link rel="stylesheet" href="css/theme.css">
 </head>
-<body data-active="absensi" data-title="Absensi">
-<div class="shell" id="shell">
-  <aside class="sidebar" id="sidebar"></aside>
-  <div class="scrim" id="scrim"></div>
-  <div class="main">
-    <header class="topbar" id="topbar"></header>
+<body>
 
-    <div class="page-head">
-      <h1>Absensi</h1>
-      <p>Catat kehadiran Partangiangan dan Latihan Koor. Absensi tetap bisa diisi tanpa internet dan terkirim otomatis begitu tersambung lagi.</p>
-    </div>
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <span class="navbar-brand">
+      <i class="fas fa-church me-2"></i>Absensi Partangiangan & Latihan Koor
+    </span>
+    <a href="dashboard.html" class="btn btn-light">
+      <i class="fas fa-arrow-left me-2"></i>Kembali
+    </a>
+  </div>
+</nav>
 
-    <div id="statusKoneksi" class="banner warn" role="status"><span id="statusKoneksiText"></span></div>
+<div class="container mt-4">
 
-    <!-- Input -->
-    <div class="card">
-      <div class="card-head"><div><h3>Catat kehadiran</h3><p class="hint">Tanggal dan kegiatan tetap terpilih setelah disimpan, jadi tinggal ganti nama untuk anggota berikutnya.</p></div></div>
-      <div class="stack-16">
-        <div class="grid2">
-          <div class="field"><span class="lbl">Kegiatan</span>
-            <div class="seg full" id="segKegiatan">
-              <button type="button" class="on" data-v="Partangiangan">🙏 Partangiangan</button>
-              <button type="button" data-v="Latihan Koor">🎵 Latihan Koor</button>
-              <button type="button" data-v="Lainnya">📌 Lainnya</button>
-            </div>
-            <input type="hidden" id="kegiatan" value="Partangiangan">
-          </div>
-          <div class="field"><span class="lbl">Status kehadiran</span>
-            <div class="seg status full" id="segStatus">
-              <button type="button" class="on" data-v="Hadir">Hadir</button>
-              <button type="button" data-v="Izin">Izin</button>
-              <button type="button" data-v="Sakit">Sakit</button>
-              <button type="button" data-v="Alpha">Alpha</button>
-            </div>
-            <input type="hidden" id="status" value="Hadir">
-          </div>
-        </div>
-        <div class="field">
-          <label for="anggotaSearch">Nama anggota</label>
-          <div class="combo anggota-search-wrapper">
-            <input type="text" id="anggotaSearch" class="input" placeholder="Ketik untuk mencari nama…" autocomplete="off" role="combobox" aria-expanded="false" aria-controls="anggotaDropdown">
-            <input type="hidden" id="anggotaId"><input type="hidden" id="anggotaKategori">
-            <div id="anggotaDropdown" class="combo-list" role="listbox"></div>
-          </div>
-          <div class="picked" id="picked"><i class="fas fa-circle-check"></i> <span id="pickedText"></span></div>
-        </div>
-        <div class="grid2">
-          <div class="field"><label for="tanggal">Tanggal</label><input type="date" id="tanggal" class="input"></div>
-          <div class="field"><label for="hari">Hari</label><input type="text" id="hari" class="input" readonly placeholder="Terisi otomatis"></div>
+  <!-- STATUS KONEKSI / OFFLINE -->
+  <div id="statusKoneksi" class="alert py-2 px-3 d-flex align-items-center" style="display:none;">
+    <span id="statusKoneksiText"></span>
+  </div>
+
+  <!-- FORM INPUT -->
+  <div class="card p-3 mb-4 shadow">
+    <h5 class="mb-3">
+      <i class="fas fa-edit me-2 text-primary"></i>Input Absensi Kegiatan
+    </h5>
+
+    <div class="row">
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Kegiatan</label>
+        <select id="kegiatan" class="form-control mb-2">
+          <option value="Partangiangan">🙏 Partangiangan</option>
+          <option value="Latihan Koor">🎵 Latihan Koor</option>
+          <option value="Lainnya">📌 Lainnya</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Nama Anggota</label>
+        <div class="anggota-search-wrapper">
+          <input type="text" id="anggotaSearch" class="form-control mb-2"
+                 placeholder="🔍 Ketik untuk cari nama..." autocomplete="off"
+                 oninput="filterAnggota()" onfocus="filterAnggota()">
+          <input type="hidden" id="anggotaId">
+          <input type="hidden" id="anggotaKategori">
+          <div id="anggotaDropdown" class="list-group shadow"></div>
         </div>
       </div>
-      <div class="form-actions"><button class="btn" id="btnSimpan" type="button"><i class="fas fa-floppy-disk"></i> Simpan absensi</button></div>
-    </div>
-
-    <!-- Rekap -->
-    <div class="card">
-      <div class="card-head"><div><h3>Rekap seluruh absensi</h3><p class="hint">Jumlah dari semua catatan yang tersimpan.</p></div></div>
-      <div class="rekap">
-        <div class="rekap-card">
-          <h4><span class="ic" style="background:#e4edff;color:#1d4ed8"><i class="fas fa-user-graduate"></i></span> Naposobulung</h4>
-          <div class="rekap-nums">
-            <div class="h"><b id="naposoHadir">0</b><span>Hadir</span></div><div class="i"><b id="naposoIzin">0</b><span>Izin</span></div>
-            <div class="s"><b id="naposoSakit">0</b><span>Sakit</span></div><div class="a"><b id="naposoAlpha">0</b><span>Alpha</span></div>
-          </div>
-        </div>
-        <div class="rekap-card">
-          <h4><span class="ic" style="background:#def5f1;color:#0f766e"><i class="fas fa-chalkboard-user"></i></span> Parguru Malua</h4>
-          <div class="rekap-nums">
-            <div class="h"><b id="parguruHadir">0</b><span>Hadir</span></div><div class="i"><b id="parguruIzin">0</b><span>Izin</span></div>
-            <div class="s"><b id="parguruSakit">0</b><span>Sakit</span></div><div class="a"><b id="parguruAlpha">0</b><span>Alpha</span></div>
-          </div>
-        </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Status</label>
+        <select id="status" class="form-control mb-2">
+          <option value="Hadir">✅ Hadir</option>
+          <option value="Izin">📝 Izin</option>
+          <option value="Sakit">🤒 Sakit</option>
+          <option value="Alpha">❌ Alpha</option>
+        </select>
       </div>
     </div>
 
-    <!-- Laporan -->
-    <div class="card filter-section">
-      <div class="card-head"><div><h3>Unduh laporan</h3><p class="hint">Hasilnya berkas TXT yang rapi, dikelompokkan per tanggal dan kegiatan. Kosongkan filter untuk mengunduh semuanya.</p></div></div>
-      <div class="grid3" style="align-items:end">
-        <div class="field"><label for="filterTanggal">Tanggal</label><input type="date" id="filterTanggal" class="input"></div>
-        <div class="field"><label for="filterKegiatan">Kegiatan</label>
-          <select id="filterKegiatan" class="select"><option value="">Semua kegiatan</option><option value="Partangiangan">Partangiangan</option><option value="Latihan Koor">Latihan Koor</option><option value="Lainnya">Lainnya</option></select>
-        </div>
-        <button class="btn btn-ok" id="btnDownload" type="button"><i class="fas fa-file-arrow-down"></i> Unduh laporan (TXT)</button>
+    <div class="row">
+      <div class="col-md-6">
+        <label class="form-label fw-bold">Tanggal</label>
+        <input type="date" id="tanggal" class="form-control mb-2" onchange="isiHari()">
+      </div>
+      <div class="col-md-6">
+        <label class="form-label fw-bold">Hari</label>
+        <input type="text" id="hari" class="form-control mb-2" placeholder="Hari" readonly>
       </div>
     </div>
 
-    <!-- Riwayat -->
-    <div class="card">
-      <div class="card-head"><h3>Riwayat absensi <span class="cnt" id="cnt"></span></h3></div>
-      <div class="toolbar">
-        <div class="search"><i class="fas fa-magnifying-glass"></i><input id="rSearch" class="input" placeholder="Cari nama anggota…" autocomplete="off"></div>
-        <select id="rKegiatan" class="select" aria-label="Filter kegiatan"><option value="">Semua kegiatan</option><option>Partangiangan</option><option>Latihan Koor</option><option>Lainnya</option></select>
-        <select id="rStatus" class="select" aria-label="Filter status"><option value="">Semua status</option><option>Hadir</option><option>Izin</option><option>Sakit</option><option>Alpha</option></select>
+    <button onclick="simpanAbsensi()" class="btn btn-primary" id="btnSimpan">
+      <i class="fas fa-save me-2"></i>Simpan Absensi
+    </button>
+  </div>
+
+  <!-- MODAL TAMBAH ANGGOTA BARU -->
+  <div class="modal fade" id="modalTambahAnggota" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">
+            <i class="fas fa-user-plus me-2 text-success"></i>Tambah Anggota Baru
+          </h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <p class="text-muted small">Nama tidak ditemukan di daftar. Lengkapi data di bawah untuk menambahkan keanggotaan baru, lalu anggota ini akan otomatis terpilih untuk absensi.</p>
+          <label class="form-label fw-bold">Nama</label>
+          <input type="text" id="newAnggotaNama" class="form-control mb-2" placeholder="Nama lengkap">
+
+          <label class="form-label fw-bold">Weyik</label>
+          <select id="newAnggotaWeyik" class="form-control mb-2">
+            <option value="">Pilih Weyik</option>
+            <option value="Roma">Roma</option>
+            <option value="Kolose">Kolose</option>
+            <option value="Filipi">Filipi</option>
+            <option value="Pilippi">Pilippi</option>
+            <option value="Tesalonika">Tesalonika</option>
+            <option value="Betlehem">Betlehem</option>
+            <option value="Galatia">Galatia</option>
+            <option value="Efesus">Efesus</option>
+          </select>
+
+          <label class="form-label fw-bold">Kategori</label>
+          <select id="newAnggotaKategori" class="form-control mb-2">
+            <option value="Naposobulung">Naposobulung</option>
+            <option value="Parguru Malua">Parguru Malua</option>
+          </select>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
+          <button type="button" class="btn btn-success" id="btnSimpanAnggotaBaru" onclick="simpanAnggotaBaru()">
+            <i class="fas fa-save me-2"></i>Simpan & Pilih
+          </button>
+        </div>
       </div>
-      <div class="tbl-wrap">
-        <table class="tbl stack">
-          <thead><tr><th>Nama</th><th>Kegiatan</th><th>Kategori</th><th>Hari &amp; tanggal</th><th>Status</th><th class="right">Aksi</th></tr></thead>
-          <tbody id="dataAbsensi"><tr><td colspan="6"><div class="loading"><span class="spin"></span> Memuat data absensi…</div></td></tr></tbody>
-        </table>
-      </div>
-      <div class="more hidden" id="moreWrap"><button class="btn btn-ghost" id="btnMore" type="button"><i class="fas fa-chevron-down"></i> Tampilkan lebih banyak</button></div>
     </div>
   </div>
-</div>
 
-<!-- Modal tambah anggota baru -->
-<div class="modal-back" id="modalTambahAnggota">
-  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="mTitle">
-    <h3 id="mTitle">Tambah anggota baru</h3>
-    <p>Nama belum ada di daftar. Lengkapi datanya, lalu anggota ini langsung terpilih untuk absensi.</p>
-    <div class="stack-16">
-      <div class="field"><label for="newAnggotaNama">Nama lengkap</label><input type="text" id="newAnggotaNama" class="input" placeholder="Nama lengkap" autocomplete="off"></div>
-      <div class="grid2">
-        <div class="field"><label for="newAnggotaWeyik">Weyik <span class="opt">(opsional)</span></label>
-          <select id="newAnggotaWeyik" class="select"><option value="">Pilih weyik</option><option>Roma</option><option>Kolose</option><option>Filipi</option><option>Pilippi</option><option>Tesalonika</option><option>Betlehem</option><option>Galatia</option><option>Efesus</option></select>
-        </div>
-        <div class="field"><label for="newAnggotaKategori">Kategori</label>
-          <select id="newAnggotaKategori" class="select"><option>Naposobulung</option><option>Parguru Malua</option></select>
+  <!-- FILTER DAN DOWNLOAD SECTION -->
+  <div class="card p-3 mb-4 shadow filter-section">
+    <h5 class="mb-3">
+      <i class="fas fa-download me-2 text-success"></i>Download Laporan Absensi (TXT)
+    </h5>
+    
+    <div class="row">
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Filter Tanggal</label>
+        <input type="date" id="filterTanggal" class="form-control mb-2">
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Filter Kegiatan</label>
+        <select id="filterKegiatan" class="form-control mb-2">
+          <option value="">📋 Semua Kegiatan</option>
+          <option value="Partangiangan">🙏 Partangiangan</option>
+          <option value="Latihan Koor">🎵 Latihan Koor</option>
+          <option value="Lainnya">📌 Lainnya</option>
+        </select>
+      </div>
+      <div class="col-md-4">
+        <label class="form-label fw-bold">&nbsp;</label>
+        <button onclick="downloadTXT()" class="btn btn-success w-100" id="btnDownload">
+          <i class="fas fa-file-alt me-2"></i>Download Laporan (TXT)
+        </button>
+      </div>
+    </div>
+    
+    <div class="row mt-2">
+      <div class="col-md-12">
+        <div class="alert alert-info mb-0">
+          <i class="fas fa-info-circle me-2"></i>
+          Laporan akan didownload dalam format TXT dengan tampilan rapi dan terstruktur.
         </div>
       </div>
     </div>
-    <div class="modal-actions">
-      <button type="button" class="btn btn-ghost" id="btnBatalAnggota">Batal</button>
-      <button type="button" class="btn btn-ok" id="btnSimpanAnggotaBaru"><i class="fas fa-floppy-disk"></i> Simpan &amp; pilih</button>
+  </div>
+
+  <!-- TABEL RIWAYAT -->
+  <div class="card p-3 shadow">
+    <h5 class="mb-3">
+      <i class="fas fa-history me-2 text-info"></i>Riwayat Absensi
+    </h5>
+    
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead class="table-dark">
+          <tr>
+            <th>Kegiatan</th>
+            <th>Nama</th>
+            <th>Kategori</th>
+            <th>Hari</th>
+            <th>Tanggal</th>
+            <th>Status</th>
+            <th style="width: 100px;">Aksi</th>
+          </tr>
+        </thead>
+        <tbody id="dataAbsensi">
+          <tr>
+            <td colspan="7" class="text-center py-4">
+              <div class="spinner-border text-primary" role="status">
+                <span class="visually-hidden">Loading...</span>
+              </div>
+              <p class="mt-2 text-muted">Memuat data absensi...</p>
+            </td>
+          </tr>
+        </tbody>
+      </table>
     </div>
   </div>
+
+  <!-- REKAP TOTAL -->
+  <div class="card p-3 mt-4 shadow">
+    <h5 class="mb-3">
+      <i class="fas fa-chart-pie me-2 text-warning"></i>Rekap Total Absensi
+    </h5>
+
+    <div class="row">
+      <div class="col-md-6">
+        <div class="stats-card">
+          <h6 class="fw-bold"><i class="fas fa-user-graduate me-2"></i>Naposobulung</h6>
+          <div class="row text-center">
+            <div class="col-3">
+              <div class="small">Hadir</div>
+              <h4 class="mb-0" id="naposoHadir">0</h4>
+            </div>
+            <div class="col-3">
+              <div class="small">Izin</div>
+              <h4 class="mb-0" id="naposoIzin">0</h4>
+            </div>
+            <div class="col-3">
+              <div class="small">Sakit</div>
+              <h4 class="mb-0" id="naposoSakit">0</h4>
+            </div>
+            <div class="col-3">
+              <div class="small">Alpha</div>
+              <h4 class="mb-0" id="naposoAlpha">0</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div class="col-md-6">
+        <div class="stats-card" style="background: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);">
+          <h6 class="fw-bold"><i class="fas fa-chalkboard-teacher me-2"></i>Parguru Malua</h6>
+          <div class="row text-center">
+            <div class="col-3">
+              <div class="small">Hadir</div>
+              <h4 class="mb-0" id="parguruHadir">0</h4>
+            </div>
+            <div class="col-3">
+              <div class="small">Izin</div>
+              <h4 class="mb-0" id="parguruIzin">0</h4>
+            </div>
+            <div class="col-3">
+              <div class="small">Sakit</div>
+              <h4 class="mb-0" id="parguruSakit">0</h4>
+            </div>
+            <div class="col-3">
+              <div class="small">Alpha</div>
+              <h4 class="mb-0" id="parguruAlpha">0</h4>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
 </div>
 
+<!-- BOOTSTRAP JS (untuk modal tambah anggota) -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+
+<!-- FIREBASE -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="js/admin-common.js"></script>
 
 <script>
-const { db, esc, toast, todayISO, fmtDateStr, openModal, closeModal, confirmBox, requireAuth } = AdminApp;
-const $ = (id) => document.getElementById(id);
-const popupErr = (m) => toast(m, 'error');
+// ================= KONFIGURASI FIREBASE =================
+const firebaseConfig = {
+  apiKey: "AIzaSyCwQGsFPBIs_gk0Xc1hscpG-7n6M16gqWc",
+  authDomain: "rnhkbp-pelikan.firebaseapp.com",
+  projectId: "rnhkbp-pelikan",
+  storageBucket: "rnhkbp-pelikan.firebasestorage.app",
+  messagingSenderId: "202813062166",
+  appId: "1:202813062166:web:eb3d963d5965a5e6f48937"
+};
 
-// ===== Mode offline: absensi tersimpan di perangkat lalu terkirim otomatis saat online =====
-db.enablePersistence({ synchronizeTabs: true }).catch((err) => {
-  if (err.code === 'failed-precondition') console.warn('Mode offline hanya aktif di satu tab. Tutup tab RNHKBP lain.');
-  else if (err.code === 'unimplemented') console.warn('Browser ini tidak mendukung penyimpanan offline.');
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
+
+// ================= AKTIFKAN MODE OFFLINE (Firestore Offline Persistence) =================
+// Absensi yang diisi saat tidak ada internet akan disimpan di perangkat (IndexedDB)
+// dan otomatis terupload ke server begitu internet tersambung lagi — tanpa kode tambahan,
+// ini bawaan Firestore SDK.
+let offlineSiap = true;
+db.enablePersistence({ synchronizeTabs: true }).catch(err => {
+  offlineSiap = false;
+  if (err.code === 'failed-precondition') {
+    console.warn('Mode offline hanya bisa aktif di satu tab. Tutup tab RNHKBP lain yang terbuka.');
+  } else if (err.code === 'unimplemented') {
+    console.warn('Browser ini tidak mendukung penyimpanan offline.');
+  }
 });
 
-requireAuth();
+// ================= CEK LOGIN =================
+firebase.auth().onAuthStateChanged(user => {
+  if (!user) {
+    window.location.href = "login.html";
+  }
+});
 
-// ===== Segmented (kegiatan & status) =====
-function bindSeg(segId, hiddenId) {
-  $(segId).addEventListener('click', (e) => {
-    const b = e.target.closest('button'); if (!b) return;
-    $(hiddenId).value = b.dataset.v;
-    $(segId).querySelectorAll('button').forEach((x) => x.classList.toggle('on', x === b));
-  });
-}
-function setSeg(segId, hiddenId, v) {
-  $(hiddenId).value = v;
-  $(segId).querySelectorAll('button').forEach((x) => x.classList.toggle('on', x.dataset.v === v));
-}
-bindSeg('segKegiatan', 'kegiatan'); bindSeg('segStatus', 'status');
-
-// ===== Anggota (untuk pencarian) =====
+// ================= LOAD ANGGOTA (untuk pencarian) =================
 let anggotaList = [];
 let anggotaSelectedNama = "";
-let comboItems = [], comboIdx = -1;
 
-db.collection("anggota").onSnapshot((snapshot) => {
+db.collection("anggota").onSnapshot(snapshot => {
   anggotaList = [];
-  snapshot.forEach((doc) => {
-    const d = doc.data();
-    if (d && d.nama) anggotaList.push({ id: doc.id, nama: d.nama, kategori: d.kategori || "-", weyik: d.weyik || "" });
+  snapshot.forEach(doc => {
+    const data = doc.data();
+    if (data && data.nama) {
+      anggotaList.push({
+        id: doc.id,
+        nama: data.nama,
+        kategori: data.kategori || "-",
+        weyik: data.weyik || ""
+      });
+    }
   });
   anggotaList.sort((a, b) => a.nama.localeCompare(b.nama, "id"));
-  if ($("anggotaDropdown").style.display === "block") filterAnggota();
+
+  // Refresh dropdown kalau sedang terbuka/sedang diketik
+  const dropdown = document.getElementById("anggotaDropdown");
+  if (dropdown && dropdown.style.display === "block") {
+    filterAnggota();
+  }
 });
 
-function setPicked(nama) {
-  $('picked').style.display = nama ? 'flex' : 'none';
-  $('pickedText').textContent = nama ? `${nama} dipilih` : '';
-}
-
+// ================= PENCARIAN NAMA ANGGOTA =================
 function filterAnggota() {
-  const input = $("anggotaSearch");
-  const q = input.value.trim().toLowerCase();
-  const dropdown = $("anggotaDropdown");
+  const input = document.getElementById("anggotaSearch");
+  const query = input.value.trim().toLowerCase();
+  const dropdown = document.getElementById("anggotaDropdown");
 
+  // Kalau teks berubah dari nama yang sudah dipilih sebelumnya, batalkan seleksi
   if (input.value !== anggotaSelectedNama) {
-    $("anggotaId").value = ""; $("anggotaKategori").value = ""; setPicked('');
+    document.getElementById("anggotaId").value = "";
+    document.getElementById("anggotaKategori").value = "";
   }
-  const matches = q ? anggotaList.filter((a) => a.nama.toLowerCase().includes(q)) : anggotaList;
-  comboItems = matches.slice(0, 30); comboIdx = -1;
+
+  const matches = query
+    ? anggotaList.filter(a => a.nama.toLowerCase().includes(query))
+    : anggotaList;
 
   let html = "";
-  if (!matches.length) html += `<div class="combo-empty">Anggota tidak ditemukan</div>`;
-  comboItems.forEach((a, i) => {
-    html += `<button type="button" class="combo-item" role="option" data-i="${i}">
-      <span>${esc(a.nama)} <span class="chip ${a.kategori === "Naposobulung" ? "naposo" : "parguru"}">${esc(a.kategori)}</span></span>
-      ${a.weyik ? `<small>${esc(a.weyik)}</small>` : ""}</button>`;
-  });
-  if (q) html += `<button type="button" class="combo-item combo-add" data-add="1"><span><i class="fas fa-user-plus"></i> Tambah anggota baru: “${esc(input.value.trim())}”</span></button>`;
+
+  if (matches.length === 0) {
+    html += `<div class="list-group-item text-muted">Anggota tidak ditemukan</div>`;
+  } else {
+    matches.slice(0, 30).forEach(a => {
+      const badgeClass = a.kategori === "Naposobulung" ? "naposo" : "parguru";
+      const namaAman = a.nama.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+      html += `
+        <button type="button" class="list-group-item list-group-item-action"
+                onclick="pilihAnggota('${a.id}', '${namaAman}', '${a.kategori}')">
+          ${a.nama} <span class="badge-mini ${badgeClass} ms-1">${a.kategori}</span>
+          ${a.weyik ? `<small>Weyik: ${a.weyik}</small>` : ""}
+        </button>`;
+    });
+  }
+
+  // Opsi tambah anggota baru selalu muncul kalau user sedang mengetik
+  if (query) {
+    const queryAman = input.value.replace(/'/g, "\\'").replace(/"/g, "&quot;");
+    html += `
+      <button type="button" class="list-group-item list-group-item-action list-group-item-success fw-bold"
+              onclick="bukaModalTambahAnggota('${queryAman}')">
+        <i class="fas fa-user-plus me-2"></i>Tambah Anggota Baru: "${input.value}"
+      </button>`;
+  }
+
   dropdown.innerHTML = html;
   dropdown.style.display = "block";
-  input.setAttribute('aria-expanded', 'true');
 }
-function closeCombo() { $("anggotaDropdown").style.display = "none"; $("anggotaSearch").setAttribute('aria-expanded', 'false'); }
 
 function pilihAnggota(id, nama, kategori) {
-  $("anggotaSearch").value = nama; $("anggotaId").value = id; $("anggotaKategori").value = kategori;
-  anggotaSelectedNama = nama; setPicked(nama); closeCombo();
+  document.getElementById("anggotaSearch").value = nama;
+  document.getElementById("anggotaId").value = id;
+  document.getElementById("anggotaKategori").value = kategori;
+  anggotaSelectedNama = nama;
+  document.getElementById("anggotaDropdown").style.display = "none";
 }
 
-$("anggotaSearch").addEventListener('input', filterAnggota);
-$("anggotaSearch").addEventListener('focus', filterAnggota);
-$("anggotaSearch").addEventListener('keydown', (e) => {
-  const items = [...$("anggotaDropdown").querySelectorAll('.combo-item')];
-  if (e.key === 'ArrowDown' || e.key === 'ArrowUp') {
-    if (!items.length) return; e.preventDefault();
-    comboIdx = (comboIdx + (e.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
-    items.forEach((x, i) => x.classList.toggle('act', i === comboIdx));
-    items[comboIdx].scrollIntoView({ block: 'nearest' });
-  } else if (e.key === 'Enter' && comboIdx >= 0 && items[comboIdx]) { e.preventDefault(); items[comboIdx].click(); }
-  else if (e.key === 'Escape') closeCombo();
-});
-$("anggotaDropdown").addEventListener('click', (e) => {
-  const b = e.target.closest('.combo-item'); if (!b) return;
-  if (b.dataset.add) { bukaModalTambahAnggota($("anggotaSearch").value.trim()); return; }
-  const a = comboItems[Number(b.dataset.i)]; if (a) pilihAnggota(a.id, a.nama, a.kategori);
-});
-document.addEventListener("click", (e) => {
-  const w = document.querySelector(".anggota-search-wrapper");
-  if (w && !w.contains(e.target)) closeCombo();
+// Tutup dropdown kalau klik di luar area pencarian
+document.addEventListener("click", function (e) {
+  const wrapper = document.querySelector(".anggota-search-wrapper");
+  if (wrapper && !wrapper.contains(e.target)) {
+    document.getElementById("anggotaDropdown").style.display = "none";
+  }
 });
 
-// ===== Tambah anggota baru =====
+// ================= TAMBAH ANGGOTA BARU (KEANGGOTAAN BARU) =================
 function bukaModalTambahAnggota(namaAwal) {
-  $("newAnggotaNama").value = (namaAwal || "").replace(/\b\w/g, (c) => c.toUpperCase());
-  $("newAnggotaWeyik").value = ""; $("newAnggotaKategori").value = "Naposobulung";
-  closeCombo(); openModal("modalTambahAnggota");
-}
-$("btnBatalAnggota").addEventListener('click', () => closeModal("modalTambahAnggota"));
-$("newAnggotaNama").addEventListener('keydown', (e) => { if (e.key === 'Enter') simpanAnggotaBaru(); });
+  const nama = namaAwal || document.getElementById("anggotaSearch").value;
+  document.getElementById("newAnggotaNama").value = nama
+    .replace(/\b\w/g, c => c.toUpperCase());
+  document.getElementById("newAnggotaWeyik").value = "";
+  document.getElementById("newAnggotaKategori").value = "Naposobulung";
+  document.getElementById("anggotaDropdown").style.display = "none";
 
-async function simpanAnggotaBaru() {
-  const nama = $("newAnggotaNama").value.trim().replace(/\s+/g, ' ');
-  const weyik = $("newAnggotaWeyik").value, kategori = $("newAnggotaKategori").value;
-  if (!nama) { toast("Nama anggota tidak boleh kosong.", "warn"); return; }
-  const btn = $("btnSimpanAnggotaBaru"); btn.disabled = true;
-  try {
-    const ref = await db.collection("anggota").add({ nama, weyik, kategori, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-    pilihAnggota(ref.id, nama, kategori);
-    closeModal("modalTambahAnggota");
-    toast("Anggota baru ditambahkan dan langsung terpilih.", "success");
-  } catch (err) { toast("Gagal menambahkan anggota: " + err.message, "error"); }
-  btn.disabled = false;
+  const modal = new bootstrap.Modal(document.getElementById("modalTambahAnggota"));
+  modal.show();
 }
-$("btnSimpanAnggotaBaru").addEventListener('click', simpanAnggotaBaru);
 
-// ===== Hari otomatis =====
+function simpanAnggotaBaru() {
+  const nama = document.getElementById("newAnggotaNama").value.trim();
+  const weyik = document.getElementById("newAnggotaWeyik").value;
+  const kategori = document.getElementById("newAnggotaKategori").value;
+
+  if (!nama) {
+    alert("Nama anggota tidak boleh kosong!");
+    return;
+  }
+
+  const btn = document.getElementById("btnSimpanAnggotaBaru");
+  btn.disabled = true;
+  btn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...';
+
+  db.collection("anggota").add({
+    nama: nama,
+    weyik: weyik,
+    kategori: kategori,
+    createdAt: firebase.firestore.FieldValue.serverTimestamp()
+  })
+  .then(docRef => {
+    // Otomatis pilih anggota baru ini untuk diabsen
+    pilihAnggota(docRef.id, nama, kategori);
+
+    const modalEl = document.getElementById("modalTambahAnggota");
+    bootstrap.Modal.getInstance(modalEl).hide();
+
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-save me-2"></i>Simpan & Pilih';
+    alert("✅ Anggota baru berhasil ditambahkan dan langsung terpilih untuk absensi!");
+  })
+  .catch(error => {
+    alert("❌ Gagal menambahkan anggota: " + error.message);
+    btn.disabled = false;
+    btn.innerHTML = '<i class="fas fa-save me-2"></i>Simpan & Pilih';
+  });
+}
+
+// ================= ISI HARI =================
 function isiHari() {
-  const t = $("tanggal").value;
-  if (!t) { $("hari").value = ""; return; }
-  $("hari").value = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"][new Date(t + "T00:00:00").getDay()];
+  const tanggal = document.getElementById("tanggal").value;
+  if (!tanggal) return;
+
+  const hariList = ["Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"];
+  const date = new Date(tanggal + "T00:00:00");
+  document.getElementById("hari").value = hariList[date.getDay()];
 }
-$("tanggal").addEventListener('change', isiHari);
 
-// ===== Simpan absensi =====
+// ================= SIMPAN ABSENSI =================
 function simpanAbsensi() {
-  const kegiatan = $("kegiatan").value, anggotaId = $("anggotaId").value;
-  const nama = $("anggotaSearch").value.trim(), kategori = $("anggotaKategori").value;
-  const tanggal = $("tanggal").value, hari = $("hari").value, status = $("status").value;
-
-  if (!anggotaId || !nama) { toast("Cari dan pilih anggota dari daftar, atau tambahkan anggota baru.", "warn"); $("anggotaSearch").focus(); return; }
-  if (!tanggal) { toast("Tanggal belum diisi.", "warn"); $("tanggal").focus(); return; }
-
+  const kegiatan = document.getElementById("kegiatan").value;
+  const anggotaId = document.getElementById("anggotaId").value;
+  const nama = document.getElementById("anggotaSearch").value.trim();
+  const kategori = document.getElementById("anggotaKategori").value;
+  const tanggal = document.getElementById("tanggal").value;
+  const hari = document.getElementById("hari").value;
+  const status = document.getElementById("status").value;
+  
+  if (!anggotaId || !nama || !tanggal) {
+    alert("Cari dan pilih anggota dari daftar (atau tambahkan anggota baru), lalu isi tanggal terlebih dahulu!");
+    return;
+  }
+  
   const isOnline = navigator.onLine;
-  // Tidak di-await: saat offline, Firestore menyimpan ke perangkat dan mengirimnya otomatis nanti
-  const tugas = db.collection("absensi").add({
-    kegiatan, anggotaId, nama, kategori, tanggal, hari, status,
+  const btnSimpan = document.getElementById('btnSimpan');
+  btnSimpan.disabled = true;
+  btnSimpan.innerHTML = isOnline
+    ? '<i class="fas fa-spinner fa-spin me-2"></i>Menyimpan...'
+    : '<i class="fas fa-cloud-upload-alt me-2"></i>Menyimpan offline...';
+
+  // PENTING: promise ini TIDAK di-await untuk reset form.
+  // Kalau sedang offline, Firestore menyimpan data ini di penyimpanan lokal
+  // perangkat (IndexedDB) dan promise baru "selesai" nanti setelah internet
+  // tersambung lagi & data berhasil terupload ke server — otomatis, tanpa kode tambahan.
+  const tugasSimpan = db.collection("absensi").add({
+    kegiatan: kegiatan,
+    anggotaId: anggotaId,
+    nama: nama,
+    kategori: kategori,
+    tanggal: tanggal,
+    hari: hari,
+    status: status,
     createdAt: firebase.firestore.FieldValue.serverTimestamp()
   });
 
-  $("anggotaSearch").value = ""; $("anggotaId").value = ""; $("anggotaKategori").value = "";
-  anggotaSelectedNama = ""; setPicked(''); closeCombo(); setSeg('segStatus', 'status', 'Hadir');
-  $("anggotaSearch").focus();
+  // Reset form & beri feedback SEGERA, tidak menunggu tugasSimpan selesai
+  document.getElementById("tanggal").value = "";
+  document.getElementById("hari").value = "";
+  document.getElementById("anggotaSearch").value = "";
+  document.getElementById("anggotaId").value = "";
+  document.getElementById("anggotaKategori").value = "";
+  anggotaSelectedNama = "";
+  document.getElementById("anggotaDropdown").style.display = "none";
 
-  if (isOnline) toast(`Absensi ${nama} (${status}) tersimpan.`, 'success');
-  else toast(`Absensi ${nama} tersimpan di perangkat ini dan akan terkirim otomatis saat internet tersambung.`, 'warn');
-  tugas.catch((err) => toast("Gagal menyimpan absensi " + nama + ": " + err.message, 'error'));
-}
-$("btnSimpan").addEventListener('click', simpanAbsensi);
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById("tanggal").value = today;
+  isiHari();
 
-// ===== Riwayat =====
-let semuaAbsensi = [];
-let batasTampil = 50;
-const chipStatus = { Hadir: 'hadir', Izin: 'izin', Sakit: 'sakit', Alpha: 'alpha' };
+  btnSimpan.disabled = false;
+  btnSimpan.innerHTML = '<i class="fas fa-save me-2"></i>Simpan Absensi';
 
-db.collection("absensi").orderBy("createdAt", "desc").onSnapshot({ includeMetadataChanges: true }, (snapshot) => {
-  semuaAbsensi = snapshot.docs.map((doc) => ({ id: doc.id, d: doc.data(), pending: doc.metadata.hasPendingWrites }));
-
-  const r = { n: { Hadir: 0, Izin: 0, Sakit: 0, Alpha: 0 }, p: { Hadir: 0, Izin: 0, Sakit: 0, Alpha: 0 } };
-  semuaAbsensi.forEach(({ d }) => {
-    const g = d.kategori === "Naposobulung" ? r.n : d.kategori === "Parguru Malua" ? r.p : null;
-    if (g && g[d.status] !== undefined) g[d.status]++;
-  });
-  ['Hadir', 'Izin', 'Sakit', 'Alpha'].forEach((s) => { $("naposo" + s).textContent = r.n[s]; $("parguru" + s).textContent = r.p[s]; });
-
-  pendingSyncCount = semuaAbsensi.filter((x) => x.pending).length;
-  renderRiwayat(); updateStatusKoneksi();
-}, (err) => {
-  console.error(err);
-  $("dataAbsensi").innerHTML = `<tr><td colspan="6"><div class="empty"><i class="fas fa-triangle-exclamation"></i><b>Gagal memuat absensi</b>${esc(err.message)}</div></td></tr>`;
-});
-
-function renderRiwayat() {
-  const q = $("rSearch").value.trim().toLowerCase(), k = $("rKegiatan").value, s = $("rStatus").value;
-  const list = semuaAbsensi.filter(({ d }) => (!k || d.kegiatan === k) && (!s || d.status === s) && (!q || (d.nama || '').toLowerCase().includes(q)));
-  $("cnt").textContent = semuaAbsensi.length ? `· ${list.length}${list.length !== semuaAbsensi.length ? ' dari ' + semuaAbsensi.length : ''} catatan` : '';
-
-  if (!list.length) {
-    $("dataAbsensi").innerHTML = `<tr><td colspan="6"><div class="empty"><i class="fas fa-clipboard-list"></i><b>${semuaAbsensi.length ? 'Tidak ada yang cocok' : 'Belum ada data absensi'}</b>${semuaAbsensi.length ? 'Coba ubah pencarian atau filter.' : 'Catat kehadiran pertama lewat formulir di atas.'}</div></td></tr>`;
-    $("moreWrap").classList.add('hidden'); return;
-  }
-  const tampil = list.slice(0, batasTampil);
-  $("dataAbsensi").innerHTML = tampil.map(({ id, d, pending }) => {
-    const naposo = d.kategori === "Naposobulung";
-    return `<tr class="${pending ? 'pending' : ''}">
-      <td class="first"><div class="who-cell"><span class="ava ${naposo ? '' : 'g'}">${esc((d.nama || '?').charAt(0).toUpperCase())}</span><span class="strong">${esc(d.nama || '-')}</span></div></td>
-      <td data-label="Kegiatan">${esc(d.kegiatan || '-')}</td>
-      <td data-label="Kategori"><span class="chip ${naposo ? 'naposo' : 'parguru'}">${esc(d.kategori || '-')}</span></td>
-      <td data-label="Tanggal">${esc(d.hari || '')}${d.hari ? ', ' : ''}${esc(fmtDateStr(d.tanggal))}</td>
-      <td data-label="Status"><span><span class="chip ${chipStatus[d.status] || ''}">${esc(d.status || '-')}</span>${pending ? '<br><span class="chip pend"><i class="fas fa-cloud-arrow-up"></i> Menunggu kirim</span>' : ''}</span></td>
-      <td class="acts"><div class="cell-actions"><button class="icon-btn del" type="button" data-id="${id}" title="Hapus" aria-label="Hapus absensi ${esc(d.nama || '')}"><i class="fas fa-trash"></i></button></div></td></tr>`;
-  }).join('');
-  $("moreWrap").classList.toggle('hidden', list.length <= batasTampil);
-  $("btnMore").innerHTML = `<i class="fas fa-chevron-down"></i> Tampilkan lebih banyak (${list.length - batasTampil} lagi)`;
-}
-['rSearch', 'rKegiatan', 'rStatus'].forEach((id) => $(id).addEventListener(id === 'rSearch' ? 'input' : 'change', () => { batasTampil = 50; renderRiwayat(); }));
-$("btnMore").addEventListener('click', () => { batasTampil += 50; renderRiwayat(); });
-$("dataAbsensi").addEventListener('click', async (e) => {
-  const b = e.target.closest('[data-id]'); if (!b) return;
-  const item = semuaAbsensi.find((x) => x.id === b.dataset.id);
-  const ya = await confirmBox({ title: 'Hapus catatan absensi?', text: item ? `Absensi ${item.d.nama} (${item.d.status}) pada ${fmtDateStr(item.d.tanggal)} akan dihapus.` : '', ok: 'Hapus', danger: true });
-  if (!ya) return;
-  db.collection("absensi").doc(b.dataset.id).delete().then(() => toast('Catatan absensi dihapus.', 'success')).catch((err) => toast('Gagal menghapus: ' + err.message, 'error'));
-});
-
-// ===== Status koneksi =====
-let pendingSyncCount = 0;
-function updateStatusKoneksi() {
-  const box = $('statusKoneksi'), text = $('statusKoneksiText'), online = navigator.onLine;
-  if (online && pendingSyncCount === 0) { box.style.display = 'none'; return; }
-  box.style.display = 'flex';
-  if (!online) {
-    box.className = 'banner warn';
-    text.innerHTML = `<i class="fas fa-triangle-exclamation"></i> <b>Mode offline.</b> Absensi tetap tersimpan di perangkat ini dan terkirim otomatis saat internet tersambung.${pendingSyncCount > 0 ? ` <b>(${pendingSyncCount} menunggu kirim)</b>` : ''}`;
+  if (isOnline) {
+    tampilkanToast(`✅ Absensi ${nama} berhasil disimpan!`, 'success');
   } else {
-    box.className = 'banner info';
-    text.innerHTML = `<i class="fas fa-rotate fa-spin"></i> Menyinkronkan ${pendingSyncCount} data absensi ke server…`;
+    tampilkanToast(`📥 Absensi ${nama} tersimpan offline di perangkat ini. Akan otomatis terupload begitu internet tersambung.`, 'warning');
+  }
+
+  // Kalau ternyata gagal karena alasan lain (bukan sekadar offline), baru beri tahu
+  tugasSimpan.catch((error) => {
+    tampilkanToast("❌ Gagal menyimpan data " + nama + ": " + error.message, 'danger');
+  });
+}
+
+// ================= TOAST NOTIFIKASI RINGAN =================
+function tampilkanToast(pesan, tipe) {
+  let container = document.getElementById('toastContainer');
+  if (!container) {
+    container = document.createElement('div');
+    container.id = 'toastContainer';
+    container.style.cssText = 'position:fixed; top:20px; left:50%; transform:translateX(-50%); z-index:1090; width:90%; max-width:420px;';
+    document.body.appendChild(container);
+  }
+
+  const warna = { success: 'success', warning: 'warning', danger: 'danger', info: 'info' }[tipe] || 'secondary';
+  const el = document.createElement('div');
+  el.className = `alert alert-${warna} shadow mb-2`;
+  el.style.cssText = 'animation: fadeInDown .3s ease;';
+  el.innerText = pesan;
+  container.appendChild(el);
+
+  setTimeout(() => {
+    el.style.transition = 'opacity .4s ease';
+    el.style.opacity = '0';
+    setTimeout(() => el.remove(), 400);
+  }, 4000);
+}
+
+// ================= HAPUS ABSENSI =================
+function hapusAbsensi(id) {
+  if (confirm("Apakah Anda yakin ingin menghapus data absensi ini?")) {
+    db.collection("absensi").doc(id).delete()
+      .then(() => {
+        alert("✅ Data absensi berhasil dihapus!");
+      })
+      .catch((error) => {
+        alert("❌ Gagal menghapus: " + error.message);
+      });
   }
 }
-window.addEventListener('online', () => { updateStatusKoneksi(); toast('Internet tersambung kembali. Menyinkronkan data…', 'info'); });
-window.addEventListener('offline', () => { updateStatusKoneksi(); toast('Koneksi terputus. Absensi tetap bisa diisi secara offline.', 'warn'); });
+
+// ================= GET STATUS BADGE =================
+function getStatusBadge(status) {
+  switch(status) {
+    case 'Hadir': return 'bg-success';
+    case 'Izin': return 'bg-warning text-dark';
+    case 'Sakit': return 'bg-info';
+    case 'Alpha': return 'bg-danger';
+    default: return 'bg-secondary';
+  }
+}
+
+// ================= TAMPILKAN ABSENSI =================
+db.collection("absensi")
+  .orderBy("createdAt", "desc")
+  .onSnapshot({ includeMetadataChanges: true }, snapshot => {
+    let html = "";
+    let naposoHadir = 0, naposoIzin = 0, naposoSakit = 0, naposoAlpha = 0;
+    let parguruHadir = 0, parguruIzin = 0, parguruSakit = 0, parguruAlpha = 0;
+    let jumlahPending = 0;
+
+    if (snapshot.empty) {
+      html = `
+        <tr>
+          <td colspan="7" class="text-center py-4">
+            <i class="fas fa-folder-open fa-3x text-muted mb-3"></i>
+            <p class="text-muted">Belum ada data absensi</p>
+          </td>
+        </tr>
+      `;
+    } else {
+      snapshot.forEach(doc => {
+        const data = doc.data();
+        const docId = doc.id;
+        const kategori = data.kategori || "";
+        const belumSinkron = doc.metadata.hasPendingWrites;
+        if (belumSinkron) jumlahPending++;
+        
+        if (kategori === "Naposobulung") {
+          if (data.status === "Hadir") naposoHadir++;
+          else if (data.status === "Izin") naposoIzin++;
+          else if (data.status === "Sakit") naposoSakit++;
+          else if (data.status === "Alpha") naposoAlpha++;
+        } else if (kategori === "Parguru Malua") {
+          if (data.status === "Hadir") parguruHadir++;
+          else if (data.status === "Izin") parguruIzin++;
+          else if (data.status === "Sakit") parguruSakit++;
+          else if (data.status === "Alpha") parguruAlpha++;
+        }
+
+        const kategoriBadge = kategori === 'Naposobulung' ? 
+          '<span class="badge bg-primary">Naposobulung</span>' : 
+          '<span class="badge bg-success">Parguru Malua</span>';
+        
+        const pendingBadge = belumSinkron
+          ? '<br><span class="badge bg-secondary mt-1"><i class="fas fa-cloud-upload-alt me-1"></i>Menunggu upload</span>'
+          : '';
+
+        html += `
+          <tr${belumSinkron ? ' class="table-warning"' : ''}>
+            <td>${data.kegiatan || '-'}</td>
+            <td>${data.nama || '-'}</td>
+            <td>${kategoriBadge}</td>
+            <td>${data.hari || '-'}</td>
+            <td>${data.tanggal || '-'}</td>
+            <td>
+              <span class="badge ${getStatusBadge(data.status)}">${data.status || '-'}</span>
+              ${pendingBadge}
+            </td>
+            <td>
+              <button onclick="hapusAbsensi('${docId}')" class="btn btn-danger btn-sm">
+                <i class="fas fa-trash"></i>
+              </button>
+            </td>
+          </tr>
+        `;
+      });
+    }
+
+    document.getElementById("dataAbsensi").innerHTML = html;
+
+    document.getElementById("naposoHadir").innerText = naposoHadir;
+    document.getElementById("naposoIzin").innerText = naposoIzin;
+    document.getElementById("naposoSakit").innerText = naposoSakit;
+    document.getElementById("naposoAlpha").innerText = naposoAlpha;
+    document.getElementById("parguruHadir").innerText = parguruHadir;
+    document.getElementById("parguruIzin").innerText = parguruIzin;
+    document.getElementById("parguruSakit").innerText = parguruSakit;
+    document.getElementById("parguruAlpha").innerText = parguruAlpha;
+
+    pendingSyncCount = jumlahPending;
+    updateStatusKoneksi();
+  });
+
+// ================= STATUS KONEKSI (ONLINE / OFFLINE / SINKRONISASI) =================
+let pendingSyncCount = 0;
+
+function updateStatusKoneksi() {
+  const box = document.getElementById('statusKoneksi');
+  const text = document.getElementById('statusKoneksiText');
+  const online = navigator.onLine;
+
+  if (online && pendingSyncCount === 0) {
+    box.style.display = 'none';
+    return;
+  }
+
+  box.style.display = 'flex';
+
+  if (!online) {
+    box.className = 'alert alert-warning py-2 px-3 d-flex align-items-center';
+    text.innerHTML = `<i class="fas fa-exclamation-triangle me-2"></i>
+      <b>Mode Offline</b> — Absensi yang diisi tetap tersimpan di perangkat ini
+      dan akan otomatis terupload begitu internet tersambung lagi.
+      ${pendingSyncCount > 0 ? `<b class="ms-1">(${pendingSyncCount} data menunggu upload)</b>` : ''}`;
+  } else {
+    box.className = 'alert alert-info py-2 px-3 d-flex align-items-center';
+    text.innerHTML = `<i class="fas fa-sync fa-spin me-2"></i>
+      Menyinkronkan ${pendingSyncCount} data absensi ke server...`;
+  }
+}
+
+window.addEventListener('online', () => {
+  updateStatusKoneksi();
+  tampilkanToast('🌐 Internet tersambung kembali. Menyinkronkan data...', 'info');
+});
+window.addEventListener('offline', () => {
+  updateStatusKoneksi();
+  tampilkanToast('📴 Koneksi internet terputus. Absensi tetap bisa diisi secara offline.', 'warning');
+});
+
+document.addEventListener('DOMContentLoaded', updateStatusKoneksi);
 
 // ================= DOWNLOAD LAPORAN TXT =================
 function downloadTXT() {
@@ -395,8 +775,8 @@ function downloadTXT() {
   const btnDownload = document.getElementById('btnDownload');
   btnDownload.disabled = true;
   btnDownload.innerHTML = isOnline
-    ? '<i class="fas fa-spinner fa-spin"></i> Menyiapkan…'
-    : '<i class="fas fa-database"></i> Menyiapkan (offline)…';
+    ? '<i class="fas fa-spinner fa-spin me-2"></i>Menyiapkan laporan...'
+    : '<i class="fas fa-database me-2"></i>Menyiapkan laporan (offline)...';
 
   // Kalau offline, langsung ambil dari cache lokal (tidak perlu tunggu timeout server)
   // Kalau online, coba server dulu; kalau gagal otomatis jatuh ke cache
@@ -418,9 +798,9 @@ function downloadTXT() {
       });
 
       if (filteredData.length === 0) {
-        toast("Tidak ada data sesuai filter.", "warn");
+        alert("Tidak ada data sesuai filter!");
         btnDownload.disabled = false;
-        btnDownload.innerHTML = '<i class="fas fa-file-arrow-down"></i> Unduh laporan (TXT)';
+        btnDownload.innerHTML = '<i class="fas fa-file-alt me-2"></i>Download Laporan (TXT)';
         return;
       }
 
@@ -656,30 +1036,30 @@ function downloadTXT() {
       
       // Reset button
       btnDownload.disabled = false;
-      btnDownload.innerHTML = '<i class="fas fa-file-arrow-down"></i> Unduh laporan (TXT)';
+      btnDownload.innerHTML = '<i class="fas fa-file-alt me-2"></i>Download Laporan (TXT)';
     })
     .catch(error => {
       console.error("Error downloading:", error);
       if (!isOnline) {
-        popupErr("❌ Belum ada data tersimpan di perangkat ini untuk diunduh secara offline.\n\nBuka halaman ini minimal sekali saat online agar data absensi tersimpan di perangkat, setelah itu laporan bisa diunduh kapan pun walau tanpa internet.");
+        alert("❌ Belum ada data tersimpan di perangkat ini untuk diunduh secara offline.\n\nBuka halaman ini minimal sekali saat online agar data absensi tersimpan di perangkat, setelah itu laporan bisa diunduh kapan pun walau tanpa internet.");
       } else {
-        popupErr("❌ Gagal mendownload: " + error.message);
+        alert("❌ Gagal mendownload: " + error.message);
       }
       
       // Reset button
       btnDownload.disabled = false;
-      btnDownload.innerHTML = '<i class="fas fa-file-arrow-down"></i> Unduh laporan (TXT)';
+      btnDownload.innerHTML = '<i class="fas fa-file-alt me-2"></i>Download Laporan (TXT)';
     });
 }
 
-
-$('btnDownload').addEventListener('click', downloadTXT);
-
-// ===== Nilai awal =====
-$('tanggal').value = todayISO();
-isiHari();
-updateStatusKoneksi();
+// ================= SET TANGGAL DEFAULT =================
+document.addEventListener('DOMContentLoaded', function() {
+  const today = new Date().toISOString().split('T')[0];
+  document.getElementById('tanggal').value = today;
+  isiHari();
+});
 </script>
+
 <script src="js/pwa-init.js"></script>
 </body>
 </html>

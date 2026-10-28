@@ -2,7 +2,7 @@
 // Service Worker sederhana untuk RNHKBP Pelikan
 // Membuat aplikasi bisa di-install (Android/iOS) & tetap bisa dibuka saat offline (halaman shell)
 
-const CACHE_NAME = "rnhkbp-pelikan-v2";
+const CACHE_NAME = "rnhkbp-pelikan-v3";
 
 // File inti yang di-cache agar aplikasi tetap bisa dibuka walau tanpa internet
 const APP_SHELL = [
@@ -16,6 +16,7 @@ const APP_SHELL = [
   "./partitur.html",
   "./style.css",
   "./css/admin.css",
+  "./css/theme.css",
   "./js/admin-common.js",
   "./logo.png",
   "./icon-192.png",

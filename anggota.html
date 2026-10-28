@@ -12,179 +12,159 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="RNHKBP Pelikan">
   <meta name="mobile-web-app-capable" content="yes">
-  <meta name="robots" content="noindex">
-  <title>Anggota · Admin RNHKBP Pelikan</title>
+
+  <title>Kelola Anggota</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <link rel="stylesheet" href="css/admin.css">
+  <link rel="stylesheet" href="css/theme.css">
 </head>
-<body data-active="anggota" data-title="Anggota">
-<div class="shell" id="shell">
-  <aside class="sidebar" id="sidebar"></aside>
-  <div class="scrim" id="scrim"></div>
-  <div class="main">
-    <header class="topbar" id="topbar"></header>
+<body>
 
-    <div class="page-head">
-      <h1>Anggota</h1>
-      <p>Data anggota Naposobulung dan Parguru Malua. Nama di sini muncul sebagai pilihan saat mencatat absensi.</p>
-    </div>
-
-    <div class="mini-stats">
-      <div class="mini-stat"><b id="sTotal">–</b><span>Total anggota</span></div>
-      <div class="mini-stat"><b id="sNaposo">–</b><span>Naposobulung</span></div>
-      <div class="mini-stat"><b id="sParguru">–</b><span>Parguru Malua</span></div>
-    </div>
-
-    <div class="card" id="formCard">
-      <div class="card-head">
-        <div><h3 id="formTitle">Tambah anggota</h3><p class="hint" id="formHint">Isi data lalu simpan.</p></div>
-      </div>
-      <input type="hidden" id="docId">
-      <div class="grid3">
-        <div class="field"><label for="nama">Nama lengkap</label><input id="nama" class="input" placeholder="Contoh: Gabriel Marbun" autocomplete="off"></div>
-        <div class="field"><label for="weyik">Weyik <span class="opt">(opsional)</span></label>
-          <select id="weyik" class="select">
-            <option value="">Pilih weyik</option>
-            <option>Roma</option><option>Kolose</option><option>Filipi</option><option>Pilippi</option>
-            <option>Tesalonika</option><option>Betlehem</option><option>Galatia</option><option>Efesus</option>
-          </select>
-        </div>
-        <div class="field"><label for="kategori">Kategori</label>
-          <select id="kategori" class="select"><option>Naposobulung</option><option>Parguru Malua</option></select>
-        </div>
-      </div>
-      <div class="form-actions">
-        <button class="btn" id="btnSimpan" type="button"><i class="fas fa-floppy-disk"></i> <span>Simpan anggota</span></button>
-        <button class="btn btn-ghost hidden" id="btnBatal" type="button"><i class="fas fa-xmark"></i> Batal</button>
-      </div>
-    </div>
-
-    <div class="card">
-      <div class="card-head"><h3>Daftar anggota <span class="cnt" id="cnt"></span></h3></div>
-      <div class="toolbar">
-        <div class="search"><i class="fas fa-magnifying-glass"></i><input id="q" class="input" placeholder="Cari nama atau weyik…" autocomplete="off"></div>
-        <div class="seg" id="segKat">
-          <button type="button" class="on" data-v="">Semua</button>
-          <button type="button" data-v="Naposobulung">Naposobulung</button>
-          <button type="button" data-v="Parguru Malua">Parguru Malua</button>
-        </div>
-      </div>
-      <div class="tbl-wrap">
-        <table class="tbl stack">
-          <thead><tr><th>Nama</th><th>Weyik</th><th>Kategori</th><th class="right">Aksi</th></tr></thead>
-          <tbody id="rows"><tr><td colspan="4"><div class="loading"><span class="spin"></span> Memuat anggota…</div></td></tr></tbody>
-        </table>
-      </div>
-    </div>
+<nav class="navbar navbar-dark bg-dark">
+  <div class="container-fluid">
+    <span class="navbar-brand">Kelola Anggota</span>
+    <a href="dashboard.html" class="btn btn-light">Kembali</a>
   </div>
+</nav>
+
+<div class="container mt-4">
+
+  <div class="card p-3 mb-4">
+    <h5>Tambah / Edit Anggota</h5>
+
+    <input type="hidden" id="docId">
+
+    <input id="nama" class="form-control mb-2" placeholder="Nama">
+
+    <!-- WEYIK SELECT -->
+    <select id="weyik" class="form-control mb-2">
+      <option value="">Pilih Weyik</option>
+      <option value="Roma">Roma</option>
+      <option value="Kolose">Kolose</option>
+      <option value="Filipi">Filipi</option>
+      <option value="Pilippi">Pilippi</option>
+      <option value="Tesalonika">Tesalonika</option>
+      <option value="Betlehem">Betlehem</option>
+      <option value="Galatia">Galatia</option>
+      <option value="Efesus">Efesus</option>
+    </select>
+
+    <select id="kategori" class="form-control mb-2">
+      <option value="Naposobulung">Naposobulung</option>
+      <option value="Parguru Malua">Parguru Malua</option>
+    </select>
+
+    <button onclick="simpan()" class="btn btn-primary">Simpan</button>
+  </div>
+
+  <div class="card p-3">
+    <h5>Daftar Anggota</h5>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Nama</th>
+          <th>Weyik</th>
+          <th>Kategori</th>
+          <th>Aksi</th>
+        </tr>
+      </thead>
+      <tbody id="dataAnggota"></tbody>
+    </table>
+  </div>
+
 </div>
 
+<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
-<script src="js/admin-common.js"></script>
+
 <script>
-const { db, esc, toast, confirmBox, requireAuth } = AdminApp;
-const $ = (id) => document.getElementById(id);
-let semua = [];            // [{id, nama, weyik, kategori}]
-let filterKat = '';
+const firebaseConfig = {
+  apiKey: "AIzaSyCwQGsFPBIs_gk0Xc1hscpG-7n6M16gqWc",
+  authDomain: "rnhkbp-pelikan.firebaseapp.com",
+  projectId: "rnhkbp-pelikan",
+  storageBucket: "rnhkbp-pelikan.firebasestorage.app",
+  messagingSenderId: "202813062166",
+  appId: "1:202813062166:web:eb3d963d5965a5e6f48937"
+};
 
-requireAuth();
+firebase.initializeApp(firebaseConfig);
+const db = firebase.firestore();
 
-db.collection("anggota").onSnapshot((snap) => {
-  semua = snap.docs.map((d) => ({ id: d.id, nama: d.data().nama || '', weyik: d.data().weyik || '', kategori: d.data().kategori || '' }));
-  semua.sort((a, b) => a.nama.localeCompare(b.nama, 'id'));
-  $('sTotal').textContent = semua.length;
-  $('sNaposo').textContent = semua.filter((a) => a.kategori === 'Naposobulung').length;
-  $('sParguru').textContent = semua.filter((a) => a.kategori === 'Parguru Malua').length;
-  render();
-}, (err) => {
-  console.error(err);
-  $('rows').innerHTML = `<tr><td colspan="4"><div class="empty"><i class="fas fa-triangle-exclamation"></i><b>Gagal memuat anggota</b>${esc(err.message)}</div></td></tr>`;
-});
-
-function render() {
-  const q = $('q').value.trim().toLowerCase();
-  const list = semua.filter((a) => (!filterKat || a.kategori === filterKat) && (!q || a.nama.toLowerCase().includes(q) || a.weyik.toLowerCase().includes(q)));
-  $('cnt').textContent = `· ${list.length}${list.length !== semua.length ? ' dari ' + semua.length : ''}`;
-  if (!list.length) {
-    $('rows').innerHTML = `<tr><td colspan="4"><div class="empty"><i class="fas fa-users-slash"></i><b>${semua.length ? 'Tidak ada yang cocok' : 'Belum ada anggota'}</b>${semua.length ? 'Coba kata kunci atau filter lain.' : 'Tambahkan anggota pertama lewat formulir di atas.'}</div></td></tr>`;
-    return;
+firebase.auth().onAuthStateChanged(user=>{
+  if(!user){
+    window.location.href="login.html";
   }
-  $('rows').innerHTML = list.map((a) => {
-    const naposo = a.kategori === 'Naposobulung';
-    return `<tr>
-      <td class="first"><div class="who-cell"><span class="ava ${naposo ? '' : 'g'}">${esc(a.nama.charAt(0).toUpperCase() || '?')}</span><span class="strong">${esc(a.nama)}</span></div></td>
-      <td data-label="Weyik">${a.weyik ? esc(a.weyik) : '<span class="muted">–</span>'}</td>
-      <td data-label="Kategori"><span class="chip ${naposo ? 'naposo' : 'parguru'}">${esc(a.kategori || '-')}</span></td>
-      <td class="acts"><div class="cell-actions">
-        <button class="icon-btn" type="button" data-act="edit" data-id="${a.id}" title="Edit" aria-label="Edit ${esc(a.nama)}"><i class="fas fa-pen"></i></button>
-        <button class="icon-btn del" type="button" data-act="del" data-id="${a.id}" title="Hapus" aria-label="Hapus ${esc(a.nama)}"><i class="fas fa-trash"></i></button>
-      </div></td></tr>`;
-  }).join('');
-}
-
-$('rows').addEventListener('click', (e) => {
-  const b = e.target.closest('[data-act]'); if (!b) return;
-  const a = semua.find((x) => x.id === b.dataset.id); if (!a) return;
-  if (b.dataset.act === 'edit') edit(a); else hapus(a);
-});
-$('q').addEventListener('input', render);
-$('segKat').addEventListener('click', (e) => {
-  const b = e.target.closest('button'); if (!b) return;
-  filterKat = b.dataset.v;
-  document.querySelectorAll('#segKat button').forEach((x) => x.classList.toggle('on', x === b));
-  render();
 });
 
-function reset() {
-  $('docId').value = ''; $('nama').value = ''; $('weyik').value = '';
-  $('formTitle').textContent = 'Tambah anggota'; $('formHint').textContent = 'Isi data lalu simpan.';
-  $('btnSimpan').querySelector('span').textContent = 'Simpan anggota';
-  $('btnBatal').classList.add('hidden');
-}
-function edit(a) {
-  $('docId').value = a.id; $('nama').value = a.nama; $('weyik').value = a.weyik; $('kategori').value = a.kategori || 'Naposobulung';
-  $('formTitle').textContent = 'Edit anggota'; $('formHint').textContent = 'Ubah data lalu perbarui.';
-  $('btnSimpan').querySelector('span').textContent = 'Perbarui anggota';
-  $('btnBatal').classList.remove('hidden');
-  $('formCard').scrollIntoView({ behavior: 'smooth', block: 'start' });
-  setTimeout(() => $('nama').focus(), 350);
-}
-$('btnBatal').addEventListener('click', reset);
+function simpan(){
+  const id = document.getElementById("docId").value;
+  const nama = document.getElementById("nama").value;
+  const weyik = document.getElementById("weyik").value;
+  const kategori = document.getElementById("kategori").value;
 
-async function simpan() {
-  const id = $('docId').value;
-  const nama = $('nama').value.trim().replace(/\s+/g, ' ');
-  const weyik = $('weyik').value;
-  const kategori = $('kategori').value;
-  if (!nama) { toast('Nama anggota harus diisi.', 'warn'); $('nama').focus(); return; }
-  if (!id && semua.some((a) => a.nama.toLowerCase() === nama.toLowerCase())) {
-    const lanjut = await confirmBox({ title: 'Nama sudah ada', text: `“${nama}” sudah terdaftar. Tetap tambahkan sebagai anggota baru?`, ok: 'Tetap tambahkan' });
-    if (!lanjut) return;
+  if(id){
+    db.collection("anggota").doc(id).update({
+      nama: nama,
+      weyik: weyik,
+      kategori: kategori
+    });
+  } else {
+    db.collection("anggota").add({
+      nama: nama,
+      weyik: weyik,
+      kategori: kategori
+    });
   }
-  const btn = $('btnSimpan'); btn.disabled = true;
-  try {
-    if (id) await db.collection("anggota").doc(id).update({ nama, weyik, kategori });
-    else await db.collection("anggota").add({ nama, weyik, kategori, createdAt: firebase.firestore.FieldValue.serverTimestamp() });
-    toast(id ? 'Data anggota diperbarui.' : 'Anggota ditambahkan.', 'success');
-    reset();
-  } catch (err) { console.error(err); toast('Gagal menyimpan: ' + err.message, 'error'); }
-  btn.disabled = false;
-}
-$('btnSimpan').addEventListener('click', simpan);
-$('nama').addEventListener('keydown', (e) => { if (e.key === 'Enter') simpan(); });
 
-async function hapus(a) {
-  const ya = await confirmBox({ title: 'Hapus anggota?', text: `“${a.nama}” akan dihapus dari daftar. Catatan absensinya tidak ikut terhapus.`, ok: 'Hapus', danger: true });
-  if (!ya) return;
-  try { await db.collection("anggota").doc(a.id).delete(); toast('Anggota dihapus.', 'success'); if ($('docId').value === a.id) reset(); }
-  catch (err) { toast('Gagal menghapus: ' + err.message, 'error'); }
+  document.getElementById("docId").value="";
+  document.getElementById("nama").value="";
+  document.getElementById("weyik").value="";
+}
+
+db.collection("anggota").onSnapshot(snapshot=>{
+  let html="";
+  snapshot.forEach(doc=>{
+    const data = doc.data();
+    html += `
+      <tr>
+        <td>${data.nama}</td>
+        <td>${data.weyik}</td>
+        <td>${data.kategori}</td>
+        <td>
+          <button class="btn btn-warning btn-sm" 
+            onclick="edit('${doc.id}','${data.nama}','${data.weyik}','${data.kategori}')">
+            Edit
+          </button>
+          <button class="btn btn-danger btn-sm" onclick="hapus('${doc.id}')">
+            Hapus
+          </button>
+        </td>
+      </tr>
+    `;
+  });
+
+  document.getElementById("dataAnggota").innerHTML = html;
+});
+
+function edit(id,nama,weyik,kategori){
+  document.getElementById("docId").value=id;
+  document.getElementById("nama").value=nama;
+  document.getElementById("weyik").value=weyik;
+  document.getElementById("kategori").value=kategori;
+}
+
+function hapus(id){
+  if(confirm("Yakin hapus?")){
+    db.collection("anggota").doc(id).delete();
+  }
 }
 </script>
+
 <script src="js/pwa-init.js"></script>
 </body>
 </html>

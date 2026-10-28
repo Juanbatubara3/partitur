@@ -370,10 +370,10 @@ db.collection("artikel").doc(artikelId).onSnapshot((doc) => {
   // Tampilkan detail artikel
   document.getElementById("detailArtikel").innerHTML = `
     <div class="card border-0 shadow-lg">
-      <img src="${data.foto || 'https://via.placeholder.com/900x500?text=RNHKBP+Pelikan'}" 
+      <img src="${data.foto || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 900 500%27%3E%3Crect width=%27900%27 height=%27500%27 fill=%27%23dbe7ff%27/%3E%3Ctext x=%27450%27 y=%27268%27 font-family=%27Arial%27 font-size=%2756%27 text-anchor=%27middle%27 fill=%27%232563eb%27 opacity=%27.6%27%3ERNHKBP Pelikan%3C/text%3E%3C/svg%3E'}" 
            class="article-image w-100" 
            alt="${data.judul || 'Artikel'}"
-           onerror="this.src='https://via.placeholder.com/900x500?text=Gambar+Tidak+Tersedia'">
+           onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 900 500%27%3E%3Crect width=%27900%27 height=%27500%27 fill=%27%23dbe7ff%27/%3E%3Ctext x=%27450%27 y=%27268%27 font-family=%27Arial%27 font-size=%2756%27 text-anchor=%27middle%27 fill=%27%232563eb%27 opacity=%27.6%27%3EGambar tidak tersedia%3C/text%3E%3C/svg%3E'">
       <div class="card-body p-5">
         <h1 class="article-title mb-3">${data.judul || 'Judul Tidak Tersedia'}</h1>
         
