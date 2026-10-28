@@ -19,6 +19,7 @@
     { href: 'absensi.html', key: 'absensi', icon: 'fa-clipboard-check', label: 'Absensi' },
     { href: 'admin-artikel.html', key: 'artikel', icon: 'fa-newspaper', label: 'Artikel & Dokumentasi' },
     { href: 'admin-renungan.html', key: 'renungan', icon: 'fa-book-bible', label: 'Renungan' },
+    { href: 'admin-kegiatan.html', key: 'kegiatan', icon: 'fa-calendar-check', label: 'Kegiatan' },
     { href: 'anggota.html', key: 'anggota', icon: 'fa-users', label: 'Anggota' },
     { href: 'admin-kepengurusan.html', key: 'kepengurusan', icon: 'fa-user-tie', label: 'Kepengurusan' },
     { group: 'Tampilan situs' },

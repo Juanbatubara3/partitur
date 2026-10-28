@@ -1,6 +1,8 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="manifest" href="manifest.json">
   <meta name="theme-color" content="#3b82f6">
   <link rel="apple-touch-icon" href="icon-180.png">
@@ -10,300 +12,146 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <meta name="apple-mobile-web-app-title" content="RNHKBP Pelikan">
   <meta name="mobile-web-app-capable" content="yes">
-
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Dokumentasi Kegiatan - RNHKBP Pelikan</title>
+  <title>Dokumentasi Kegiatan · RNHKBP Pelikan</title>
+  <meta name="description" content="Dokumentasi Partangiangan, Latihan Koor, dan berbagai kegiatan RNHKBP Pelikan dalam foto dan cerita.">
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
-  <style>
-    .hero-section {
-      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-      color: white;
-      padding: 60px 0;
-      margin-bottom: 40px;
-    }
-    
-    .article-card {
-      border: none;
-      border-radius: 15px;
-      overflow: hidden;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-      transition: all 0.3s;
-      height: 100%;
-    }
-    
-    .article-card:hover {
-      transform: translateY(-10px);
-      box-shadow: 0 15px 30px rgba(0,0,0,0.15);
-    }
-    
-    .article-image {
-      height: 220px;
-      object-fit: cover;
-      transition: transform 0.5s;
-    }
-    
-    .article-card:hover .article-image {
-      transform: scale(1.05);
-    }
-    
-    .category-badge {
-      position: absolute;
-      top: 15px;
-      right: 15px;
-      background: rgba(13, 110, 253, 0.9);
-      color: white;
-      padding: 5px 15px;
-      border-radius: 25px;
-      font-size: 12px;
-      font-weight: 500;
-      z-index: 1;
-    }
-    
-    .date-badge {
-      position: absolute;
-      top: 15px;
-      left: 15px;
-      background: rgba(255,255,255,0.9);
-      color: #333;
-      padding: 5px 15px;
-      border-radius: 25px;
-      font-size: 12px;
-      font-weight: 500;
-      z-index: 1;
-    }
-    
-    .search-box {
-      border-radius: 30px;
-      padding: 15px 25px;
-      border: none;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    }
-    
-    .filter-select {
-      border-radius: 30px;
-      padding: 15px 25px;
-      border: none;
-      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-      cursor: pointer;
-    }
-    
-    .pagination-btn {
-      border-radius: 30px;
-      padding: 10px 25px;
-      transition: all 0.3s;
-    }
-    
-    .pagination-btn:hover {
-      transform: scale(1.05);
-    }
-    
-    .footer {
-      background: #212529;
-      color: white;
-      padding: 50px 0 20px;
-      margin-top: 60px;
-    }
-    
-    .skeleton {
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-      border-radius: 10px;
-    }
-    
-    @keyframes loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-  </style>
+  <link rel="stylesheet" href="css/publik.css">
 </head>
-<body>
+<body class="pub">
 
-<!-- Navbar -->
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+<nav class="navbar navbar-expand-lg fixed-top">
   <div class="container">
-    <a class="navbar-brand" href="index.html">
-      <i class="fas fa-church me-2"></i>RNHKBP Pelikan
+    <a class="navbar-brand d-flex align-items-center" href="index.html">
+      <img src="logo.png" alt="Logo NHKBP Pelikan" class="me-2">
+      <div>
+        <div class="fw-bold">R-NHKBP PELIKAN</div>
+        <small>RESSORT PELIKAN RAYA</small>
+      </div>
     </a>
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-label="Buka menu">
       <span class="navbar-toggler-icon"></span>
     </button>
     <div class="collapse navbar-collapse" id="navbarNav">
       <ul class="navbar-nav mx-auto">
-        <li class="nav-item">
-          <a class="nav-link" href="index.html">Beranda</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link active" href="dokumentasi-publik.html">Dokumentasi</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="partitur.html">Partitur</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="index.html#tentang">Tentang</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="index.html#kontak">Kontak</a>
-        </li>
+        <li class="nav-item"><a class="nav-link" href="index.html">Beranda</a></li>
+        <li class="nav-item"><a class="nav-link active" href="dokumentasi-publik.html">Dokumentasi</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#kegiatan">Kegiatan</a></li>
+        <li class="nav-item"><a class="nav-link" href="partitur.html">Partitur</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#renungan">Renungan</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#profil">Kepengurusan</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#tentang">Tentang</a></li>
+        <li class="nav-item"><a class="nav-link" href="index.html#kontak">Kontak</a></li>
       </ul>
-      <a href="login.html" class="btn btn-outline-light">
-        <i class="fas fa-lock me-2"></i>Admin
-      </a>
+      <a href="login.html" class="btn btn-outline-primary"><i class="fas fa-lock me-2"></i>Admin Login</a>
     </div>
   </div>
 </nav>
 
-<!-- Hero Section -->
-<section class="hero-section">
-  <div class="container text-center">
-    <h1 class="display-4 mb-3">
-      <i class="fas fa-images me-3"></i>Dokumentasi Kegiatan
-    </h1>
-    <p class="lead mb-4">
-      Dokumentasi Partangiangan, Latihan Koor, dan berbagai kegiatan RNHKBP Pelikan
-    </p>
-    
-    <!-- Search Box -->
-    <div class="row justify-content-center">
-      <div class="col-md-8">
-        <div class="input-group">
-          <input 
-            type="text" 
-            id="searchInput" 
-            class="form-control search-box" 
-            placeholder="Cari judul atau isi artikel..."
-            onkeyup="filterArtikel()"
-          >
-          <span class="input-group-text search-box" style="border-left: none; background: white;">
-            <i class="fas fa-search text-primary"></i>
-          </span>
-        </div>
-      </div>
+<header class="dk-hero">
+  <div class="container">
+    <h1>Dokumentasi Kegiatan</h1>
+    <p>Partangiangan, Latihan Koor, dan berbagai kegiatan RNHKBP Pelikan dalam foto dan cerita.</p>
+    <div class="dk-search">
+      <i class="fas fa-search"></i>
+      <input type="search" id="searchInput" placeholder="Cari judul atau isi artikel…" autocomplete="off" aria-label="Cari artikel">
+      <button type="button" class="dk-clear" id="clearSearch" aria-label="Hapus pencarian"><i class="fas fa-xmark"></i></button>
     </div>
   </div>
-</section>
+</header>
 
-<!-- Filter Section -->
-<div class="container mb-5">
-  <div class="row justify-content-center">
-    <div class="col-md-6">
-      <select id="kategoriFilter" class="form-select filter-select" onchange="filterArtikel()">
-        <option value="">📋 Semua Kategori</option>
-        <option value="Partangiangan">🙏 Partangiangan</option>
-        <option value="Latihan Koor">🎵 Latihan Koor</option>
-        <option value="Kebaktian">⛪ Kebaktian</option>
-        <option value="Acara Khusus">🎉 Acara Khusus</option>
-        <option value="Lainnya">📌 Lainnya</option>
-      </select>
-    </div>
+<div class="container dk-filterbar">
+  <div class="dk-filterpanel">
+    <div class="dk-pills" id="pills" role="tablist" aria-label="Filter kategori"></div>
+    <div class="dk-count" id="countInfo" aria-live="polite"></div>
   </div>
 </div>
 
-<!-- Artikel Grid -->
-<div class="container mb-5">
-  <!-- Skeleton Loading -->
-  <div id="skeletonContainer" class="row g-4" style="display: none;">
-    <div class="col-lg-4 col-md-6">
-      <div class="card article-card">
-        <div class="skeleton" style="height: 220px;"></div>
-        <div class="card-body">
-          <div class="skeleton" style="height: 24px; width: 80%; margin-bottom: 10px;"></div>
-          <div class="skeleton" style="height: 16px; margin-bottom: 5px;"></div>
-          <div class="skeleton" style="height: 16px; width: 60%;"></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 col-md-6">
-      <div class="card article-card">
-        <div class="skeleton" style="height: 220px;"></div>
-        <div class="card-body">
-          <div class="skeleton" style="height: 24px; width: 80%; margin-bottom: 10px;"></div>
-          <div class="skeleton" style="height: 16px; margin-bottom: 5px;"></div>
-          <div class="skeleton" style="height: 16px; width: 60%;"></div>
-        </div>
-      </div>
-    </div>
-    <div class="col-lg-4 col-md-6">
-      <div class="card article-card">
-        <div class="skeleton" style="height: 220px;"></div>
-        <div class="card-body">
-          <div class="skeleton" style="height: 24px; width: 80%; margin-bottom: 10px;"></div>
-          <div class="skeleton" style="height: 16px; margin-bottom: 5px;"></div>
-          <div class="skeleton" style="height: 16px; width: 60%;"></div>
-        </div>
-      </div>
-    </div>
+<main class="container dk-main">
+  <div id="skeletonContainer" class="dk-grid">
+    <div class="dk-skelcard"><div class="dk-skel"></div><div class="dk-skelbody"><div class="dk-skel" style="height:14px;width:40%"></div><div class="dk-skel" style="height:22px;width:85%"></div><div class="dk-skel" style="height:14px"></div></div></div>
+    <div class="dk-skelcard"><div class="dk-skel"></div><div class="dk-skelbody"><div class="dk-skel" style="height:14px;width:40%"></div><div class="dk-skel" style="height:22px;width:85%"></div><div class="dk-skel" style="height:14px"></div></div></div>
+    <div class="dk-skelcard"><div class="dk-skel"></div><div class="dk-skelbody"><div class="dk-skel" style="height:14px;width:40%"></div><div class="dk-skel" style="height:22px;width:85%"></div><div class="dk-skel" style="height:14px"></div></div></div>
   </div>
-  
-  <!-- Artikel Container -->
-  <div id="artikelContainer" class="row g-4"></div>
-  
-  <!-- Load More Button -->
-  <div class="text-center mt-5">
-    <button class="btn btn-outline-primary pagination-btn" onclick="loadMore()" id="loadMoreBtn" style="display: none;">
-      <i class="fas fa-sync-alt me-2"></i>Muat Lebih Banyak
-    </button>
-  </div>
-  
-  <!-- No Data Message -->
-  <div id="noDataMessage" class="text-center py-5" style="display: none;">
-    <i class="fas fa-folder-open fa-4x text-muted mb-3"></i>
-    <h4 class="text-muted">Belum Ada Artikel</h4>
-    <p class="text-muted">Belum ada dokumentasi yang tersedia saat ini.</p>
-  </div>
-  
-  <!-- No Results Message -->
-  <div id="noResultsMessage" class="text-center py-5" style="display: none;">
-    <i class="fas fa-search fa-4x text-muted mb-3"></i>
-    <h4 class="text-muted">Tidak Ditemukan</h4>
-    <p class="text-muted">Tidak ada artikel yang sesuai dengan pencarian Anda.</p>
-    <button class="btn btn-primary mt-3" onclick="resetFilter()">
-      <i class="fas fa-redo-alt me-2"></i>Reset Filter
-    </button>
-  </div>
-</div>
 
-<!-- Footer -->
-<footer class="footer">
+  <div id="featuredContainer"></div>
+  <div id="artikelContainer" class="dk-grid"></div>
+
+  <div class="dk-note" id="loadAllNote"><i class="fas fa-spinner fa-spin"></i> Memuat semua artikel untuk pencarian…</div>
+
+  <div class="dk-center">
+    <button class="dk-btn ghost" id="loadMoreBtn" type="button" style="display:none"><i class="fas fa-rotate"></i> Muat lebih banyak</button>
+  </div>
+
+  <div id="noDataMessage" class="dk-empty" style="display:none">
+    <div class="ic"><i class="fas fa-images"></i></div>
+    <h4>Belum ada dokumentasi</h4>
+    <p>Dokumentasi kegiatan akan tampil di sini setelah diunggah.</p>
+    <a class="dk-btn" href="index.html"><i class="fas fa-house"></i> Kembali ke beranda</a>
+  </div>
+  <div id="noResultsMessage" class="dk-empty" style="display:none">
+    <div class="ic"><i class="fas fa-magnifying-glass"></i></div>
+    <h4>Tidak ditemukan</h4>
+    <p>Tidak ada artikel yang cocok dengan pencarian atau kategori ini.</p>
+    <button class="dk-btn" id="resetBtn" type="button"><i class="fas fa-rotate-left"></i> Reset filter</button>
+  </div>
+  <div id="errorBox" class="dk-empty" style="display:none">
+    <div class="ic" style="background:#fee2e2;color:#dc2626"><i class="fas fa-triangle-exclamation"></i></div>
+    <h4>Gagal memuat data</h4>
+    <p id="errorText">Periksa koneksi internet, lalu coba lagi.</p>
+    <button class="dk-btn" id="retryBtn" type="button"><i class="fas fa-rotate"></i> Coba lagi</button>
+  </div>
+</main>
+
+<footer class="pub-footer">
   <div class="container">
     <div class="row">
-      <div class="col-md-4 mb-4">
-        <h5><i class="fas fa-church me-2"></i>RNHKBP Pelikan</h5>
-        <p class="text-white-50">Melayani dengan Kasih, Bertumbuh dalam Iman</p>
+      <div class="col-lg-4 mb-4">
+        <div class="brand">
+          <img src="logo.png" alt="Logo NHKBP Pelikan">
+          <div><h5 class="mb-0">RNHKBP PELIKAN</h5><small style="color:#60a5fa">RESSORT PELIKAN RAYA</small></div>
+        </div>
+        <p class="small" style="color:#94a3c4">Melayani dengan Kasih, Bertumbuh dalam Iman.</p>
       </div>
-      <div class="col-md-4 mb-4">
+      <div class="col-lg-2 col-6 mb-4">
         <h5>Link Cepat</h5>
-        <ul class="list-unstyled">
-          <li><a href="index.html" class="text-white-50 text-decoration-none">Beranda</a></li>
-          <li><a href="dokumentasi-publik.html" class="text-white-50 text-decoration-none">Dokumentasi</a></li>
-          <li><a href="index.html#tentang" class="text-white-50 text-decoration-none">Tentang</a></li>
-          <li><a href="index.html#kontak" class="text-white-50 text-decoration-none">Kontak</a></li>
+        <ul>
+          <li><a href="index.html">Beranda</a></li>
+          <li><a href="dokumentasi-publik.html">Dokumentasi</a></li>
+          <li><a href="index.html#kegiatan">Kegiatan</a></li>
+          <li><a href="partitur.html">Partitur</a></li>
+          <li><a href="index.html#renungan">Renungan</a></li>
+          <li><a href="index.html#profil">Kepengurusan</a></li>
         </ul>
       </div>
-      <div class="col-md-4 mb-4">
-        <h5>Admin</h5>
-        <p class="text-white-50">Fitur admin hanya untuk pengelola</p>
-        <a href="login.html" class="btn btn-outline-light btn-sm">
-          <i class="fas fa-lock me-2"></i>Login Admin
-        </a>
+      <div class="col-lg-2 col-6 mb-4">
+        <h5>Lainnya</h5>
+        <ul>
+          <li><a href="index.html#tentang">Tentang</a></li>
+          <li><a href="index.html#kontak">Kontak</a></li>
+          <li><a href="login.html">Admin Login</a></li>
+        </ul>
+      </div>
+      <div class="col-lg-4 mb-4">
+        <h5>Info Kontak</h5>
+        <ul>
+          <li><i class="fas fa-map-marker-alt"></i> Jl. Pelikan Raya No. 1</li>
+          <li><i class="fas fa-phone"></i> +62 812 3456 7890</li>
+          <li><i class="fas fa-envelope"></i> info@nhkbp-pelikan.org</li>
+          <li><i class="fab fa-instagram"></i> <a href="https://www.instagram.com/nhkbppelikanrealaccount" target="_blank" rel="noopener">@nhkbppelikanrealaccount</a></li>
+        </ul>
       </div>
     </div>
-    <hr class="bg-light">
-    <div class="text-center">
-      <p class="mb-0">&copy; 2024 RNHKBP Pelikan. All rights reserved.</p>
-    </div>
+    <div class="bottom">&copy; 2026 NHKBP PELIKAN - Ressort Pelikan Raya</div>
   </div>
 </footer>
 
-<!-- Firebase -->
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 <script>
-// ================= KONFIGURASI FIREBASE =================
 const firebaseConfig = {
   apiKey: "AIzaSyCwQGsFPBIs_gk0Xc1hscpG-7n6M16gqWc",
   authDomain: "rnhkbp-pelikan.firebaseapp.com",
@@ -312,291 +160,144 @@ const firebaseConfig = {
   messagingSenderId: "202813062166",
   appId: "1:202813062166:web:eb3d963d5965a5e6f48937"
 };
-
-// Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const $ = (id) => document.getElementById(id);
 
-// ================= VARIABEL GLOBAL =================
-let allArticles = [];
-let displayedArticles = [];
-let lastVisible = null;
-let loading = false;
-let hasMore = true;
-const ARTICLES_PER_PAGE = 6;
+const esc = (s) => String(s == null ? '' : s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const NOIMG = 'data:image/svg+xml,' + encodeURIComponent("<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 500'><rect width='800' height='500' fill='#dbe7ff'/><g fill='#93b4ff'><circle cx='330' cy='210' r='34'/><path d='M200 360l120-130 90 90 70-70 120 110z'/></g><text x='400' y='430' font-family='Arial' font-size='34' text-anchor='middle' fill='#2563eb' opacity='.55'>RNHKBP Pelikan</text></svg>");
+// Foto dari Cloudinary dikecilkan otomatis supaya halaman cepat dimuat
+const opt = (u, w) => (u && u.includes('res.cloudinary.com') && u.includes('/upload/') && !/\/upload\/[a-z]_/.test(u)) ? u.replace('/upload/', '/upload/f_auto,q_auto,w_' + w + '/') : u;
+const plain = (html) => new DOMParser().parseFromString((html || '').replace(/<(\/?)(p|h[1-6]|li|ul|ol|div|blockquote|br)\b/gi, ' <$1$2'), 'text/html').body.textContent.replace(/\s+/g, ' ').trim();
+const catClass = (k) => 'cat-' + String(k || 'lainnya').toLowerCase().replace(/[^a-z0-9]+/g, '-');
+const fmtTgl = (v, long) => {
+  try { if (v && v.toDate) return v.toDate().toLocaleDateString('id-ID', { day: 'numeric', month: long ? 'long' : 'short', year: 'numeric' }); } catch (e) {}
+  return '';
+};
+const menitBaca = (html) => Math.max(1, Math.ceil(plain(html).split(' ').filter(Boolean).length / 200));
 
-// ================= LOAD ARTICLES =================
+const KATEGORI = [
+  ['', 'Semua'], ['Partangiangan', '🙏 Partangiangan'], ['Latihan Koor', '🎵 Latihan Koor'],
+  ['Kebaktian', '⛪ Kebaktian'], ['Acara Khusus', '🎉 Acara Khusus'], ['Lainnya', '📌 Lainnya']
+];
+let allArticles = [], lastVisible = null, loading = false, hasMore = true, loadedOnce = false;
+let kategoriAktif = '', cariAktif = '';
+
+$('pills').innerHTML = KATEGORI.map(([v, l], i) => `<button type="button" class="dk-pill${i === 0 ? ' on' : ''}" data-k="${esc(v)}" role="tab" aria-selected="${i === 0}">${esc(l)}</button>`).join('');
+
+function kartu(a, delay) {
+  const tgl = fmtTgl(a.tanggal, false), url = 'detail-artikel-publik.html?id=' + encodeURIComponent(a.id);
+  const ex = plain(a.isi).slice(0, 150);
+  return `<article class="dk-card" style="animation-delay:${delay}ms">
+    <a class="dk-media" href="${url}" tabindex="-1" aria-hidden="true">
+      <img src="${esc(opt(a.foto, 720) || NOIMG)}" alt="" loading="lazy" onerror="this.onerror=null;this.src='${NOIMG}'">
+      <span class="dk-chip ${catClass(a.kategori)}">${esc(a.kategori || 'Umum')}</span>
+    </a>
+    <div class="dk-body">
+      <div class="dk-meta">${tgl ? `<span><i class="far fa-calendar"></i>${esc(tgl)}</span>` : ''}<span><i class="far fa-clock"></i>${menitBaca(a.isi)} mnt baca</span></div>
+      <h3><a href="${url}">${esc(a.judul || 'Tanpa judul')}</a></h3>
+      <p>${esc(ex)}${ex.length >= 150 ? '…' : ''}</p>
+      <div class="dk-foot"><span class="dk-like"><i class="fas fa-heart"></i>${a.like || 0}</span><a class="dk-more" href="${url}">Baca selengkapnya <i class="fas fa-arrow-right"></i></a></div>
+    </div>
+  </article>`;
+}
+function kartuUtama(a) {
+  const tgl = fmtTgl(a.tanggal, true), url = 'detail-artikel-publik.html?id=' + encodeURIComponent(a.id);
+  const ex = plain(a.isi).slice(0, 260);
+  return `<article class="dk-feature">
+    <a class="dk-media" href="${url}" tabindex="-1" aria-hidden="true"><img src="${esc(opt(a.foto, 1100) || NOIMG)}" alt="" onerror="this.onerror=null;this.src='${NOIMG}'"></a>
+    <div class="dk-body">
+      <span class="dk-new"><i class="fas fa-star"></i> Terbaru</span>
+      <div><span class="dk-chip ${catClass(a.kategori)}">${esc(a.kategori || 'Umum')}</span></div>
+      <h3><a href="${url}">${esc(a.judul || 'Tanpa judul')}</a></h3>
+      <div class="dk-meta">${tgl ? `<span><i class="far fa-calendar"></i>${esc(tgl)}</span>` : ''}<span><i class="far fa-clock"></i>${menitBaca(a.isi)} mnt baca</span><span><i class="fas fa-heart" style="color:#e11d48"></i>${a.like || 0} suka</span></div>
+      <p>${esc(ex)}${ex.length >= 260 ? '…' : ''}</p>
+      <div class="dk-foot"><a class="dk-btn" href="${url}">Baca artikel <i class="fas fa-arrow-right"></i></a></div>
+    </div>
+  </article>`;
+}
+
+function render() {
+  const q = cariAktif.toLowerCase(), k = kategoriAktif, filtering = Boolean(q || k);
+  const list = allArticles.filter((a) => (!k || (a.kategori || '') === k) && (!q || (a.judul || '').toLowerCase().includes(q) || plain(a.isi).toLowerCase().includes(q)));
+
+  $('noDataMessage').style.display = (loadedOnce && !allArticles.length) ? 'block' : 'none';
+  $('noResultsMessage').style.display = (allArticles.length && !list.length) ? 'block' : 'none';
+  $('countInfo').textContent = allArticles.length ? (filtering ? `${list.length} hasil` : `${allArticles.length}${hasMore ? '+' : ''} artikel`) : '';
+
+  const pakaiUtama = !filtering && list.length > 0;
+  $('featuredContainer').innerHTML = pakaiUtama ? kartuUtama(list[0]) : '';
+  $('artikelContainer').innerHTML = (pakaiUtama ? list.slice(1) : list).map((a, i) => kartu(a, Math.min(i, 8) * 40)).join('');
+  $('loadMoreBtn').style.display = (hasMore && !filtering && allArticles.length) ? 'inline-flex' : 'none';
+}
+
 async function loadArticles(isInitial = true) {
   if (loading) return;
   loading = true;
-  
-  if (isInitial) {
-    document.getElementById('skeletonContainer').style.display = 'flex';
-    document.getElementById('artikelContainer').innerHTML = '';
-    lastVisible = null;
-    allArticles = [];
-  }
-  
+  const size = isInitial ? 7 : 6;
+  if (isInitial) { $('skeletonContainer').style.display = 'grid'; $('errorBox').style.display = 'none'; lastVisible = null; allArticles = []; hasMore = true; }
+  else { $('loadMoreBtn').disabled = true; }
   try {
-    let query = db.collection("artikel")
-      .orderBy("tanggal", "desc")
-      .limit(ARTICLES_PER_PAGE);
-    
-    if (lastVisible) {
-      query = query.startAfter(lastVisible);
+    let query = db.collection("artikel").orderBy("tanggal", "desc").limit(size);
+    if (lastVisible) query = query.startAfter(lastVisible);
+    const snap = await query.get();
+    if (snap.empty) hasMore = false;
+    else {
+      lastVisible = snap.docs[snap.docs.length - 1];
+      allArticles = allArticles.concat(snap.docs.map((d) => ({ id: d.id, ...d.data() })));
+      hasMore = snap.size === size;
     }
-    
-    const snapshot = await query.get();
-    
-    if (isInitial) {
-      document.getElementById('skeletonContainer').style.display = 'none';
-    }
-    
-    if (snapshot.empty) {
-      hasMore = false;
-      document.getElementById('loadMoreBtn').style.display = 'none';
-      
-      if (isInitial && allArticles.length === 0) {
-        document.getElementById('noDataMessage').style.display = 'block';
-      }
-      loading = false;
-      return;
-    }
-    
-    document.getElementById('noDataMessage').style.display = 'none';
-    
-    lastVisible = snapshot.docs[snapshot.docs.length - 1];
-    
-    const newArticles = [];
-    snapshot.forEach(doc => {
-      newArticles.push({
-        id: doc.id,
-        ...doc.data()
-      });
-    });
-    
-    allArticles = [...allArticles, ...newArticles];
-    
-    if (isInitial) {
-      displayedArticles = allArticles;
-      renderArticles(displayedArticles);
-    } else {
-      displayedArticles = allArticles;
-      appendArticles(newArticles);
-    }
-    
-    hasMore = snapshot.size === ARTICLES_PER_PAGE;
-    document.getElementById('loadMoreBtn').style.display = hasMore ? 'inline-block' : 'none';
-    
-  } catch (error) {
-    console.error("Error loading articles:", error);
-    if (isInitial) {
-      document.getElementById('skeletonContainer').style.display = 'none';
-      document.getElementById('artikelContainer').innerHTML = `
-        <div class="col-12 text-center py-5">
-          <i class="fas fa-exclamation-triangle fa-4x text-danger mb-3"></i>
-          <h5 class="text-danger">Gagal Memuat Data</h5>
-          <p class="text-muted">${error.message}</p>
-        </div>
-      `;
-    }
+    loadedOnce = true;
+    render();
+  } catch (err) {
+    console.error("Gagal memuat artikel:", err);
+    if (isInitial) { $('errorText').textContent = err.message || 'Periksa koneksi internet, lalu coba lagi.'; $('errorBox').style.display = 'block'; }
   }
-  
+  $('skeletonContainer').style.display = 'none';
+  $('loadMoreBtn').disabled = false;
   loading = false;
 }
 
-// ================= RENDER ARTICLES =================
-function renderArticles(articles) {
-  const container = document.getElementById('artikelContainer');
-  
-  if (articles.length === 0) {
-    container.innerHTML = '';
-    document.getElementById('noResultsMessage').style.display = 'block';
-    document.getElementById('loadMoreBtn').style.display = 'none';
-    return;
-  }
-  
-  document.getElementById('noResultsMessage').style.display = 'none';
-  
-  let html = '';
-  articles.forEach(artikel => {
-    // Format tanggal
-    let tanggal = '';
-    if (artikel.tanggal) {
-      try {
-        if (artikel.tanggal.toDate) {
-          tanggal = artikel.tanggal.toDate().toLocaleDateString('id-ID', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          });
-        }
-      } catch (e) {}
-    }
-    
-    // Buat excerpt
-    let excerpt = '';
-    if (artikel.isi) {
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = artikel.isi;
-      excerpt = tempDiv.textContent.substring(0, 120) + (tempDiv.textContent.length > 120 ? '...' : '');
-    }
-    
-    html += `
-      <div class="col-lg-4 col-md-6">
-        <div class="card article-card">
-          <div class="position-relative overflow-hidden">
-            <img src="${artikel.foto || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 220%27%3E%3Crect width=%27400%27 height=%27220%27 fill=%27%23dbe7ff%27/%3E%3Ctext x=%27200%27 y=%27118%27 font-family=%27Arial%27 font-size=%2725%27 text-anchor=%27middle%27 fill=%27%232563eb%27 opacity=%27.6%27%3ERNHKBP Pelikan%3C/text%3E%3C/svg%3E'}" 
-                 class="article-image w-100" 
-                 alt="${artikel.judul}"
-                 onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 220%27%3E%3Crect width=%27400%27 height=%27220%27 fill=%27%23dbe7ff%27/%3E%3Ctext x=%27200%27 y=%27118%27 font-family=%27Arial%27 font-size=%2725%27 text-anchor=%27middle%27 fill=%27%232563eb%27 opacity=%27.6%27%3ERNHKBP Pelikan%3C/text%3E%3C/svg%3E'">
-            <span class="category-badge">
-              <i class="fas fa-tag me-1"></i>${artikel.kategori || 'Umum'}
-            </span>
-            <span class="date-badge">
-              <i class="far fa-calendar-alt me-1"></i>${tanggal}
-            </span>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title fw-bold mb-2">${artikel.judul || 'Judul Artikel'}</h5>
-            <p class="card-text text-muted small">${excerpt}</p>
-            <div class="d-flex justify-content-between align-items-center mt-3">
-              <a href="detail-artikel-publik.html?id=${artikel.id}" class="btn btn-primary btn-sm">
-                <i class="fas fa-book-open me-2"></i>Baca
-              </a>
-              <small class="text-muted">
-                <i class="far fa-heart text-danger me-1"></i> ${artikel.like || 0}
-              </small>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-  
-  container.innerHTML = html;
+// Saat mencari/memfilter, muat dulu semua artikel supaya hasilnya lengkap
+async function pastikanSemuaTermuat() {
+  if (!hasMore) return;
+  $('loadAllNote').style.display = 'block';
+  while (hasMore) { if (loading) { await new Promise((r) => setTimeout(r, 120)); continue; } await loadArticles(false); if (!allArticles.length) break; }
+  $('loadAllNote').style.display = 'none';
+  render();
+}
+function terapkanFilter() {
+  $('clearSearch').style.display = cariAktif ? 'block' : 'none';
+  render();
+  if (cariAktif || kategoriAktif) pastikanSemuaTermuat();
 }
 
-// ================= APPEND ARTICLES =================
-function appendArticles(newArticles) {
-  const container = document.getElementById('artikelContainer');
-  
-  let html = '';
-  newArticles.forEach(artikel => {
-    let tanggal = '';
-    if (artikel.tanggal) {
-      try {
-        if (artikel.tanggal.toDate) {
-          tanggal = artikel.tanggal.toDate().toLocaleDateString('id-ID', {
-            day: 'numeric',
-            month: 'long',
-            year: 'numeric'
-          });
-        }
-      } catch (e) {}
-    }
-    
-    let excerpt = '';
-    if (artikel.isi) {
-      const tempDiv = document.createElement('div');
-      tempDiv.innerHTML = artikel.isi;
-      excerpt = tempDiv.textContent.substring(0, 120) + (tempDiv.textContent.length > 120 ? '...' : '');
-    }
-    
-    html += `
-      <div class="col-lg-4 col-md-6">
-        <div class="card article-card">
-          <div class="position-relative overflow-hidden">
-            <img src="${artikel.foto || 'data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 220%27%3E%3Crect width=%27400%27 height=%27220%27 fill=%27%23dbe7ff%27/%3E%3Ctext x=%27200%27 y=%27118%27 font-family=%27Arial%27 font-size=%2725%27 text-anchor=%27middle%27 fill=%27%232563eb%27 opacity=%27.6%27%3ERNHKBP Pelikan%3C/text%3E%3C/svg%3E'}" 
-                 class="article-image w-100" 
-                 alt="${artikel.judul}"
-                 onerror="this.onerror=null;this.src='data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 400 220%27%3E%3Crect width=%27400%27 height=%27220%27 fill=%27%23dbe7ff%27/%3E%3Ctext x=%27200%27 y=%27118%27 font-family=%27Arial%27 font-size=%2725%27 text-anchor=%27middle%27 fill=%27%232563eb%27 opacity=%27.6%27%3ERNHKBP Pelikan%3C/text%3E%3C/svg%3E'">
-            <span class="category-badge">${artikel.kategori || 'Umum'}</span>
-            <span class="date-badge">${tanggal}</span>
-          </div>
-          <div class="card-body">
-            <h5 class="card-title fw-bold mb-2">${artikel.judul || 'Judul Artikel'}</h5>
-            <p class="card-text text-muted small">${excerpt}</p>
-            <div class="d-flex justify-content-between align-items-center mt-3">
-              <a href="detail-artikel-publik.html?id=${artikel.id}" class="btn btn-primary btn-sm">
-                <i class="fas fa-book-open me-2"></i>Baca
-              </a>
-              <small class="text-muted">
-                <i class="far fa-heart text-danger me-1"></i> ${artikel.like || 0}
-              </small>
-            </div>
-          </div>
-        </div>
-      </div>
-    `;
-  });
-  
-  container.innerHTML += html;
-}
-
-// ================= FILTER ARTIKEL =================
-function filterArtikel() {
-  const searchTerm = document.getElementById('searchInput').value.toLowerCase().trim();
-  const kategori = document.getElementById('kategoriFilter').value;
-  
-  const filtered = allArticles.filter(artikel => {
-    const judul = (artikel.judul || '').toLowerCase();
-    const isi = (artikel.isi || '').toLowerCase();
-    const artikelKategori = artikel.kategori || '';
-    
-    const matchesSearch = searchTerm === '' || 
-                         judul.includes(searchTerm) || 
-                         isi.includes(searchTerm);
-    const matchesKategori = !kategori || artikelKategori === kategori;
-    
-    return matchesSearch && matchesKategori;
-  });
-  
-  renderArticles(filtered);
-  
-  if (searchTerm || kategori) {
-    document.getElementById('loadMoreBtn').style.display = 'none';
-  } else {
-    document.getElementById('loadMoreBtn').style.display = hasMore ? 'inline-block' : 'none';
-  }
-}
-
-// ================= LOAD MORE =================
-function loadMore() {
-  if (loading || !hasMore) return;
-  loadArticles(false);
-}
-
-// ================= RESET FILTER =================
-function resetFilter() {
-  document.getElementById('searchInput').value = '';
-  document.getElementById('kategoriFilter').value = '';
-  renderArticles(allArticles);
-  document.getElementById('loadMoreBtn').style.display = hasMore ? 'inline-block' : 'none';
-}
-
-// ================= INITIAL LOAD =================
-document.addEventListener('DOMContentLoaded', () => {
-  loadArticles(true);
+let timer;
+$('searchInput').addEventListener('input', (e) => { clearTimeout(timer); timer = setTimeout(() => { cariAktif = e.target.value.trim(); terapkanFilter(); }, 160); });
+$('clearSearch').addEventListener('click', () => { $('searchInput').value = ''; cariAktif = ''; terapkanFilter(); $('searchInput').focus(); });
+$('pills').addEventListener('click', (e) => {
+  const b = e.target.closest('.dk-pill'); if (!b) return;
+  kategoriAktif = b.dataset.k;
+  document.querySelectorAll('.dk-pill').forEach((x) => { x.classList.toggle('on', x === b); x.setAttribute('aria-selected', x === b); });
+  terapkanFilter();
 });
+$('resetBtn').addEventListener('click', () => {
+  $('searchInput').value = ''; cariAktif = ''; kategoriAktif = '';
+  document.querySelectorAll('.dk-pill').forEach((x, i) => { x.classList.toggle('on', i === 0); x.setAttribute('aria-selected', i === 0); });
+  terapkanFilter();
+});
+$('loadMoreBtn').addEventListener('click', () => { if (!loading && hasMore) loadArticles(false); });
+$('retryBtn').addEventListener('click', () => loadArticles(true));
 
-// ================= INFINITE SCROLL =================
+// Muat otomatis saat hampir sampai bawah
 window.addEventListener('scroll', () => {
-  if (loading || !hasMore) return;
-  
-  const searchTerm = document.getElementById('searchInput').value;
-  const kategori = document.getElementById('kategoriFilter').value;
-  if (searchTerm || kategori) return;
-  
-  const scrollY = window.scrollY;
-  const height = document.documentElement.scrollHeight - window.innerHeight;
-  
-  if (height > 0 && (scrollY / height) > 0.8) {
-    loadMore();
-  }
-});
-</script>
+  if (loading || !hasMore || cariAktif || kategoriAktif || !loadedOnce) return;
+  const h = document.documentElement.scrollHeight - window.innerHeight;
+  if (h > 0 && window.scrollY / h > 0.85) loadArticles(false);
+}, { passive: true });
 
+loadArticles(true);
+</script>
 <script src="js/pwa-init.js"></script>
 </body>
 </html>

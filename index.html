@@ -854,6 +854,8 @@
       }
     }
   </style>
+  <link rel="stylesheet" href="css/kegiatan.css">
+  <script src="js/kegiatan-data.js"></script>
 </head>
 <body>
 
@@ -877,6 +879,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link" href="dokumentasi-publik.html">Dokumentasi</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="#kegiatan">Kegiatan</a>
         </li>
         <li class="nav-item">
           <a class="nav-link" href="partitur.html">Partitur</a>
@@ -1014,6 +1019,20 @@
 </div>
 
 <!-- RENUNGAN HARIAN SECTION -->
+<!-- ===== KEGIATAN KAMI ===== -->
+<section id="kegiatan" class="kgp-section">
+  <div class="container">
+    <h2 class="section-title">Kegiatan <span>Kami</span></h2>
+    <p class="kgp-sub">Rangkaian pelayanan dan persekutuan yang kami jalani bersama sepanjang tahun.</p>
+    <div class="kgp-list" id="kegiatanList">
+      <div class="text-center text-muted py-4"><span class="spinner-border spinner-border-sm text-primary me-2"></span>Memuat kegiatan…</div>
+    </div>
+    <div class="text-center mt-5">
+      <a class="kgp-cta" href="dokumentasi-publik.html"><i class="fas fa-images me-2"></i>Lihat dokumentasi kegiatan</a>
+    </div>
+  </div>
+</section>
+
 <section id="renungan" class="renungan-section">
   <div class="container">
     <h2 class="section-title">Renungan <span>Harian</span></h2>
@@ -1300,6 +1319,7 @@
         <ul class="footer-links">
           <li><a href="index.html">Beranda</a></li>
           <li><a href="dokumentasi-publik.html">Dokumentasi</a></li>
+          <li><a href="#kegiatan">Kegiatan</a></li>
           <li><a href="#renungan">Renungan</a></li>
           <li><a href="#profil">Kepengurusan</a></li>
           <li><a href="#tentang">Tentang</a></li>
@@ -1374,9 +1394,6 @@ async function loadStats() {
     const anggotaSnapshot = await db.collection("anggota").get();
     document.getElementById('totalAnggota').textContent = anggotaSnapshot.size;
     
-    const absensiSnapshot = await db.collection("absensi").get();
-    document.getElementById('totalKegiatan').textContent = absensiSnapshot.size;
-    
     const artikelSnapshot = await db.collection("artikel").get();
     document.getElementById('totalArtikel').textContent = artikelSnapshot.size;
     
@@ -1389,6 +1406,47 @@ async function loadStats() {
   } catch (error) {
     console.error("Error loading stats:", error);
   }
+}
+
+// ================= LOAD KEGIATAN =================
+const escKg = (t) => String(t == null ? '' : t).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const optKg = (u, w) => (u && u.includes('res.cloudinary.com') && u.includes('/upload/') && !/\/upload\/[a-z]_/.test(u)) ? u.replace('/upload/', '/upload/f_auto,q_auto,w_' + w + '/') : u;
+
+function renderKegiatan(items) {
+  const section = document.getElementById('kegiatan');
+  const list = document.getElementById('kegiatanList');
+  if (!items.length) { section.style.display = 'none'; return; }
+  section.style.display = '';
+  list.innerHTML = items.map((k, i) => {
+    const w = window.KEGIATAN_WARNA[i % window.KEGIATAN_WARNA.length];
+    const foto = k.foto ? `<div class="kgp-photo"><img src="${escKg(optKg(k.foto, 700))}" alt="${escKg(k.nama)}" loading="lazy" onerror="this.parentNode.remove()"></div>` : '';
+    const meta = [
+      k.jadwal ? `<span><i class="far fa-clock"></i>${escKg(k.jadwal)}</span>` : '',
+      k.lokasi ? `<span><i class="fas fa-location-dot"></i>${escKg(k.lokasi)}</span>` : ''
+    ].join('');
+    return `<article class="kgp-card" style="--c1:${w[0]};--c2:${w[1]};animation-delay:${i * 70}ms">
+      ${foto}
+      <div class="kgp-inner">
+        <div class="kgp-head"><span class="kgp-ic"><i class="fas ${escKg(k.ikon || 'fa-star')}"></i></span><span class="kgp-num">${String(i + 1).padStart(2, '0')}</span></div>
+        <h3>${escKg(k.nama)}</h3>
+        ${k.deskripsi ? `<p>${escKg(k.deskripsi)}</p>` : ''}
+        ${meta ? `<div class="kgp-meta">${meta}</div>` : ''}
+      </div>
+    </article>`;
+  }).join('');
+}
+
+async function loadKegiatan() {
+  let items = window.KEGIATAN_DEFAULT;      // dipakai selama admin belum menyimpan data sendiri
+  try {
+    const snap = await db.collection("pengurus").doc("kegiatan").get();
+    if (snap.exists && Array.isArray(snap.data().items)) items = snap.data().items;
+  } catch (error) {
+    console.warn("Kegiatan memakai data bawaan:", error.message);
+  }
+  items = items.filter((k) => k && k.nama).slice(0, window.KEGIATAN_MAKS);
+  document.getElementById('totalKegiatan').textContent = items.length;
+  renderKegiatan(items);
 }
 
 // ================= LOAD RENUNGAN =================
@@ -1602,6 +1660,7 @@ document.addEventListener('DOMContentLoaded', () => {
   loadStats();
   loadKepengurusan();
   loadTentangFoto();
+  loadKegiatan();
 });
 </script>
 
